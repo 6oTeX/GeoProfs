@@ -26,6 +26,7 @@ To install the application, you need to have the following:
 - Node.js
 - npm
 - Git
+- WSL2 (Windows Subsystem for Linux 2)
 
 To install the application, follow these steps:
 1. Clone the repository
@@ -36,7 +37,7 @@ npm install
 ```
 4. run the following command:
 ```bash
-npx supabase start
+supabase start
 ```
 
 ## Usage
@@ -45,7 +46,7 @@ To use the application, follow these steps:
 1. Go to the root folder of the repository
 2. Run the following command:
 ```bash
-npm start
+npm run dev
 ```
 3. Open your browser and go to the following URL:
 ```
