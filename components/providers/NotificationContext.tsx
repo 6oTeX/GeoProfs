@@ -1,5 +1,5 @@
 "use client";
-import {supabaseClient} from "@/lib/clientSupabase";
+import {supabaseClient} from "@/lib/supabaseClient";
 import {toast, ToastContainer} from 'react-toastify';
 import {createContext, ReactNode, useEffect} from "react";
 

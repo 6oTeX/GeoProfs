@@ -56,7 +56,7 @@ http://localhost:3000
 ## Extra
 
 To view the database studio, go to the following URL:
-```
+```http request
 http://localhost:54323
 ```
 
