@@ -1,0 +1,63 @@
+<diagram program="umletino" version="15.1"><zoom_level>11</zoom_level><element><id>UMLClass</id><coordinates><x>842</x><y>376</y><w>308</w><h>308</h></coordinates><panel_attributes>Leave request
+--
+ID: uuid
+User: ID
+
+StartDate: Date
+EndDate: Date
+Reason: Text
+Explination: Text
+
+State: Text(
+	"Submitted",
+	"Accepted",
+	"Declined",
+	"Resubmitted")
+
+ReviewedByUser_id: uuid
+Response: Text
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>600</x><y>376</y><w>176</w><h>264</h></coordinates><panel_attributes>User
+--
+ID: uuid
+
+Name: Text
+SurName: Text
+mail: Text
+
+department_id:  uuid
+
+Position: Text
+
+HolidayHours: number
+PersonalHours: number
+SickHours: number</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>765</x><y>398</y><w>99</w><h>55</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;40;10;40;30;70;30</additional_attributes></element><element><id>UMLClass</id><coordinates><x>600</x><y>244</y><w>176</w><h>110</h></coordinates><panel_attributes>Project
+--
+ID: uuid
+name: Text
+StartDate: date
+EndDate: date</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>600</x><y>145</y><w>176</w><h>77</h></coordinates><panel_attributes>User-Project Relation
+--
+ID: uuid
+Project_ID: uuid
+User_ID: uuid</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>556</x><y>189</y><w>66</w><h>110</h></coordinates><panel_attributes>lt=-&gt;</panel_attributes><additional_attributes>40;10;10;10;10;80;40;80</additional_attributes></element><element><id>UMLClass</id><coordinates><x>292</x><y>464</y><w>154</w><h>88</h></coordinates><panel_attributes>Section
+--
+ID: uuid
+Manager: uuid
+Name: Text</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>435</x><y>398</y><w>88</w><h>143</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;110;60;110;60;10</additional_attributes></element><element><id>Relation</id><coordinates><x>435</x><y>497</y><w>88</w><h>209</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;170;60;170;60;10</additional_attributes></element><element><id>Relation</id><coordinates><x>435</x><y>497</y><w>187</w><h>165</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;130;90;130;90;10;150;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>292</x><y>607</y><w>154</w><h>99</h></coordinates><panel_attributes>Department
+--
+ID: uuid
+Name: Text
+Manager: uuid
+Section: uuid</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>237</x><y>486</y><w>77</w><h>231</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>50;10;10;10;10;190;50;190</additional_attributes></element><element><id>UMLClass</id><coordinates><x>116</x><y>321</y><w>110</w><h>143</h></coordinates><panel_attributes>Login Logbook
+--
+ID: uuid
+ip: Text
+date: Date
+time: Time
+user: uuid
+location: Text</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>215</x><y>398</y><w>407</w><h>33</h></coordinates><panel_attributes>lt=-&gt;</panel_attributes><additional_attributes>10;10;350;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>116</x><y>189</y><w>110</w><h>99</h></coordinates><panel_attributes>Export Logbook
+--
+ID: uuid
+date: Date
+time: Time
+byUser: uuid</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>215</x><y>266</y><w>55</w><h>165</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>30;130;30;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>765</x><y>200</y><w>66</w><h>231</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;10;40;10;40;190</additional_attributes></element></diagram>
