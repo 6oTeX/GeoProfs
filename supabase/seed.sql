@@ -146,7 +146,7 @@ INSERT INTO auth.users (
              'dummy_aud',                           -- aud (optional field)
              'admin',                               -- role (admin role)
              'admin@gmail.com',                     -- email (admin email)
-             '$2a$12$7Tgk1.j5W9sJRV5gI.e8LOkX5miG5bwH2OuTQXgjgFf5K/MU.NboW', -- encrypted_password (bcrypt hash of "password")
+             '$2a$10$TvhFlyXgiRboLHsVpariSexpJejV1bCurQyCwJGu2OGPLnQ2sWeNq', -- encrypted_password (bcrypt hash of "password")
              NOW(),                                 -- email_confirmed_at (timestamp for email confirmation)
              NOW(),                                 -- invited_at (timestamp for invitation)
              'dummy_confirmation_token',            -- confirmation_token
@@ -176,3 +176,5 @@ INSERT INTO auth.users (
              NULL,                                  -- deleted_at (not deleted)
              FALSE                                  -- is_anonymous (not anonymous)
          );
+
+INSERT INTO public.projects (name, start_date, end_date) values ('test_project',NOW(), NOW())
