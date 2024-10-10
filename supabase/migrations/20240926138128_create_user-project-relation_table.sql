@@ -7,4 +7,4 @@ create table
     constraint user_project_relations_pkey primary key (id),
     constraint user_project_relations_project_id_fkey foreign key (project_id) references projects (id),
     constraint user_project_relations_user_id_fkey foreign key (user_id) references profiles (id)
-  ) tablespace pg_default;
+  ) tablespace pg_default; 

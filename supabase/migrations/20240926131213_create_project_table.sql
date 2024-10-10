@@ -6,4 +6,4 @@ create table
     start_date timestamp with time zone not null,
     end_date timestamp with time zone not null,
     constraint project_pkey primary key (id)
-  ) tablespace pg_default;
+  ) tablespace pg_default; 

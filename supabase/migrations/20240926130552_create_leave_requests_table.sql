@@ -12,7 +12,7 @@ CREATE TYPE public.leave_request_reasons as ENUM (
     'wedding',
     'death',
     'other'
-);
+); 
 
 create table
   public.leave_requests (
