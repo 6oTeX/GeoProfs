@@ -1,64 +1,259 @@
 openapi: 3.0.3
 info:
   title: GeoProfs - OpenAPI 3.0
-  description: hierin worden de API endpoint in beschreven welke gebruikt worden om de front-end en back-end te koppelen.
+  description: Hierin worden de API endpoints beschreven welke gebruikt worden om de front-end en back-end te koppelen.
   version: 1.0.11
 servers:
   - url: http://localhost:3000/api
 tags:
   - name: leave-requests
-    description: Acces to leave-requests
+    description: Access to leave-requests
+  - name: users
+    description: Access to user data
+  - name: calendar
+    description: Access to calendar data
 paths:
+  /leave-request:
+    post:
+      tags:
+        - leave-requests
+      summary: Create a leave-request
+      description: Voor het indienen van een verlofaanvraag door de ingelogde gebruiker. De status van de aanvraag zal op "pending" worden gezet.
+      operationId: postLeaveRequest
+      parameters:
+        - name: reason
+          in: query
+          schema:
+            type: string
+          description: De reden voor het verzoek (bijvoorbeeld ziekte of vakantie).
+          required: true
+        - name: explanation
+          in: query
+          schema:
+            type: string
+          description: Uitleg van het verzoek.
+          required: true
+        - name: start-date
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Startdatum van de verlofaanvraag.
+          required: true
+        - name: end-date
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Einddatum van de verlofaanvraag.
+          required: true
+      responses:
+        '200':
+          description: Succesvolle operatie
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionStatus'
+
   /leave-requests:
     get:
       tags:
         - leave-requests
       summary: Get leave-requests
-      description: Get all leave-requests within selected user(s)
+      description: Voor het ophalen van alle verlofaanvragen van een gebruiker en/of afdeling.
       operationId: getLeaveRequests
-      parameters: 
+      parameters:
         - name: user
           in: query
           schema:
-            type: string 
-          description: user id to use
+            type: string
+          description: Gebruikers-ID om verlofaanvragen op te halen. Standaard de ingelogde gebruiker.
           required: false
         - name: department
           in: query
           schema:
-            type: string 
-          description: department id to get the requests from
+            type: string
+          description: Afdelings-ID om verlofaanvragen binnen een afdeling op te halen.
           required: false
         - name: section
           in: query
           schema:
-            type: string 
-          description: section id to get the requests from
-          required: false
-        - name: project
-          in: query
-          schema:
-              type: string
-          description: project id to filter the requests by
+            type: string
+          description: Sectie-ID om verlofaanvragen binnen een sectie op te halen.
           required: false
       responses:
         '200':
-          description: Succesfull Operation
+          description: Succesvolle operatie
           content:
-            json:
+            application/json:
               schema:
-                $ref: '#/components/schemas/leave-request'
+                type: array
+                items:
+                  $ref: '#/components/schemas/leave-request'
         '403':
-          description: Access Denied
+          description: Toegang geweigerd
         '404':
-          description: No leave-requests found
-components: 
-  schemas: 
+          description: Geen verlofaanvragen gevonden
+
+  /leave-requests/{id}/accept:
+    put:
+      tags:
+        - leave-requests
+      summary: Accept leave-request
+      description: Voor het accepteren van een verlofaanvraag door managers van de betreffende afdeling of sectie.
+      operationId: acceptLeaveRequest
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID van de verlofaanvraag.
+      responses:
+        '200':
+          description: Succesvolle operatie
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/leave-request'
+        '403':
+          description: Toegang geweigerd
+        '404':
+          description: Verlofaanvraag niet gevonden
+
+  /leave-requests/{id}/decline:
+    put:
+      tags:
+        - leave-requests
+      summary: Decline leave-request
+      description: Voor het afwijzen van een verlofaanvraag door managers van de betreffende afdeling of sectie.
+      operationId: declineLeaveRequest
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID van de verlofaanvraag.
+        - name: response
+          in: query
+          schema:
+            type: string
+          required: true
+          description: De reden voor het afwijzen van de aanvraag.
+      responses:
+        '200':
+          description: Succesvolle operatie
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/leave-request'
+        '403':
+          description: Toegang geweigerd
+        '404':
+          description: Verlofaanvraag niet gevonden
+
+  /users:
+    get:
+      tags:
+        - users
+      summary: Get all users
+      description: Voor het ontvangen van alle gebruikersgegevens.
+      operationId: getUsers
+      responses:
+        '200':
+          description: Succesvolle operatie
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/user'
+        '403':
+          description: Toegang geweigerd
+
+  /users/me:
+    get:
+      tags:
+        - users
+      summary: Get current user
+      description: Voor het ontvangen van alle beveiligde gegevens van de ingelogde gebruiker.
+      operationId: getCurrentUser
+      responses:
+        '200':
+          description: Succesvolle operatie
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        '403':
+          description: Toegang geweigerd
+
+  /calendar/{year}/{month}:
+    get:
+      tags:
+        - calendar
+      summary: Get leave requests for a specific month
+      description: Voor het ophalen van alle verlofaanvragen binnen een specifieke maand.
+      operationId: getCalendarLeaveRequests
+      parameters:
+        - name: year
+          in: path
+          schema:
+            type: string
+          required: true
+          description: Het jaar van de verlofaanvragen.
+        - name: month
+          in: path
+          schema:
+            type: string
+          required: true
+          description: De maand van de verlofaanvragen.
+      responses:
+        '200':
+          description: Succesvolle operatie
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/leave-request'
+components:
+  schemas:
     leave-request:
       type: object
       properties:
         id:
           type: string
           example: "000-0000-0000-0000"
-
-
+        reason:
+          type: string
+        explanation:
+          type: string
+        start-date:
+          type: string
+          format: date
+        end-date:
+          type: string
+          format: date
+    ActionStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+    user:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
