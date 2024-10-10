@@ -17,4 +17,4 @@ CREATE TABLE public.notifications (
     receiver_id uuid[] not null,
     constraint notifications_pkey primary key (id),
     constraint notifications_user_id_fkey foreign key (user_id) references auth.users (id)
-) tablespace pg_default;
+) tablespace pg_default; 

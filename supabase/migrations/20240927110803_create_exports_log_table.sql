@@ -6,4 +6,4 @@ create table
     constraint data_exports_pkey primary key (id),
     constraint data_exports_by_user_fkey foreign key (by_user) references profiles (id)
   ) tablespace pg_default;
-  
+   

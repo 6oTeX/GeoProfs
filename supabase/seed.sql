@@ -141,7 +141,7 @@ INSERT INTO auth.users (
     deleted_at,
     is_anonymous
 ) VALUES (
-             '11111111-1111-1111-1111-111111111111', -- instance_id (dummy UUID)
+             '11111111-1111-1111-1111-111111111112', -- instance_id (dummy UUID)
              '00000000-0000-0000-0000-000000000001', -- id (dummy UUID for user)
              'dummy_aud',                           -- aud (optional field)
              'admin',                               -- role (admin role)
