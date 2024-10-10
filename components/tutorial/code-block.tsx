@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from "@supabase/supabase-js";
 
 const CopyIcon = () => (
   <svg

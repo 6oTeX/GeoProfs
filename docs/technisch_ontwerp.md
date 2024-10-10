@@ -41,7 +41,8 @@ Technisch ontwerp
 De volgende frameworks, libraries en software applicaties worden gebruikt.
 
 ## Framework
-Het framework wat gebruikt gaat worden is Next.js. 
+
+Het framework wat gebruikt gaat worden is Next.js.
 Next.js is een web compleet framework, wat gebaseerd is op React. Het heeft een makkelijk en snel ontwikkelproces.
 
 Next.js kan geschreven worden in JavaScript of TypeScript. Voor dit project is TypeScript gekozen, vanwege het feit dat hier minder foutgevoelige code mee wordt geschreven.
@@ -51,12 +52,13 @@ Next.js kan geschreven worden in JavaScript of TypeScript. Voor dit project is T
 De packages worden gemanaged door NPM.
 
 De packages die gebruikt worden zijn:
-*   Shadcn voor UI-componenten
-*   Tailwind voor CSS
+
+- Shadcn voor UI-componenten
+- Tailwind voor CSS
 
 ## Versie beheer
 
-GIT wordt gebruikt voor versiebeheer en deployment. 
+GIT wordt gebruikt voor versiebeheer en deployment.
 De GIT-repo wordt op GitHub gehost.
 
 ## Database
@@ -71,7 +73,7 @@ De front-end gebruikt shadcn als component library. NEXT maakt gebruik van serve
 
 ## Backend
 
-De backend bestaat uit Next.js API-routes, gecombineerd met Supabase als database-backend en authenticatiesysteem. Supabase biedt ingebouwde API's voor CRUD-operaties. Voor het ophalen van data zullen de ingebouwde API's van supabase gebruikt worden. Het aanroepen van functies zal via NEXT apis gaan. 
+De backend bestaat uit Next.js API-routes, gecombineerd met Supabase als database-backend en authenticatiesysteem. Supabase biedt ingebouwde API's voor CRUD-operaties. Voor het ophalen van data zullen de ingebouwde API's van supabase gebruikt worden. Het aanroepen van functies zal via NEXT apis gaan.
 
 ## Database-structuur
 
@@ -85,16 +87,12 @@ De backend bestaat uit Next.js API-routes, gecombineerd met Supabase als databas
 
 ---
 
-
 | **URL**     | /api/leave-request?reason=TEXT&explanation=TEXT&start-date=DATE&end-date=DATE |
 | ----------- | ----------------------------------------------------------------------------- |
 | **Method**  | POST                                                                          |
 | **Uitleg**  | Voor het indienen van een verlofaanvraag.                                     |
 | **Toegang** | Alle ingelogde gebruikers                                                     |
 | **Return**  | ActionStatus                                                                  |
-
-
-
 
 ---
 
@@ -107,11 +105,11 @@ De backend bestaat uit Next.js API-routes, gecombineerd met Supabase als databas
 
 **Parameters:**
 
-*?user=ID:* De geselecteerde gebruiker, standaard is dit de huidig ingelogde gebruiker.
+_?user=ID:_ De geselecteerde gebruiker, standaard is dit de huidig ingelogde gebruiker.
 
-*?department=ID* De geselecteerde department, geeft nu alle leave_requests binnen een department terug.**
+_?department=ID_ De geselecteerde department, geeft nu alle leave_requests binnen een department terug.\*\*
 
-*?sectie=ID* De geselecteerde sectie, geeft nu alle leave_requests binnen een sectie terug.**
+_?sectie=ID_ De geselecteerde sectie, geeft nu alle leave_requests binnen een sectie terug.\*\*
 
 ---
 
@@ -155,7 +153,7 @@ De backend bestaat uit Next.js API-routes, gecombineerd met Supabase als databas
 | ----------- | ---------------------------------------------------------------- |
 | **Method**  | GET                                                              |
 | **Uitleg**  | Voor het ontvangen van alle leave_requests van de gegeven maand. |
-| **Toegang** | Alle ingelogde gebruikers. *                                     |
+| **Toegang** | Alle ingelogde gebruikers. \*                                    |
 | **Return**  | array met leave requests.                                        |
 
 De leave_requests zijn niet volledig gevuld gebaseerd op de rechten van de gebruiker, zo krijgt een werknemer alleen te zien wie er binnen zijn department afwezig zijn, maar niet reden.
@@ -171,31 +169,35 @@ De applicatie maakt gebruik van Supabase-authenticatie voor inlog- en toegangsbe
 ### Werknemer
 
 Een werknemer kan:
-* zijn eigen gebruikers data inzien via *GET /api/users/me*
-* Leave aanvragen via *PUT /api/leave_request*
-* Afwezigheid zijn via *GET /api/calendar/MONTH*
+
+- zijn eigen gebruikers data inzien via _GET /api/users/me_
+- Leave aanvragen via _PUT /api/leave_request_
+- Afwezigheid zijn via _GET /api/calendar/MONTH_
 
 ### Manager
 
 Een manager kan het volgende:
-* Alle leave_requests ophalen binnen zijn/haar bevoegdheid via: *GET /api/leave-requests*
-* leave_requests accepteren binnen zijn/haar bevoegdheid via: *PUT /api/leave-requests/ID/accept*
-* leave_requests afwijzen binnen zijn/haar bevoegdheid via: *PUT /api/leave-requests/ID/decline*
-* Afwezigheid zijn, en de redenen hiervan via: *GET /api/calendar/MONTH*
-* De gebruikers data van alle gebruikers binnen zijn/haar bevoegdheid via: *GET /api/users*
+
+- Alle leave_requests ophalen binnen zijn/haar bevoegdheid via: _GET /api/leave-requests_
+- leave_requests accepteren binnen zijn/haar bevoegdheid via: _PUT /api/leave-requests/ID/accept_
+- leave_requests afwijzen binnen zijn/haar bevoegdheid via: _PUT /api/leave-requests/ID/decline_
+- Afwezigheid zijn, en de redenen hiervan via: _GET /api/calendar/MONTH_
+- De gebruikers data van alle gebruikers binnen zijn/haar bevoegdheid via: _GET /api/users_
 
 Een manager kan ook alles wat een werknemer kan.
 
 ### CEO
 
 Een CEO kan het volgende:
-* Het exporteren van alle afwezigheid binnen periode naar .CSV via: *GET /api/export*
+
+- Het exporteren van alle afwezigheid binnen periode naar .CSV via: _GET /api/export_
 
 # Test Strategie
 
 Testen zal plaatsvinden op zowel frontend als backend. Supabase wordt niet getest, aangezien het een beheerde service is.
 
 Er wordt gebruik gemaakt van:
+
 - **Jest** voor unit testing
 - **Cypress** voor end-to-end testing
 
@@ -217,17 +219,17 @@ Bepaalde acties van de applicatie worden gelogd. Hierin wordt datum en tijd van 
 
 # Documentatie en code conventie
 
-Documentatie van de code zal plaatsvinden in de code. 
+Documentatie van de code zal plaatsvinden in de code.
 Er zal gebruik gemaakt worden van een Doxygen-documentatievorm.
 
 ```ts
 class Foo {
-    /**
-     * @brief bar function of foo
-     * 
-     * @todo nog geen implementatie
-     * @return void
-     */
-    public Bar() {
-    }
+  /**
+   * @brief bar function of foo
+   *
+   * @todo nog geen implementatie
+   * @return void
+   */
+  public Bar() {}
 }
+```

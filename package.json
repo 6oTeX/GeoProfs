@@ -5,7 +5,8 @@
     "build": "next build",
     "start": "next start",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "prettier": "prettier --write ."
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.1.1",

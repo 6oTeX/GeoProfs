@@ -48,12 +48,12 @@ paths:
           description: Einddatum van de verlofaanvraag.
           required: true
       responses:
-        '200':
+        "200":
           description: Succesvolle operatie
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ActionStatus'
+                $ref: "#/components/schemas/ActionStatus"
 
   /leave-requests:
     get:
@@ -82,17 +82,17 @@ paths:
           description: Sectie-ID om verlofaanvragen binnen een sectie op te halen.
           required: false
       responses:
-        '200':
+        "200":
           description: Succesvolle operatie
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/leave-request'
-        '403':
+                  $ref: "#/components/schemas/leave-request"
+        "403":
           description: Toegang geweigerd
-        '404':
+        "404":
           description: Geen verlofaanvragen gevonden
 
   /leave-requests/{id}/accept:
@@ -110,17 +110,17 @@ paths:
           required: true
           description: ID van de verlofaanvraag.
       responses:
-        '200':
+        "200":
           description: Succesvolle operatie
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/leave-request'
-        '403':
+                  $ref: "#/components/schemas/leave-request"
+        "403":
           description: Toegang geweigerd
-        '404':
+        "404":
           description: Verlofaanvraag niet gevonden
 
   /leave-requests/{id}/decline:
@@ -144,17 +144,17 @@ paths:
           required: true
           description: De reden voor het afwijzen van de aanvraag.
       responses:
-        '200':
+        "200":
           description: Succesvolle operatie
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/leave-request'
-        '403':
+                  $ref: "#/components/schemas/leave-request"
+        "403":
           description: Toegang geweigerd
-        '404':
+        "404":
           description: Verlofaanvraag niet gevonden
 
   /users:
@@ -165,15 +165,15 @@ paths:
       description: Voor het ontvangen van alle gebruikersgegevens.
       operationId: getUsers
       responses:
-        '200':
+        "200":
           description: Succesvolle operatie
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/user'
-        '403':
+                  $ref: "#/components/schemas/user"
+        "403":
           description: Toegang geweigerd
 
   /users/me:
@@ -184,13 +184,13 @@ paths:
       description: Voor het ontvangen van alle beveiligde gegevens van de ingelogde gebruiker.
       operationId: getCurrentUser
       responses:
-        '200':
+        "200":
           description: Succesvolle operatie
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/user'
-        '403':
+                $ref: "#/components/schemas/user"
+        "403":
           description: Toegang geweigerd
 
   /calendar/{year}/{month}:
@@ -214,14 +214,14 @@ paths:
           required: true
           description: De maand van de verlofaanvragen.
       responses:
-        '200':
+        "200":
           description: Succesvolle operatie
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/leave-request'
+                  $ref: "#/components/schemas/leave-request"
 components:
   schemas:
     leave-request:
