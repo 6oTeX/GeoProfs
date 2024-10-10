@@ -1,0 +1,64 @@
+openapi: 3.0.3
+info:
+  title: GeoProfs - OpenAPI 3.0
+  description: hierin worden de API endpoint in beschreven welke gebruikt worden om de front-end en back-end te koppelen.
+  version: 1.0.11
+servers:
+  - url: http://localhost:3000/api
+tags:
+  - name: leave-requests
+    description: Acces to leave-requests
+paths:
+  /leave-requests:
+    get:
+      tags:
+        - leave-requests
+      summary: Get leave-requests
+      description: Get all leave-requests within selected user(s)
+      operationId: getLeaveRequests
+      parameters: 
+        - name: user
+          in: query
+          schema:
+            type: string 
+          description: user id to use
+          required: false
+        - name: department
+          in: query
+          schema:
+            type: string 
+          description: department id to get the requests from
+          required: false
+        - name: section
+          in: query
+          schema:
+            type: string 
+          description: section id to get the requests from
+          required: false
+        - name: project
+          in: query
+          schema:
+              type: string
+          description: project id to filter the requests by
+          required: false
+      responses:
+        '200':
+          description: Succesfull Operation
+          content:
+            json:
+              schema:
+                $ref: '#/components/schemas/leave-request'
+        '403':
+          description: Access Denied
+        '404':
+          description: No leave-requests found
+components: 
+  schemas: 
+    leave-request:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "000-0000-0000-0000"
+
+

@@ -25,18 +25,15 @@ Technisch ontwerp
   - [Backend](#backend)
   - [Database-structuur](#database-structuur)
   - [API-ontwerp](#api-ontwerp)
+    - [REST API Endpoints](#rest-api-endpoints)
   - [Authenticatie en Autorisatie](#authenticatie-en-autorisatie)
-  - [Hosting en Deployment](#hosting-en-deployment)
-- [Functionele Specificaties](#functionele-specificaties)
-  - [Gebruikersrollen](#gebruikersrollen)
-  - [Use cases](#use-cases)
-  - [UI en UX Design](#ui-en-ux-design)
+    - [Werknemer](#werknemer)
+    - [Manager](#manager)
+    - [CEO](#ceo)
 - [Test Strategie](#test-strategie)
 - [Beveiliging](#beveiliging)
-  - [Gegevensencryptie](#gegevensencryptie)
   - [Veiligheidsmaatregelen](#veiligheidsmaatregelen)
   - [Logging en Monitoring](#logging-en-monitoring)
-- [Prestaties en Schaalbaarheid](#prestaties-en-schaalbaarheid)
 - [Documentatie en code conventie](#documentatie-en-code-conventie)
 
 # Tech Stack
@@ -66,49 +63,133 @@ De GIT-repo wordt op GitHub gehost.
 
 De database die gebruikt wordt is Supabase. Voor nu is het nog niet duidelijk of deze zelf wordt gehost (lokaal) of op de servers van Supabase.
 
-![database diagram](db.png)
-
 # Architectuur
 
 ## Frontend
 
-De frontend is gebouwd met Next.js in combinatie met TypeScript. Het ondersteunt server-side rendering (SSR) voor snellere laadtijden en betere SEO, evenals client-side rendering (CSR) voor interactieve elementen.
+De front-end gebruikt shadcn als component library. NEXT maakt gebruik van server-side rendering (SSR) en client-side rendering (CSR).
 
 ## Backend
 
-De backend bestaat uit Next.js API-routes, gecombineerd met Supabase als database-backend en authenticatiesysteem. Supabase biedt ingebouwde API's voor CRUD-operaties.
+De backend bestaat uit Next.js API-routes, gecombineerd met Supabase als database-backend en authenticatiesysteem. Supabase biedt ingebouwde API's voor CRUD-operaties. Voor het ophalen van data zullen de ingebouwde API's van supabase gebruikt worden. Het aanroepen van functies zal via NEXT apis gaan. 
 
 ## Database-structuur
 
-Een gedetailleerd schema van de database, inclusief tabellen voor gebruikers, verlofaanvragen, en goedkeuringen. Zorg voor een goede relatie tussen de entiteiten.
+![database diagram](db.png)
+
+<div style="page-break-before: always;"></div>
 
 ## API-ontwerp
 
-Documentatie van alle API endpoints, zoals:
-- `POST /api/leave-request`: Voor het indienen van een verlofaanvraag
-- `GET /api/leave-requests`: Voor het ophalen van alle verlofaanvragen
+### REST API Endpoints
+
+---
+
+
+| **URL**     | /api/leave-request?reason=TEXT&explanation=TEXT&start-date=DATE&end-date=DATE |
+| ----------- | ----------------------------------------------------------------------------- |
+| **Method**  | POST                                                                          |
+| **Uitleg**  | Voor het indienen van een verlofaanvraag.                                     |
+| **Toegang** | Alle ingelogde gebruikers                                                     |
+| **Return**  | ActionStatus                                                                  |
+
+
+
+
+---
+
+| **URL**     | /api/leave-requests                                                          |
+| ----------- | ---------------------------------------------------------------------------- |
+| **Method**  | GET                                                                          |
+| **Uitleg**  | Voor het ophalen van alle verlofaanvragen van een gebruiker en/of department |
+| **Toegang** | Alle ingelogde gebruikers                                                    |
+| **Return**  | array met leave_requests                                                     |
+
+**Parameters:**
+
+*?user=ID:* De geselecteerde gebruiker, standaard is dit de huidig ingelogde gebruiker.
+
+*?department=ID* De geselecteerde department, geeft nu alle leave_requests binnen een department terug.**
+
+*?sectie=ID* De geselecteerde sectie, geeft nu alle leave_requests binnen een sectie terug.**
+
+---
+
+| **URL**     | /api/leave-requests/ID/accept                                                  |
+| ----------- | ------------------------------------------------------------------------------ |
+| **Method**  | PUT                                                                            |
+| **Uitleg**  | Voor het accepteren van een leave request.                                     |
+| **Toegang** | Alle managers welke de gebruiker in een van zijn secties of departments heeft. |
+| **Return**  | array met leave requests                                                       |
+
+---
+
+| **URL**     | /api/leave-requests/ID/decline?response=TEXT                                   |
+| ----------- | ------------------------------------------------------------------------------ |
+| **Method**  | PUT                                                                            |
+| **Uitleg**  | Voor het afwijzen van een leave request.                                       |
+| **Toegang** | Alle managers welke de gebruiker in een van zijn secties of departments heeft. |
+| **Return**  | array met leave requests                                                       |
+
+---
+
+| **URL**     | /api/users                             |
+| ----------- | -------------------------------------- |
+| **Method**  | GET                                    |
+| **Uitleg**  | Voor het ontvangen van alle user data. |
+| **Toegang** | Alle ingelogde gebruikers.             |
+| **Return**  | array met leave requests               |
+
+---
+
+| **URL**     | /api/users/me                                                           |
+| ----------- | ----------------------------------------------------------------------- |
+| **Method**  | GET                                                                     |
+| **Uitleg**  | Voor het ontvangen van alle beveiligde data van de ingelogde gebruiker. |
+| **Toegang** | Alle ingelogde gebruikers.                                              |
+| **Return**  | array met leave requests                                                |
+
+---
+
+| **URL**     | /api/calender/YEAR/MONTH                                         |
+| ----------- | ---------------------------------------------------------------- |
+| **Method**  | GET                                                              |
+| **Uitleg**  | Voor het ontvangen van alle leave_requests van de gegeven maand. |
+| **Toegang** | Alle ingelogde gebruikers. *                                     |
+| **Return**  | array met leave requests.                                        |
+
+De leave_requests zijn niet volledig gevuld gebaseerd op de rechten van de gebruiker, zo krijgt een werknemer alleen te zien wie er binnen zijn department afwezig zijn, maar niet reden.
+
+---
+
+<div style="page-break-before: always;"></div>
 
 ## Authenticatie en Autorisatie
 
-De applicatie maakt gebruik van Supabase-authenticatie voor inlog- en toegangsbeheer. JWT-tokens worden gebruikt voor autorisatie en beveiliging van API-aanroepen.
+De applicatie maakt gebruik van Supabase-authenticatie voor inlog- en toegangsbeheer. Toegang tot de API wordt verleend op basis van rollen en ownership. De rollen zijn als volgt:
 
-## Hosting en Deployment
+### Werknemer
 
-De applicatie wordt gehost op Vercel, wat speciaal is ontworpen voor Next.js-applicaties. Continuous Deployment (CD) wordt geïmplementeerd via GitHub en Vercel.
+Een werknemer kan:
+* zijn eigen gebruikers data inzien via *GET /api/users/me*
+* Leave aanvragen via *PUT /api/leave_request*
+* Afwezigheid zijn via *GET /api/calendar/MONTH*
 
-# Functionele Specificaties
+### Manager
 
-## Gebruikersrollen
+Een manager kan het volgende:
+* Alle leave_requests ophalen binnen zijn/haar bevoegdheid via: *GET /api/leave-requests*
+* leave_requests accepteren binnen zijn/haar bevoegdheid via: *PUT /api/leave-requests/ID/accept*
+* leave_requests afwijzen binnen zijn/haar bevoegdheid via: *PUT /api/leave-requests/ID/decline*
+* Afwezigheid zijn, en de redenen hiervan via: *GET /api/calendar/MONTH*
+* De gebruikers data van alle gebruikers binnen zijn/haar bevoegdheid via: *GET /api/users*
 
-De applicatie kent verschillende gebruikersrollen, zoals medewerker, manager en HR-beheerder, elk met hun eigen rechten en functionaliteiten.
+Een manager kan ook alles wat een werknemer kan.
 
-## Use cases
+### CEO
 
-Beschrijf alle belangrijke use cases, zoals verlof aanvragen, goedkeuren, annuleren, en rapporten genereren.
-
-## UI en UX Design
-
-Het ontwerp houdt rekening met toegankelijkheid (a11y) en responsiviteit. Tailwind wordt gebruikt voor styling, en Shadcn voor herbruikbare componenten.
+Een CEO kan het volgende:
+* Het exporteren van alle afwezigheid binnen periode naar .CSV via: *GET /api/export*
 
 # Test Strategie
 
@@ -120,21 +201,19 @@ Er wordt gebruik gemaakt van:
 
 # Beveiliging
 
-## Gegevensencryptie
-
-Zowel de communicatie tussen client en server als de opslag van gegevens wordt beveiligd met SSL en encryptie van gevoelige informatie.
-
 ## Veiligheidsmaatregelen
 
 Bescherming tegen veelvoorkomende kwetsbaarheden zoals SQL-injecties, Cross-Site Scripting (XSS), en Cross-Site Request Forgery (CSRF).
 
+SQL-Injectie is niet mogelijk, de supabase API is hier namelijk voor beschermd.
+
+Voor cross site scripting zullen we elk request "schoonmaken" door middel van de js package DOMPurify.
+
+Voor Cross-site request forgery zullen wij de js package csrfProtection gebruiken.
+
 ## Logging en Monitoring
 
-Gebruik van tools zoals Sentry voor foutmonitoring en Supabase logs voor backend logging en auditing.
-
-# Prestaties en Schaalbaarheid
-
-Er wordt caching gebruikt waar mogelijk, en Vercel's edge-netwerk zorgt voor snelle laadtijden wereldwijd. Schaalbaarheid wordt gewaarborgd door serverless functionaliteiten van Vercel en Supabase.
+Bepaalde acties van de applicatie worden gelogd. Hierin wordt datum en tijd van de actie gelogd, de gebruiker welke deze actie uitvoert en de actie zelf. Deze logs zullen verborgen zijn voor de gebruiker, en kunnen opgevraagd worden wanner nodig.
 
 # Documentatie en code conventie
 
