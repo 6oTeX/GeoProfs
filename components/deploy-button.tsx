@@ -34,7 +34,7 @@ export default function DeployButton() {
         size={"sm"}
       >
         <svg
-          className="h-3 h-3"
+          className="h-3"
           viewBox="0 0 76 65"
           fill="hsl(var(--background)/1)"
           xmlns="http://www.w3.org/2000/svg"

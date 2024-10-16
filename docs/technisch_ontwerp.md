@@ -178,9 +178,9 @@ Een werknemer kan:
 
 Een manager kan het volgende:
 
-- Alle leave_requests ophalen binnen zijn/haar bevoegdheid via: _GET /api/leave-requests_
-- leave_requests accepteren binnen zijn/haar bevoegdheid via: _PUT /api/leave-requests/ID/accept_
-- leave_requests afwijzen binnen zijn/haar bevoegdheid via: _PUT /api/leave-requests/ID/decline_
+- Alle leave*requests ophalen binnen zijn/haar bevoegdheid via: \_GET /api/leave-requests*
+- leave*requests accepteren binnen zijn/haar bevoegdheid via: \_PUT /api/leave-requests/ID/accept*
+- leave*requests afwijzen binnen zijn/haar bevoegdheid via: \_PUT /api/leave-requests/ID/decline*
 - Afwezigheid zijn, en de redenen hiervan via: _GET /api/calendar/MONTH_
 - De gebruikers data van alle gebruikers binnen zijn/haar bevoegdheid via: _GET /api/users_
 
