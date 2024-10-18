@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { nl } from "date-fns/locale";
@@ -30,22 +29,44 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
+import { DateRange } from "react-day-picker"; // Ensure correct import
+
+interface LeaveRequestFormProps {
+  reason: string;
+  date: DateRange | undefined;
+  availableDays: string;
+  comments: string;
+}
 
 export default function LeaveRequestForm() {
-  const [date, setDate] = useState<Date>();
-
   const form = useForm({
     defaultValues: {
       reason: "",
-      date: new Date(),
+      date: undefined,
       availableDays: "",
       comments: "",
-    },
+    } as LeaveRequestFormProps,
   });
 
   const onSubmit = (data: any) => {
     console.log(data);
-    // Handle form submission
+
+    // API call to submit the form data
+    fetch("/api/leave-requests", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    form.reset();
   };
 
   return (
@@ -69,7 +90,7 @@ export default function LeaveRequestForm() {
 
           <FormField
             control={form.control}
-            defaultValue={new Date()}
+            defaultValue={undefined}
             name="date"
             render={({ field }) => (
               <FormItem className="flex flex-col">
@@ -85,7 +106,19 @@ export default function LeaveRequestForm() {
                         )}
                       >
                         {field.value ? (
-                          format(field.value, "PPP", { locale: nl })
+                          <span>
+                            {field.value.from
+                              ? format(field.value.from, "d MMMM yyyy", {
+                                  locale: nl,
+                                })
+                              : "Pick a date"}
+                            &nbsp;-&nbsp;
+                            {field.value.to
+                              ? format(field.value.to, "d MMMM yyyy", {
+                                  locale: nl,
+                                })
+                              : "Pick a date"}
+                          </span>
                         ) : (
                           <span>Pick a date</span>
                         )}
@@ -95,8 +128,8 @@ export default function LeaveRequestForm() {
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
-                      mode="single"
-                      selected={field.value as Date | undefined}
+                      mode="range"
+                      selected={field.value as DateRange | undefined}
                       onSelect={field.onChange}
                       disabled={(date) =>
                         date < new Date() || date < new Date("1900-01-01")
