@@ -1,37 +1,14 @@
-import SignUpUserSteps from "@/components/tutorial/sign-up-user-steps";
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
-
-import Image from "next/image";
 import Link from "next/link";
 import {
-  ChevronLeft,
-  ChevronRight,
-  Copy,
-  CreditCard,
-  File,
-  Home,
-  LineChart,
-  ListFilter,
-  MoreVertical,
-  Package,
-  Package2,
-  PanelLeft,
-  Search,
-  Settings,
-  ShoppingCart,
-  Truck,
-  Users2,
+  ArrowRight,
+  Calendar,
+  CheckCircle2,
+  Clock,
+  Menu,
+  Smartphone,
+  Users,
 } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -43,476 +20,229 @@ import {
 } from "@/components/ui/card";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-} from "@/components/ui/pagination";
-import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import ConnectSupabaseSteps from "@/components/tutorial/connect-supabase-steps";
 
-export default async function Dashboard() {
+export default function GeoprofsLandingPage() {
   return (
-    <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <main className="grid flex-1 items-start gap-4 p-4 pt-28 sm:px-6 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
-        <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
-          <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
-            {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
-            <Card className="sm:col-span-2" x-chunk="dashboard-05-chunk-0">
-              <CardHeader className="pb-3">
-                <CardTitle>Your Orders</CardTitle>
-                <CardDescription className="max-w-lg text-balance leading-relaxed">
-                  Introducing Our Dynamic Orders Dashboard for Seamless
-                  Management and Insightful Analysis.
+    <div className="flex min-h-screen flex-col">
+      <header className="container z-40 bg-background">
+        <div className="flex h-20 items-center justify-between py-6">
+          <div className="flex gap-6 md:gap-10">
+            <Link href="/" className="items-center space-x-2 md:flex">
+              <span className="font-bold text-xl">Geoprofs</span>
+            </Link>
+            <nav className="hidden gap-6 md:flex">
+              <Link
+                href="#features"
+                className="flex items-center text-lg font-medium text-muted-foreground"
+              >
+                Features
+              </Link>
+              <Link
+                href="#testimonials"
+                className="flex items-center text-lg font-medium text-muted-foreground"
+              >
+                Testimonials
+              </Link>
+            </nav>
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon" className="md:hidden">
+                <Menu className="h-5 w-5" />
+                <span className="sr-only">Toggle menu</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem asChild>
+                <Link href="#features">Features</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="#testimonials">Testimonials</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <nav className="hidden md:flex">
+            <Button asChild>
+              <Link href="/sign-in">Login</Link>
+            </Button>
+          </nav>
+        </div>
+      </header>
+      <main className="flex-1">
+        <section
+          id="features"
+          className="container space-y-6 bg-slate-50 py-8 dark:bg-transparent md:py-12 lg:py-24"
+        >
+          <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
+            <h2 className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
+              Features
+            </h2>
+            <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
+              Discover how Geoprofs can revolutionize your company&apos;s
+              time-off management process.
+            </p>
+          </div>
+          <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
+            <Card>
+              <CardHeader>
+                <CardTitle>Easy Leave Requests</CardTitle>
+                <CardDescription>
+                  Streamlined process for time-off requests.
                 </CardDescription>
               </CardHeader>
-              <CardFooter>
-                <Button>Create New Order</Button>
-              </CardFooter>
+              <CardContent>
+                <Calendar className="h-8 w-8 text-primary" />
+              </CardContent>
             </Card>
-            <Card x-chunk="dashboard-05-chunk-1">
-              <CardHeader className="pb-2">
-                <CardDescription>This Week</CardDescription>
-                <CardTitle className="text-4xl">$1,329</CardTitle>
+            <Card>
+              <CardHeader>
+                <CardTitle>Sick Day Reporting</CardTitle>
+                <CardDescription>
+                  Quick and easy sick day notifications.
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-xs text-muted-foreground">
-                  +25% from last week
-                </div>
+                <Clock className="h-8 w-8 text-primary" />
               </CardContent>
-              <CardFooter>
-                <Progress value={25} aria-label="25% increase" />
-              </CardFooter>
             </Card>
-            <Card x-chunk="dashboard-05-chunk-2">
-              <CardHeader className="pb-2">
-                <CardDescription>This Month</CardDescription>
-                <CardTitle className="text-4xl">$5,329</CardTitle>
+            <Card>
+              <CardHeader>
+                <CardTitle>Team Calendar</CardTitle>
+                <CardDescription>
+                  Visualize your team&apos;s availability at a glance.
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-xs text-muted-foreground">
-                  +10% from last month
-                </div>
+                <Users className="h-8 w-8 text-primary" />
               </CardContent>
-              <CardFooter>
-                <Progress value={12} aria-label="12% increase" />
-              </CardFooter>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Mobile App</CardTitle>
+                <CardDescription>
+                  Manage time-off on the go with our mobile application.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Smartphone className="h-8 w-8 text-primary" />
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Approval Workflows</CardTitle>
+                <CardDescription>
+                  Customizable approval processes for different leave types.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <CheckCircle2 className="h-8 w-8 text-primary" />
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Reporting & Analytics</CardTitle>
+                <CardDescription>
+                  Gain insights into leave patterns and team availability.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ArrowRight className="h-8 w-8 text-primary" />
+              </CardContent>
             </Card>
           </div>
-          <Tabs defaultValue="week">
-            <div className="flex items-center">
-              <TabsList>
-                <TabsTrigger value="week">Week</TabsTrigger>
-                <TabsTrigger value="month">Month</TabsTrigger>
-                <TabsTrigger value="year">Year</TabsTrigger>
-              </TabsList>
-              <div className="ml-auto flex items-center gap-2">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="h-7 gap-1 text-sm"
-                    >
-                      <ListFilter className="h-3.5 w-3.5" />
-                      <span className="sr-only sm:not-sr-only">Filter</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuCheckboxItem checked>
-                      Fulfilled
-                    </DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem>
-                      Declined
-                    </DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem>
-                      Refunded
-                    </DropdownMenuCheckboxItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="h-7 gap-1 text-sm"
-                >
-                  <File className="h-3.5 w-3.5" />
-                  <span className="sr-only sm:not-sr-only">Export</span>
-                </Button>
-              </div>
+        </section>
+        <section id="testimonials" className="container py-8 md:py-12 lg:py-24">
+          <div className="mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-4 text-center">
+            <h2 className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
+              Testimonials
+            </h2>
+            <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7 mb-8">
+              See what our customers are saying about Geoprofs.
+            </p>
+          </div>
+          <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <Card>
+              <CardHeader>
+                <CardTitle>Streamlined Our Process</CardTitle>
+                <CardDescription>
+                  Sarah Johnson, HR Manager at TechCorp
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                Geoprofs has completely streamlined our leave management
+                process. It&apos;s user-friendly and has saved us countless
+                hours.
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Improved Team Communication</CardTitle>
+                <CardDescription>
+                  Mark Lee, Team Lead at InnovateCo
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                The team calendar feature has greatly improved our communication
+                and planning. We always know who&apos;s available.
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Perfect for Remote Teams</CardTitle>
+                <CardDescription>
+                  Emily Chen, CEO of RemoteWorks
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                As a fully remote company, Geoprofs has been invaluable in
+                managing our global team&apos;s time-off and availability.
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        <section className="container py-8 md:py-12 lg:py-24">
+          <div className="mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-4 text-center">
+            <h2 className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
+              Ready to simplify your leave management?
+            </h2>
+            <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
+              Join thousands of companies already using Geoprofs to streamline
+              their time-off processes.
+            </p>
+            <div className="flex w-full max-w-sm items-center space-x-2">
+              <Input type="email" placeholder="Enter your work email" />
+              <Button type="submit">
+                Get Started
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
             </div>
-            <TabsContent value="week">
-              <Card x-chunk="dashboard-05-chunk-3">
-                <CardHeader className="px-7">
-                  <CardTitle>Orders</CardTitle>
-                  <CardDescription>
-                    Recent orders from your store.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Customer</TableHead>
-                        <TableHead className="hidden sm:table-cell">
-                          Type
-                        </TableHead>
-                        <TableHead className="hidden sm:table-cell">
-                          Status
-                        </TableHead>
-                        <TableHead className="hidden md:table-cell">
-                          Date
-                        </TableHead>
-                        <TableHead className="text-right">Amount</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      <TableRow className="bg-accent">
-                        <TableCell>
-                          <div className="font-medium">Liam Johnson</div>
-                          <div className="hidden text-sm text-muted-foreground md:inline">
-                            liam@example.com
-                          </div>
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">
-                          Sale
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">
-                          <Badge className="text-xs" variant="secondary">
-                            Fulfilled
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          2023-06-23
-                        </TableCell>
-                        <TableCell className="text-right">$250.00</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <div className="font-medium">Olivia Smith</div>
-                          <div className="hidden text-sm text-muted-foreground md:inline">
-                            olivia@example.com
-                          </div>
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">
-                          Refund
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">
-                          <Badge className="text-xs" variant="outline">
-                            Declined
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          2023-06-24
-                        </TableCell>
-                        <TableCell className="text-right">$150.00</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <div className="font-medium">Noah Williams</div>
-                          <div className="hidden text-sm text-muted-foreground md:inline">
-                            noah@example.com
-                          </div>
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">
-                          Subscription
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">
-                          <Badge className="text-xs" variant="secondary">
-                            Fulfilled
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          2023-06-25
-                        </TableCell>
-                        <TableCell className="text-right">$350.00</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <div className="font-medium">Emma Brown</div>
-                          <div className="hidden text-sm text-muted-foreground md:inline">
-                            emma@example.com
-                          </div>
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">
-                          Sale
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">
-                          <Badge className="text-xs" variant="secondary">
-                            Fulfilled
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          2023-06-26
-                        </TableCell>
-                        <TableCell className="text-right">$450.00</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <div className="font-medium">Liam Johnson</div>
-                          <div className="hidden text-sm text-muted-foreground md:inline">
-                            liam@example.com
-                          </div>
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">
-                          Sale
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">
-                          <Badge className="text-xs" variant="secondary">
-                            Fulfilled
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          2023-06-23
-                        </TableCell>
-                        <TableCell className="text-right">$250.00</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <div className="font-medium">Liam Johnson</div>
-                          <div className="hidden text-sm text-muted-foreground md:inline">
-                            liam@example.com
-                          </div>
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">
-                          Sale
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">
-                          <Badge className="text-xs" variant="secondary">
-                            Fulfilled
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          2023-06-23
-                        </TableCell>
-                        <TableCell className="text-right">$250.00</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <div className="font-medium">Olivia Smith</div>
-                          <div className="hidden text-sm text-muted-foreground md:inline">
-                            olivia@example.com
-                          </div>
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">
-                          Refund
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">
-                          <Badge className="text-xs" variant="outline">
-                            Declined
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          2023-06-24
-                        </TableCell>
-                        <TableCell className="text-right">$150.00</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <div className="font-medium">Emma Brown</div>
-                          <div className="hidden text-sm text-muted-foreground md:inline">
-                            emma@example.com
-                          </div>
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">
-                          Sale
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">
-                          <Badge className="text-xs" variant="secondary">
-                            Fulfilled
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          2023-06-26
-                        </TableCell>
-                        <TableCell className="text-right">$450.00</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </div>
-        <div>
-          <Card className="overflow-hidden" x-chunk="dashboard-05-chunk-4">
-            <CardHeader className="flex flex-row items-start bg-muted/50">
-              <div className="grid gap-0.5">
-                <CardTitle className="group flex items-center gap-2 text-lg">
-                  Order Oe31b70H
-                  <Button
-                    size="icon"
-                    variant="outline"
-                    className="h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100"
-                  >
-                    <Copy className="h-3 w-3" />
-                    <span className="sr-only">Copy Order ID</span>
-                  </Button>
-                </CardTitle>
-                <CardDescription>Date: November 23, 2023</CardDescription>
-              </div>
-              <div className="ml-auto flex items-center gap-1">
-                <Button size="sm" variant="outline" className="h-8 gap-1">
-                  <Truck className="h-3.5 w-3.5" />
-                  <span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
-                    Track Order
-                  </span>
-                </Button>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button size="icon" variant="outline" className="h-8 w-8">
-                      <MoreVertical className="h-3.5 w-3.5" />
-                      <span className="sr-only">More</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem>Export</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>Trash</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </CardHeader>
-            <CardContent className="p-6 text-sm">
-              <div className="grid gap-3">
-                <div className="font-semibold">Order Details</div>
-                <ul className="grid gap-3">
-                  <li className="flex items-center justify-between">
-                    <span className="text-muted-foreground">
-                      Glimmer Lamps x <span>2</span>
-                    </span>
-                    <span>$250.00</span>
-                  </li>
-                  <li className="flex items-center justify-between">
-                    <span className="text-muted-foreground">
-                      Aqua Filters x <span>1</span>
-                    </span>
-                    <span>$49.00</span>
-                  </li>
-                </ul>
-                <Separator className="my-2" />
-                <ul className="grid gap-3">
-                  <li className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Subtotal</span>
-                    <span>$299.00</span>
-                  </li>
-                  <li className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Shipping</span>
-                    <span>$5.00</span>
-                  </li>
-                  <li className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Tax</span>
-                    <span>$25.00</span>
-                  </li>
-                  <li className="flex items-center justify-between font-semibold">
-                    <span className="text-muted-foreground">Total</span>
-                    <span>$329.00</span>
-                  </li>
-                </ul>
-              </div>
-              <Separator className="my-4" />
-              <div className="grid grid-cols-2 gap-4">
-                <div className="grid gap-3">
-                  <div className="font-semibold">Shipping Information</div>
-                  <address className="grid gap-0.5 not-italic text-muted-foreground">
-                    <span>Liam Johnson</span>
-                    <span>1234 Main St.</span>
-                    <span>Anytown, CA 12345</span>
-                  </address>
-                </div>
-                <div className="grid auto-rows-max gap-3">
-                  <div className="font-semibold">Billing Information</div>
-                  <div className="text-muted-foreground">
-                    Same as shipping address
-                  </div>
-                </div>
-              </div>
-              <Separator className="my-4" />
-              <div className="grid gap-3">
-                <div className="font-semibold">Customer Information</div>
-                <dl className="grid gap-3">
-                  <div className="flex items-center justify-between">
-                    <dt className="text-muted-foreground">Customer</dt>
-                    <dd>Liam Johnson</dd>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <dt className="text-muted-foreground">Email</dt>
-                    <dd>
-                      <a href="mailto:">liam@acme.com</a>
-                    </dd>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <dt className="text-muted-foreground">Phone</dt>
-                    <dd>
-                      <a href="tel:">+1 234 567 890</a>
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-              <Separator className="my-4" />
-              <div className="grid gap-3">
-                <div className="font-semibold">Payment Information</div>
-                <dl className="grid gap-3">
-                  <div className="flex items-center justify-between">
-                    <dt className="flex items-center gap-1 text-muted-foreground">
-                      <CreditCard className="h-4 w-4" />
-                      Visa
-                    </dt>
-                    <dd>**** **** **** 4532</dd>
-                  </div>
-                </dl>
-              </div>
-            </CardContent>
-            <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-3">
-              <div className="text-xs text-muted-foreground">
-                Updated <time dateTime="2023-11-23">November 23, 2023</time>
-              </div>
-              <Pagination className="ml-auto mr-0 w-auto">
-                <PaginationContent>
-                  <PaginationItem>
-                    <Button size="icon" variant="outline" className="h-6 w-6">
-                      <ChevronLeft className="h-3.5 w-3.5" />
-                      <span className="sr-only">Previous Order</span>
-                    </Button>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <Button size="icon" variant="outline" className="h-6 w-6">
-                      <ChevronRight className="h-3.5 w-3.5" />
-                      <span className="sr-only">Next Order</span>
-                    </Button>
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </CardFooter>
-          </Card>
-        </div>
+          </div>
+        </section>
       </main>
+      <footer className="py-6 md:px-8 md:py-0">
+        <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+          <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
+            © 2024 Geoprofs. All rights reserved.
+          </p>
+          <nav className="flex gap-4 text-sm text-muted-foreground">
+            <Link href="#" className="hover:underline">
+              Terms
+            </Link>
+            <Link href="#" className="hover:underline">
+              Privacy
+            </Link>
+            <Link href="#" className="hover:underline">
+              Contact
+            </Link>
+          </nav>
+        </div>
+      </footer>
     </div>
   );
 }
