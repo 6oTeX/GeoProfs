@@ -29,29 +29,44 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
-import { DateRange } from "react-day-picker"; // Ensure correct import
+import { useState } from "react";
+import { DateRange } from "react-day-picker";
 
 interface LeaveRequestFormProps {
   reason: string;
+  customReason?: string;
   date: DateRange | undefined;
   availableDays: string;
   comments: string;
 }
 
+
 export default function LeaveRequestForm() {
+
+  const leaveReasons = [
+    "Ziek",
+    "Huwelijk",
+    "Overlijden",
+    "Doktersbezoek",
+    "Anders",
+  ];
+
+  const [isCustomReason, setIsCustomReason] = useState(false);
+
   const form = useForm({
     defaultValues: {
       reason: "",
+      customReason: "",
       date: undefined,
       availableDays: "",
       comments: "",
     } as LeaveRequestFormProps,
   });
+  
 
   const onSubmit = (data: any) => {
     console.log(data);
 
-    // API call to submit the form data
     fetch("/api/leave-requests", {
       method: "POST",
       headers: {
@@ -80,13 +95,47 @@ export default function LeaveRequestForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Verlof reden</FormLabel>
+                <Select
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                    setIsCustomReason(value === "Anders");
+                  }}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Kies een reden" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {leaveReasons.map((reason, index) => (
+                      <SelectItem key={index} value={reason}>
+                        {reason}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {isCustomReason && (
+            <FormField
+            control={form.control}
+            name="customReason"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Geef een reden</FormLabel>
                 <FormControl>
-                  <Input placeholder="Reden" {...field} />
+                  <Input placeholder="Typ hier uw reden" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+          
+          )}
 
           <FormField
             control={form.control}
@@ -160,7 +209,6 @@ export default function LeaveRequestForm() {
                   </FormControl>
                   <SelectContent>
                     <SelectItem value="10">10 October 2024</SelectItem>
-                    {/* Add more options as needed */}
                   </SelectContent>
                 </Select>
                 <FormMessage />
