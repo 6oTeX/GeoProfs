@@ -57,7 +57,6 @@ export default function LeaveRequestForm() {
       reason: "",
       customReason: "",
       date: undefined,
-      availableDays: "",
       comments: "",
     } as LeaveRequestFormProps,
   });
@@ -68,9 +67,8 @@ export default function LeaveRequestForm() {
     }
   }, [isCustomReason, form]);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: LeaveRequestFormProps) => {
     console.log(data);
-
     fetch("/api/leave-requests", {
       method: "POST",
       headers: {
@@ -96,6 +94,7 @@ export default function LeaveRequestForm() {
           <FormField
             control={form.control}
             name="reason"
+            rules={{ required: "Reden is verplicht!" }}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Verlof reden</FormLabel>
@@ -128,6 +127,7 @@ export default function LeaveRequestForm() {
             <FormField
               control={form.control}
               name="customReason"
+              rules={{ required: "Reden is verplicht!" }}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Geef een reden</FormLabel>
@@ -142,8 +142,8 @@ export default function LeaveRequestForm() {
 
           <FormField
             control={form.control}
-            defaultValue={undefined}
             name="date"
+            rules={{ required: "Begin- en einddatum zijn verplicht!" }}
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel>Start en eind datum</FormLabel>
@@ -194,30 +194,6 @@ export default function LeaveRequestForm() {
               </FormItem>
             )}
           />
-
-          {/* <FormField
-            control={form.control}
-            name="availableDays"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Beschikbaar verlofdagen</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecteer beschikbare dagen" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="10">10 October 2024</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
 
           <FormField
             control={form.control}
