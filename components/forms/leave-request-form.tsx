@@ -140,13 +140,13 @@ export default function LeaveRequestForm() {
             />
           )}
 
-          <FormField
+<FormField
             control={form.control}
             name="date"
-            rules={{ required: "Begin- en einddatum zijn verplicht!" }}
+            rules={{ required: "Datum is verplicht!" }}
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>Start en eind datum</FormLabel>
+                <FormLabel>Datum</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -157,20 +157,16 @@ export default function LeaveRequestForm() {
                           !field.value && "text-muted-foreground"
                         )}
                       >
-                        {field.value ? (
-                          <span>
-                            {field.value.from
-                              ? format(field.value.from, "d MMMM yyyy", {
-                                  locale: nl,
-                                })
-                              : "Pick a date"}
-                            &nbsp;-&nbsp;
-                            {field.value.to
-                              ? format(field.value.to, "d MMMM yyyy", {
-                                  locale: nl,
-                                })
-                              : "Pick a date"}
-                          </span>
+                        {field.value?.from ? (
+                          field.value.to && field.value.to !== field.value.from ? (
+                            <span>
+                              {format(field.value.from, "d MMMM yyyy", { locale: nl })}
+                              &nbsp;-&nbsp;
+                              {format(field.value.to, "d MMMM yyyy", { locale: nl })}
+                            </span>
+                          ) : (
+                            <span>{format(field.value.from, "d MMMM yyyy", { locale: nl })}</span>
+                          )
                         ) : (
                           <span>Selecteer een datum</span>
                         )}
@@ -181,8 +177,14 @@ export default function LeaveRequestForm() {
                   <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
                       mode="range"
-                      selected={field.value as DateRange | undefined}
-                      onSelect={field.onChange}
+                      selected={field.value}
+                      onSelect={(selectedDate) => {
+                        if (selectedDate?.from && !selectedDate.to) {
+                          field.onChange({ from: selectedDate.from, to: selectedDate.from });
+                        } else {
+                          field.onChange(selectedDate);
+                        }
+                      }}
                       disabled={(date) =>
                         date < new Date() || date < new Date("1900-01-01")
                       }
