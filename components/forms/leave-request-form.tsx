@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon } from 'lucide-react';
 import { format } from "date-fns";
 import { nl } from "date-fns/locale";
 import { cn } from "@/lib/utils";
@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DateRange } from "react-day-picker";
 
 interface LeaveRequestFormProps {
@@ -40,11 +40,10 @@ interface LeaveRequestFormProps {
   comments: string;
 }
 
-
 export default function LeaveRequestForm() {
-
   const leaveReasons = [
     "Ziek",
+    "Vakantie",
     "Huwelijk",
     "Overlijden",
     "Doktersbezoek",
@@ -62,7 +61,12 @@ export default function LeaveRequestForm() {
       comments: "",
     } as LeaveRequestFormProps,
   });
-  
+
+  useEffect(() => {
+    if (!isCustomReason) {
+      form.setValue("customReason", "");
+    }
+  }, [isCustomReason, form]);
 
   const onSubmit = (data: any) => {
     console.log(data);
@@ -104,7 +108,7 @@ export default function LeaveRequestForm() {
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Kies een reden" />
+                      <SelectValue placeholder="Selecteer een reden" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -122,19 +126,18 @@ export default function LeaveRequestForm() {
 
           {isCustomReason && (
             <FormField
-            control={form.control}
-            name="customReason"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Geef een reden</FormLabel>
-                <FormControl>
-                  <Input placeholder="Typ hier uw reden" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          
+              control={form.control}
+              name="customReason"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Geef een reden</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Typ hier uw reden" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           )}
 
           <FormField
@@ -151,7 +154,7 @@ export default function LeaveRequestForm() {
                         variant={"outline"}
                         className={cn(
                           "w-full pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground",
+                          !field.value && "text-muted-foreground"
                         )}
                       >
                         {field.value ? (
@@ -169,7 +172,7 @@ export default function LeaveRequestForm() {
                               : "Pick a date"}
                           </span>
                         ) : (
-                          <span>Pick a date</span>
+                          <span>Selecteer een datum</span>
                         )}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
@@ -192,7 +195,7 @@ export default function LeaveRequestForm() {
             )}
           />
 
-          <FormField
+          {/* <FormField
             control={form.control}
             name="availableDays"
             render={({ field }) => (
@@ -214,7 +217,7 @@ export default function LeaveRequestForm() {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
 
           <FormField
             control={form.control}
@@ -250,3 +253,4 @@ export default function LeaveRequestForm() {
     </div>
   );
 }
+
