@@ -1,6 +1,7 @@
 // components/Calendar.tsx
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button'; // Adjust the import path as necessary
+import { UserSolid } from '@mynaui/icons-react';
 
 interface CalendarDay {
   date: Date;
@@ -93,19 +94,20 @@ const Calendar: React.FC<CalendarProps> = ({ events = {} }) => {
   };
 
   return (
-    <div className="p-4">
-      <div className="flex justify-between items-center mb-4">
-        <div>
-          <h2 className="text-2xl font-bold">
+    <div className="p-2 sm:p-4">
+      {/* Header Section */}
+      <div className="flex flex-col sm:flex-row sm:justify-between items-center mb-4">
+        <div className="mb-2 sm:mb-0">
+          <h2 className="text-xl sm:text-2xl font-bold">
             {currentDate.toLocaleString('default', { month: 'long' })}{' '}
             {currentDate.getFullYear()}
           </h2>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-wrap items-center space-x-2">
           <select
             value={currentDate.getMonth()}
             onChange={handleMonthChange}
-            className="border rounded px-2 py-1 h-10"
+            className="border rounded px-2 py-1 h-10 mb-2 sm:mb-0"
           >
             {months.map((month, index) => (
               <option key={index} value={index}>
@@ -117,78 +119,62 @@ const Calendar: React.FC<CalendarProps> = ({ events = {} }) => {
             type="number"
             value={currentDate.getFullYear()}
             onChange={handleYearChange}
-            className="border rounded px-2 py-1 w-20 h-10"
+            className="border rounded px-2 py-1 w-20 h-10 mb-2 sm:mb-0"
           />
-          <Button onClick={handlePrevMonth} variant="default">
+          <Button onClick={handlePrevMonth} variant="default" className="mb-2 sm:mb-0">
             Previous
           </Button>
-          <Button onClick={handleNextMonth} variant="default">
+          <Button onClick={handleNextMonth} variant="default" className="mb-2 sm:mb-0">
             Next
           </Button>
         </div>
       </div>
+
+      {/* Days of the Week */}
       <div className="grid grid-cols-7 text-center font-bold">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((dayName) => (
-          <div key={dayName} className="py-2">
+          <div key={dayName} className="py-2 text-xs sm:text-base">
             {dayName}
           </div>
         ))}
       </div>
+
+      {/* Calendar Grid */}
       {weeks.map((week, index) => (
         <div key={index} className="grid grid-cols-7 text-left">
           {week.map((day, idx) => {
             const isToday = day.date.toDateString() === today.toDateString();
 
-            let cellClasses = 'border border-gray-200 h-20 p-1 flex flex-row';
+            let cellClasses =
+              'border border-gray-200 h-16 sm:h-24 p-1 flex flex-row items-start';
 
             if (isToday) {
               cellClasses += ' bg-yellow-50';
             } else if (!day.isCurrentMonth) {
               cellClasses += ' bg-gray-100';
-            }else if (day.verlof >= 5 || day.ziek >= 5) {
+            } else if (day.verlof >= 5 || day.ziek >= 5) {
               cellClasses += ' bg-red-200';
+            }
+            let size: number;
+            if(window.innerWidth > 700) {
+              size = 18;
+            } else {
+              size = 12;
             }
 
             let afwezig = null;
             if (day.verlof || day.ziek) {
               afwezig = (
-                <div className="flex flex-col w-3/12 text-right justify-end items-center">
+                <div className="flex flex-col w-6/12 sm:w-auto text-right justify-end items-center h-full divide-y divide-gray-500">
                   {day.verlof ? (
-                    <div className="flex flex-row justify-center items-center text-yellow-200">
-                      {/* Verlof Icon */}
-                      <svg
-                        width="18"
-                        height="18"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        viewBox="0 0 24 24"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M15 7.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0m4.5 13c-.475-9.333-14.525-9.333-15 0" />
-                      </svg>{' '}
+                    <div className="flex flex-row justify-center sm:text-base text-xs items-center text-yellow-500 px-1">
+                      <UserSolid size={size} />
                       {day.verlof}
                     </div>
                   ) : null}
-                  {day.verlof && day.ziek ? (
-                    <span className="w-6 border border-black text-right"></span>
-                  ) : null}
                   {day.ziek ? (
-                    <div className="flex flex-row justify-center items-center text-red-600">
-                      {/* Ziek Icon */}
-                      <svg
-                        width="18"
-                        height="18"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        viewBox="0 0 24 24"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M15 7.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0m4.5 13c-.475-9.333-14.525-9.333-15 0" />
-                      </svg>{' '}
+                    <div className="flex flex-row justify-center sm:text-base text-xs items-center text-red-600 px-1">
+                      <UserSolid size={size} />
                       {day.ziek}
                     </div>
                   ) : null}
@@ -198,7 +184,7 @@ const Calendar: React.FC<CalendarProps> = ({ events = {} }) => {
 
             return (
               <div key={idx} className={cellClasses}>
-                <span className="font-bold w-9/12">{day.date.getDate()}</span>
+                <span className="font-bold text-xs sm:text-base flex w-full sm:w-10/12">{day.date.getDate()}</span>
                 {afwezig}
               </div>
             );
