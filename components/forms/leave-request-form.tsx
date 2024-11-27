@@ -36,11 +36,11 @@ interface LeaveRequestFormProps {
   reason: string;
   customReason?: string;
   date: DateRange | undefined;
-  availableDays: string;
   comments: string;
 }
 
 export default function LeaveRequestForm() {
+  //List with resons for leave.
   const leaveReasons = [
     "Ziek",
     "Vakantie",
@@ -50,9 +50,12 @@ export default function LeaveRequestForm() {
     "Anders",
   ];
 
+  //Checking if the custom reason is selected.
   const [isCustomReason, setIsCustomReason] = useState(false);
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
 
   const form = useForm({
+    //Default values for the form fields.
     defaultValues: {
       reason: "",
       customReason: "",
@@ -61,12 +64,14 @@ export default function LeaveRequestForm() {
     } as LeaveRequestFormProps,
   });
 
+  //Checking if there is a custom reason.
   useEffect(() => {
     if (!isCustomReason) {
       form.setValue("customReason", "");
     }
   }, [isCustomReason, form]);
 
+  //Form submit.
   const onSubmit = (data: LeaveRequestFormProps) => {
     console.log(data);
     fetch("/api/leave-requests", {
@@ -86,11 +91,13 @@ export default function LeaveRequestForm() {
     form.reset();
   };
 
+  //Form component.
   return (
     <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6">Verlof aanvragen</h2>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          {/* Field for leave reason. */}
           <FormField
             control={form.control}
             name="reason"
@@ -101,16 +108,19 @@ export default function LeaveRequestForm() {
                 <Select
                   onValueChange={(value) => {
                     field.onChange(value);
+                    //isCustomReason to true if "Anders" is selected.
                     setIsCustomReason(value === "Anders");
                   }}
-                  defaultValue={field.value}
+                  value={field.value}
                 >
+                  {/* Select field with all reasons for leave. */}
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Selecteer een reden" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
+                    {/* Retrieve all options from the leave reasons list. */}
                     {leaveReasons.map((reason, index) => (
                       <SelectItem key={index} value={reason}>
                         {reason}
@@ -123,7 +133,9 @@ export default function LeaveRequestForm() {
             )}
           />
 
+          {/* Checking if the custom reason has been selected. */}
           {isCustomReason && (
+            // Form field for custom reason.
             <FormField
               control={form.control}
               name="customReason"
@@ -140,7 +152,8 @@ export default function LeaveRequestForm() {
             />
           )}
 
-<FormField
+          {/* Form field for the date of the requested leave. */}
+          <FormField
             control={form.control}
             name="date"
             rules={{ required: "Datum is verplicht!" }}
@@ -197,6 +210,7 @@ export default function LeaveRequestForm() {
             )}
           />
 
+          {/* Form field for any comments (not required) */}
           <FormField
             control={form.control}
             name="comments"
@@ -216,9 +230,11 @@ export default function LeaveRequestForm() {
           />
 
           <div className="flex justify-between">
+            {/* Close form button */}
             <Button type="button" variant="destructive">
               Sluiten
             </Button>
+            {/* Submit form button */}
             <Button
               type="submit"
               className="bg-emerald-600 hover:bg-emerald-700"
