@@ -2,20 +2,31 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button'; // Adjust the import path as necessary
 import { UserSolid } from '@mynaui/icons-react';
+import DayOverviewModal from './DayOverviewModal'; // Import the modal component
 
 interface CalendarDay {
   date: Date;
   isCurrentMonth: boolean;
   verlof: number;
   ziek: number;
+  verlofNames: string[]; // Added to hold names for verlof
+  ziekNames: string[];   // Added to hold names for ziek
 }
 
 interface CalendarProps {
-  events?: { [key: string]: { verlof: number; ziek: number } };
+  events?: {
+    [key: string]: {
+      verlof: number;
+      ziek: number;
+      verlofNames: string[]; // Added to receive names from events
+      ziekNames: string[];   // Added to receive names from events
+    };
+  };
 }
 
 const Calendar: React.FC<CalendarProps> = ({ events = {} }) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [selectedDay, setSelectedDay] = useState<CalendarDay | null>(null); // State for the selected day
 
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -49,13 +60,20 @@ const Calendar: React.FC<CalendarProps> = ({ events = {} }) => {
       d.setDate(d.getDate() + 1)
     ) {
       const dateKey = getDateKey(d);
-      const event = events[dateKey] || { verlof: 0, ziek: 0 };
+      const event = events[dateKey] || {
+        verlof: 0,
+        ziek: 0,
+        verlofNames: [],
+        ziekNames: [],
+      };
 
       dates.push({
         date: new Date(d),
         isCurrentMonth: d.getMonth() === date.getMonth(),
         verlof: event.verlof,
         ziek: event.ziek,
+        verlofNames: event.verlofNames,
+        ziekNames: event.ziekNames,
       });
     }
 
@@ -91,6 +109,12 @@ const Calendar: React.FC<CalendarProps> = ({ events = {} }) => {
   const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newYear = parseInt(e.target.value, 10);
     setCurrentDate(new Date(newYear, currentDate.getMonth(), 1));
+  };
+
+  const handleDayClick = (day: CalendarDay) => {
+    if (day.verlof > 0 || day.ziek > 0) {
+      setSelectedDay(day);
+    }
   };
 
   return (
@@ -146,7 +170,7 @@ const Calendar: React.FC<CalendarProps> = ({ events = {} }) => {
             const isToday = day.date.toDateString() === today.toDateString();
 
             let cellClasses =
-              'border border-gray-200 h-16 sm:h-24 p-1 flex flex-row items-start';
+              'border border-gray-200 h-16 sm:h-24 p-1 flex flex-row items-start cursor-pointer';
 
             if (isToday) {
               cellClasses += ' bg-yellow-50';
@@ -156,7 +180,7 @@ const Calendar: React.FC<CalendarProps> = ({ events = {} }) => {
               cellClasses += ' bg-red-200';
             }
             let size: number;
-            if(window.innerWidth > 700) {
+            if (window.innerWidth > 700) {
               size = 18;
             } else {
               size = 12;
@@ -167,13 +191,13 @@ const Calendar: React.FC<CalendarProps> = ({ events = {} }) => {
               afwezig = (
                 <div className="flex flex-col w-6/12 sm:w-auto text-right justify-end items-center h-full divide-y divide-gray-500">
                   {day.verlof ? (
-                    <div className="flex flex-row justify-center sm:text-base text-xs items-center text-yellow-500 px-1">
+                    <div className="flex flex-row justify-center sm:text-base text-xs items-center text-red-600 px-1">
                       <UserSolid size={size} />
                       {day.verlof}
                     </div>
                   ) : null}
                   {day.ziek ? (
-                    <div className="flex flex-row justify-center sm:text-base text-xs items-center text-red-600 px-1">
+                    <div className="flex flex-row justify-center sm:text-base text-xs items-center text-yellow-500 px-1">
                       <UserSolid size={size} />
                       {day.ziek}
                     </div>
@@ -183,14 +207,30 @@ const Calendar: React.FC<CalendarProps> = ({ events = {} }) => {
             }
 
             return (
-              <div key={idx} className={cellClasses}>
-                <span className="font-bold text-xs sm:text-base flex w-full sm:w-10/12">{day.date.getDate()}</span>
+              <div
+                key={idx}
+                className={cellClasses}
+                onClick={() => handleDayClick(day)} // Added onClick handler
+              >
+                <span className="font-bold text-xs sm:text-base flex w-full sm:w-10/12">
+                  {day.date.getDate()}
+                </span>
                 {afwezig}
               </div>
             );
           })}
         </div>
       ))}
+
+      {/* Day Overview Modal */}
+      {selectedDay && (
+        <DayOverviewModal
+          date={selectedDay.date}
+          verlofNames={selectedDay.verlofNames}
+          ziekNames={selectedDay.ziekNames}
+          onClose={() => setSelectedDay(null)}
+        />
+      )}
     </div>
   );
 };

@@ -11,21 +11,37 @@ export default meta;
 
 type Story = StoryObj<typeof Calendar>;
 
-
-// Sample events data
+// Sample events data with names
 const events = {
-  '2024-11-09': { verlof: 1, ziek: 0 },
-  '2024-11-26': { verlof: 0, ziek: 5 },
-  '2024-11-27': { verlof: 2, ziek: 1 },
-  '2024-11-28': { verlof: 5, ziek: 1 },
-  '2024-11-29': { verlof: 2, ziek: 5 },
-
-
-  // Add more dates as needed
+  '2024-11-26': {
+    verlofNames: ['Alice', 'Bob'],
+    ziekNames: ['Charlie'],
+  },
+  '2024-11-27': {
+    verlofNames: ['David'],
+    ziekNames: ['Eve', 'Frank'],
+  },
+  '2024-11-29': {
+    verlofNames: ['David', 'Eve', 'Frank', 'Alice', 'Bob', 'Charlie'],
+    ziekNames: ['Dave', 'Jake'],
+  },
 };
+
+// Dynamically calculate the counts
+const processedEvents = Object.fromEntries(
+  Object.entries(events).map(([date, { verlofNames, ziekNames }]) => [
+    date,
+    {
+      verlof: verlofNames.length,
+      ziek: ziekNames.length,
+      verlofNames,
+      ziekNames,
+    },
+  ])
+);
 
 export const Default: Story = {
   args: {
-    events,
+    events: processedEvents,
   },
 };
