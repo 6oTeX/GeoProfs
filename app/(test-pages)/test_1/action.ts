@@ -1,24 +1,17 @@
 "use server";
-import { createClient } from "@supabase/supabase-js";
+import { supabaseClient } from "@/lib/supabaseClient";
+import axios from "axios";
 
 export const test_action = async (formData: FormData) => {
-  console.log(formData.get("project_name"));
-  console.log(formData.get("start_date"));
-  console.log(formData.get("end_date"));
+  
+  const reason = "sick";
+  const explanation = "I am sick";
+  const start_date = "2024-11-28";
+  const end_date = "2024-11-28";
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-  );
-
-  const { data, error } = await supabase.from("projects").insert([
-    {
-      name: formData.get("project_name"),
-      start_date: formData.get("start_date"),
-      end_date: formData.get("end_date"),
-    },
-  ]);
-
-  console.log(data);
-  console.log(error);
+  await axios.post(`http://localhost:3000/api/leave-requests?reason=${reason}&explanation=${explanation}&start-date=${start_date}&end-date=${end_date}`).then(data => [
+    console.log(data.data)
+  ]).catch(error => {
+    console.log(error)
+  })
 };

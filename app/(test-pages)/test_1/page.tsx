@@ -10,11 +10,8 @@ export default function test_1() {
   return (
     <div>
       <form action="test_1" method="PUT">
-        <Input type="text" name="project_name" />
-        <Input type="date" name="start_date" />
-        <Input type="date" name="end_date" />
         <SubmitButton style={{ width: "100%" }} formAction={test_action}>
-          Create Project
+          Test leave-request
         </SubmitButton>
       </form>
     </div>

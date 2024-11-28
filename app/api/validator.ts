@@ -36,29 +36,33 @@ class RequestValidator {
         let errors: string[] = [];
         let success = true;
 
-        for (let index = 0; index < this.params.length; index++) {
-            const element = this.params[index];
-
-            if (element.required)
+        this.params.forEach(param => {
+            const check = this.validateParam(param);
+            if (!check.success)
             {
-                const value = this.search_params.get(element.name); 
-                if (value == null)
-                {
-                    errors.push("Parameter: '" + element.name +  "' is required");
-                    success = false;
-                }
-
-                if (element.type == "date")
-                {
-                    const unixNumb: number = value ? +value : 0;
-                    const date = new Date(value ? value : "0");
-                    console.log(date.toString());
-                    
-                }
+                success = false;
+                errors = errors.concat(check.errors)
             }
-        }
+        });
 
         return { success, errors };
+    }
+
+    private validateParam(param: RequestParameter): {success: boolean, errors: string[]}
+    {
+        const value = this.search_params.get(param.name);
+        console.log(param.name,"=", value)
+        let success: boolean = true;
+        let errors: string[] = [];
+
+        // check if the value is set when required
+        if (!value && param.required)
+        {
+            success = false;
+            errors.push(`Parameter "${param.name}" is required`);
+        }
+
+        return {success, errors};
     }
 }
 
