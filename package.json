@@ -28,6 +28,7 @@
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
     "autoprefixer": "10.4.17",
+    "axios": "^1.7.8",
     "babel-jest": "^29.7.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
