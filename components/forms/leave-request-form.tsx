@@ -153,68 +153,68 @@ export default function LeaveRequestForm() {
 
           {/* Form field for the date of the requested leave. */}
           <FormField
-  control={form.control}
-  name="date"
-  rules={{ required: "Datum is verplicht!" }}
-  render={({ field }) => {
-    const [isPopoverOpen, setPopoverOpen] = useState(false);
+            control={form.control}
+            name="date"
+            rules={{ required: "Datum is verplicht!" }}
+            render={({ field }) => {
+              const [isPopoverOpen, setPopoverOpen] = useState(false);
 
-    return (
-      <FormItem className="flex flex-col">
-        <FormLabel>Datum</FormLabel>
-        <Popover open={isPopoverOpen} onOpenChange={setPopoverOpen}>
-          <PopoverTrigger asChild>
-            <FormControl>
-              <Button
-                variant={"outline"}
-                className={cn(
-                  "w-full pl-3 text-left font-normal",
-                  !field.value && "text-muted-foreground"
-                )}
-              >
-                {field.value?.from ? (
-                  field.value.to && field.value.to !== field.value.from ? (
-                    <span>
-                      {format(field.value.from, "d MMMM yyyy", { locale: nl })}
-                      &nbsp;-&nbsp;
-                      {format(field.value.to, "d MMMM yyyy", { locale: nl })}
-                    </span>
-                  ) : (
-                    <span>{format(field.value.from, "d MMMM yyyy", { locale: nl })}</span>
-                  )
-                ) : (
-                  <span>Selecteer een datum</span>
-                )}
-                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-              </Button>
-            </FormControl>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <Calendar
-              mode="range"
-              selected={field.value}
-              onSelect={(selectedDate) => {
-                if (selectedDate?.from && !selectedDate.to) {
-                  field.onChange({ from: selectedDate.from, to: selectedDate.from });
-                } else {
-                  field.onChange(selectedDate);
-                  if (selectedDate?.from && selectedDate.to) {
-                    setPopoverOpen(false); // Close the Popover when both dates are selected
-                  }
-                }
-              }}
-              disabled={(date) =>
-                date < new Date() || date < new Date("1900-01-01")
-              }
-              initialFocus
-            />
-          </PopoverContent>
-        </Popover>
-        <FormMessage />
-      </FormItem>
-    );
-  }}
-/>
+              return (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Datum</FormLabel>
+                  <Popover open={isPopoverOpen} onOpenChange={setPopoverOpen}>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-full pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value?.from ? (
+                            field.value.to && field.value.to !== field.value.from ? (
+                              <span>
+                                {format(field.value.from, "d MMMM yyyy", { locale: nl })}
+                                &nbsp;-&nbsp;
+                                {format(field.value.to, "d MMMM yyyy", { locale: nl })}
+                              </span>
+                            ) : (
+                              <span>{format(field.value.from, "d MMMM yyyy", { locale: nl })}</span>
+                            )
+                          ) : (
+                            <span>Selecteer een datum</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="range"
+                        selected={field.value}
+                        onSelect={(selectedDate) => {
+                          if (selectedDate?.from && !selectedDate.to) {
+                            field.onChange({ from: selectedDate.from, to: selectedDate.from });
+                          } else {
+                            field.onChange(selectedDate);
+                            if (selectedDate?.from && selectedDate.to) {
+                              setPopoverOpen(false); // Close the Popover when both dates are selected
+                            }
+                          }
+                        }}
+                        disabled={(date) =>
+                          date < new Date() || date < new Date("1900-01-01")
+                        }
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
 
           {/* Form field for any comments (not required) */}
           <FormField
