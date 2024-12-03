@@ -13,11 +13,11 @@ type Story = StoryObj<typeof Calendar>;
 
 // Sample events data with names
 const events = {
-  '2024-11-26': {
+  '2024-12-03': {
     verlofNames: ['Alice', 'Bob'],
     ziekNames: ['Charlie'],
   },
-  '2024-11-27': {
+  '2024-12-02': {
     verlofNames: ['David'],
     ziekNames: ['Eve', 'Frank'],
   },

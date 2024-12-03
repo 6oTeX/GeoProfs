@@ -37,7 +37,7 @@ const DayOverviewModal: React.FC<DayOverviewModalProps> = ({
           </thead>
           <tbody>
             <tr>
-              <td className=''>
+              <td>
                 {verlofNames.length > 0 ? (
                   <ul>
                     {verlofNames.map((name, index) => (
@@ -48,7 +48,7 @@ const DayOverviewModal: React.FC<DayOverviewModalProps> = ({
                   <p>Geen</p>
                 )}
               </td>
-              <td className='flex'>
+              <td>
                 {ziekNames.length > 0 ? (
                   <ul>
                     {ziekNames.map((name, index) => (
