@@ -32,7 +32,6 @@ import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { DateRange } from "react-day-picker";
 
-// Properties for the leave form.
 interface LeaveRequestFormProps {
   reason: string;
   customReason?: string;
@@ -42,7 +41,7 @@ interface LeaveRequestFormProps {
 }
 
 export default function LeaveRequestForm() {
-  // The list with reasons for leave.
+  //List with resons for leave.
   const leaveReasons = [
     "Ziek",
     "Vakantie",
@@ -52,18 +51,20 @@ export default function LeaveRequestForm() {
     "Anders",
   ];
 
+  //Checking if the custom reason is selected.
   const [isCustomReason, setIsCustomReason] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
 
   const form = useForm({
-    defaultValues: {
-      reason: "",
-      customReason: "",
-      dateStart: null,
-      dateEnd: null,
-      comments: "",
-    } as LeaveRequestFormProps,
-  });
+    //Default values for the form fields.
+      defaultValues: {
+        reason: "",
+        customReason: "",
+        dateStart: null, 
+        dateEnd: null,
+        comments: "",
+      } as LeaveRequestFormProps,
+    });
 
   //Checking if there is a custom reason.
   useEffect(() => {
@@ -74,22 +75,33 @@ export default function LeaveRequestForm() {
 
   //Form submit.
   const onSubmit = (data: LeaveRequestFormProps) => {
-    console.log(data);
+    // Fetching the daterange and turning it into two seperate values.
+    const payload = {
+      ...data,
+      dateStart: dateRange?.from || null,
+      dateEnd: dateRange?.to || null,
+    };
+
+    console.log("Submitting Payload:", payload);
+
     fetch("/api/leave-requests", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(payload),
     })
       .then((response) => response.json())
-      .then((data) => {
-        console.log("Success:", data);
+      .then((responseData) => {
+        console.log("Success:", responseData);
       })
       .catch((error) => {
         console.error("Error:", error);
       });
+
     form.reset();
+    // Resetting the daterange after sumbitting.
+    setDateRange(undefined);
   };
 
   //Form component.
@@ -205,7 +217,8 @@ export default function LeaveRequestForm() {
                           } else {
                             field.onChange(selectedDate);
                             if (selectedDate?.from && selectedDate.to) {
-                              setPopoverOpen(false); // Close the Popover when both dates are selected
+                              // Close popup when two different dates have been selected.
+                              setPopoverOpen(false);
                             }
                           }
                         }}
@@ -260,4 +273,3 @@ export default function LeaveRequestForm() {
     </div>
   );
 }
-
