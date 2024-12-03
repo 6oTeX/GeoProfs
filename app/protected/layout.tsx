@@ -1,7 +1,7 @@
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { GeistSans } from "geist/font/sans";
 import { ThemeProvider } from "next-themes";
-import "./globals.css";
+// import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import { NotificationContextProvider } from "@/components/providers/NotificationContext";
 import { TooltipProvider } from "@/components/ui/tooltip";
