@@ -53,7 +53,7 @@ export async function POST(request: Request) {
   {    
     // insert the request
     const { error } = await supabaseClient.from('leave_requests').insert({ 
-      user_id: currentUser.data.user., 
+      user_id: currentUser.data.user.aud, 
       reason: params.get("reason"),
       explanation: params.get("explanation"),
       start_date: params.get("start-date"), 
