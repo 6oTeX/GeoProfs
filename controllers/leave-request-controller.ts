@@ -11,7 +11,6 @@ class LeaveRequestController {
         let success = true;
         let errors_txt: string[] = [];
 
-
         // get the auth-session
         const supabase = createClient();
         const {
@@ -40,6 +39,75 @@ class LeaveRequestController {
 
         console.log(errors_txt);
         return {success, errors_txt};
+    }
+
+    /**
+     * @brief get all requests of the logged in user
+     * 
+     * @returns success 
+     * @returns data
+     * @returns errors
+     */
+    public static async getMyRequests() {
+        let success = true;
+        let errors_txt: string[] = [];
+        let returnData = {};
+
+        // get the auth-session
+        const supabase = createClient();
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+        if (!user) {
+            errors_txt.push("No auth-session");
+            success = false;
+        }
+        else {
+            // insert the request
+            const { data, error } = await supabase.from('leave_requests').select("*").eq("user_id",user.id)
+            // check if fetch was successful
+            if (data) {
+                returnData = data;
+            }
+            else if (error)
+            {
+                errors_txt.push(error.message);
+                success = false;
+            }
+        }
+        return {success, returnData, errors_txt};
+    }
+
+    public static async getMyRequestsFiltered(state: string) {
+        let success = true;
+        let errors_txt: string[] = [];
+        let returnData = {};
+
+         // get the auth-session
+         const supabase = createClient();
+         const {
+             data: { user },
+         } = await supabase.auth.getUser();
+         if (!user) {
+             errors_txt.push("No auth-session");
+             success = false;
+         }
+         else {
+             // insert the request
+             const { data, error } = await supabase.from('leave_requests').select("*").eq("user_id",user.id).eq("state", state);
+             // check if fetch was successful
+             if (data) {
+                 returnData = data;
+             }
+             else if (error)
+             {
+                 errors_txt.push(error.message);
+                 success = false;
+             }
+         }
+    
+        return {success, returnData, errors_txt};
+
     }
 }
 
