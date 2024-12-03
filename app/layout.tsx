@@ -5,7 +5,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { NotificationContextProvider } from "@/components/providers/NotificationContext";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ReactNode } from "react";
-import Navbar from "@/components/Navbar";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
