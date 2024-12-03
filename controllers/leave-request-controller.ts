@@ -1,5 +1,11 @@
 import { createClient } from "@/utils/supabase/server";
 
+/**
+ * @brief A controller which has access to the leave requests.
+ * 
+ * @file leave-request-controller.ts
+ * @author N.Janssen
+ */
 class LeaveRequestController {
     public static async createRequest(reason: string, explanation: string, start_date: Date, end_date: Date) {
         let success = true;
