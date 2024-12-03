@@ -1,15 +1,15 @@
 // components/Calendar.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
-import Calendar from '../components/Calendar';
+import Calender from '../components/Calender';
 
-const meta: Meta<typeof Calendar> = {
-  title: 'Components/Calendar',
-  component: Calendar,
+const meta: Meta<typeof Calender> = {
+  title: 'Components/Calender',
+  component: Calender,
 };
 
 export default meta;
 
-type Story = StoryObj<typeof Calendar>;
+type Story = StoryObj<typeof Calender>;
 
 // Sample events data with names
 const events = {

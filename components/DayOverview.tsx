@@ -1,15 +1,15 @@
-// components/DayOverviewModal.tsx
+// components/DayOverview.tsx
 import React from 'react';
 import { Button } from './ui/button'; // Adjust the import path as necessary
 
-interface DayOverviewModalProps {
+interface DayOverviewProps {
   date: Date;
   verlofNames: string[];
   ziekNames: string[];
   onClose: () => void;
 }
 
-const DayOverviewModal: React.FC<DayOverviewModalProps> = ({
+const DayOverview: React.FC<DayOverviewProps> = ({
   date,
   verlofNames,
   ziekNames,
@@ -68,4 +68,4 @@ const DayOverviewModal: React.FC<DayOverviewModalProps> = ({
   );
 };
 
-export default DayOverviewModal;
+export default DayOverview;
