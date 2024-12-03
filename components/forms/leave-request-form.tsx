@@ -32,15 +32,17 @@ import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { DateRange } from "react-day-picker";
 
+// Properties for the leave form.
 interface LeaveRequestFormProps {
   reason: string;
   customReason?: string;
-  date: DateRange | undefined;
+  dateStart: Date | null;
+  dateEnd: Date | null;
   comments: string;
 }
 
 export default function LeaveRequestForm() {
-  //List with resons for leave.
+  // The list with reasons for leave.
   const leaveReasons = [
     "Ziek",
     "Vakantie",
@@ -50,15 +52,15 @@ export default function LeaveRequestForm() {
     "Anders",
   ];
 
-  //Checking if the custom reason is selected.
   const [isCustomReason, setIsCustomReason] = useState(false);
+  const [dateRange, setDateRange] = useState<DateRange | undefined>();
 
   const form = useForm({
-    //Default values for the form fields.
     defaultValues: {
       reason: "",
       customReason: "",
-      date: undefined,
+      dateStart: null,
+      dateEnd: null,
       comments: "",
     } as LeaveRequestFormProps,
   });
@@ -157,6 +159,7 @@ export default function LeaveRequestForm() {
             name="date"
             rules={{ required: "Datum is verplicht!" }}
             render={({ field }) => {
+              // Checking if the calendar popup is open.
               const [isPopoverOpen, setPopoverOpen] = useState(false);
 
               return (
@@ -172,7 +175,9 @@ export default function LeaveRequestForm() {
                             !field.value && "text-muted-foreground"
                           )}
                         >
+                          {/* Checking if the start date exists. */}
                           {field.value?.from ? (
+                            // Checking if start date and end date are different dates.
                             field.value.to && field.value.to !== field.value.from ? (
                               <span>
                                 {format(field.value.from, "d MMMM yyyy", { locale: nl })}
@@ -183,6 +188,7 @@ export default function LeaveRequestForm() {
                               <span>{format(field.value.from, "d MMMM yyyy", { locale: nl })}</span>
                             )
                           ) : (
+                            // Default if no date has been selected yet.
                             <span>Selecteer een datum</span>
                           )}
                           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
@@ -220,6 +226,7 @@ export default function LeaveRequestForm() {
           <FormField
             control={form.control}
             name="comments"
+            rules={{ required: "Opmerking is verplicht!" }}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Opmerkingen</FormLabel>
