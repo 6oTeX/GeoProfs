@@ -168,10 +168,9 @@ export default function LeaveRequestForm() {
           {/* Form field for the date of the requested leave. */}
           <FormField
             control={form.control}
-            name="date"
+            name="dateStart"
             rules={{ required: "Datum is verplicht!" }}
-            render={({ field }) => {
-              // Checking if the calendar popup is open.
+            render={() => {
               const [isPopoverOpen, setPopoverOpen] = useState(false);
 
               return (
@@ -184,20 +183,22 @@ export default function LeaveRequestForm() {
                           variant={"outline"}
                           className={cn(
                             "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
+                            !dateRange && "text-muted-foreground"
                           )}
                         >
-                          {/* Checking if the start date exists. */}
-                          {field.value?.from ? (
-                            // Checking if start date and end date are different dates.
-                            field.value.to && field.value.to !== field.value.from ? (
-                              <span>
-                                {format(field.value.from, "d MMMM yyyy", { locale: nl })}
-                                &nbsp;-&nbsp;
-                                {format(field.value.to, "d MMMM yyyy", { locale: nl })}
-                              </span>
+                          {dateRange?.from ? (
+                            dateRange.to && dateRange.to !== dateRange.from ? (
+                              <>
+                                <span>{format(dateRange.from, "d MMMM yyyy", { locale: nl })}</span>
+                                {" - "}
+                                <span>{format(dateRange.to, "d MMMM yyyy", { locale: nl })}</span>
+                              </>
                             ) : (
-                              <span>{format(field.value.from, "d MMMM yyyy", { locale: nl })}</span>
+                              <>
+                                <span>{format(dateRange.from, "d MMMM yyyy", { locale: nl })}</span>
+                                {" - "}
+                                <span>{format(dateRange.from, "d MMMM yyyy", { locale: nl })}</span>
+                              </>
                             )
                           ) : (
                             // Default if no date has been selected yet.
@@ -210,16 +211,23 @@ export default function LeaveRequestForm() {
                     <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
                         mode="range"
-                        selected={field.value}
-                        onSelect={(selectedDate) => {
-                          if (selectedDate?.from && !selectedDate.to) {
-                            field.onChange({ from: selectedDate.from, to: selectedDate.from });
+                        selected={dateRange}
+                        onSelect={(selectedDateRange) => {
+                          if (selectedDateRange?.from) {
+                            const newDateRange = {
+                              from: selectedDateRange.from,
+                              to: selectedDateRange.to || selectedDateRange.from
+                            };
+                            setDateRange(newDateRange);
+                            form.setValue('dateStart', newDateRange.from);
+                            form.setValue('dateEnd', newDateRange.to);
                           } else {
-                            field.onChange(selectedDate);
-                            if (selectedDate?.from && selectedDate.to) {
-                              // Close popup when two different dates have been selected.
-                              setPopoverOpen(false);
-                            }
+                            setDateRange(undefined);
+                            form.setValue('dateStart', null);
+                            form.setValue('dateEnd', null);
+                          }
+                          if (selectedDateRange?.from && selectedDateRange.to) {
+                            setPopoverOpen(false);
                           }
                         }}
                         disabled={(date) =>
