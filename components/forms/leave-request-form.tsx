@@ -102,6 +102,7 @@ export default function LeaveRequestForm() {
     form.reset();
     // Resetting the daterange after sumbitting.
     setDateRange(undefined);
+    setIsCustomReason(false);
   };
 
   //Form component.
@@ -157,7 +158,7 @@ export default function LeaveRequestForm() {
                 <FormItem>
                   <FormLabel>Geef een reden</FormLabel>
                   <FormControl>
-                    <Input placeholder="Typ hier uw reden" {...field} />
+                    <Input placeholder="Typ hier uw reden" {...field} autoComplete="off" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -176,6 +177,7 @@ export default function LeaveRequestForm() {
               return (
                 <FormItem className="flex flex-col">
                   <FormLabel>Datum</FormLabel>
+                  {/* Opening the popup */}
                   <Popover open={isPopoverOpen} onOpenChange={setPopoverOpen}>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -186,6 +188,7 @@ export default function LeaveRequestForm() {
                             !dateRange && "text-muted-foreground"
                           )}
                         >
+                          {/* Displaying the selected date(s) based on if 1 or 2 dates have been selected. */}
                           {dateRange?.from ? (
                             dateRange.to && dateRange.to !== dateRange.from ? (
                               <>
@@ -210,6 +213,7 @@ export default function LeaveRequestForm() {
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
+                      // Changing the data based on if 1 or 2 dates have been selected.
                         mode="range"
                         selected={dateRange}
                         onSelect={(selectedDateRange) => {
@@ -219,12 +223,12 @@ export default function LeaveRequestForm() {
                               to: selectedDateRange.to || selectedDateRange.from
                             };
                             setDateRange(newDateRange);
-                            form.setValue('dateStart', newDateRange.from);
-                            form.setValue('dateEnd', newDateRange.to);
+                            form.setValue('dateStart', newDateRange.from, { shouldValidate: true });
+                            form.setValue('dateEnd', newDateRange.to, { shouldValidate: true });
                           } else {
                             setDateRange(undefined);
-                            form.setValue('dateStart', null);
-                            form.setValue('dateEnd', null);
+                            form.setValue('dateStart', null, { shouldValidate: true });
+                            form.setValue('dateEnd', null, { shouldValidate: true });
                           }
                           if (selectedDateRange?.from && selectedDateRange.to) {
                             setPopoverOpen(false);
