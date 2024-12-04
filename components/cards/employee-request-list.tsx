@@ -53,7 +53,7 @@ import Image from 'next/image'
                         alt="User image" 
                         width={40} 
                         height={40}
-                        className="rounded-full"
+                        className="rounded-full"    
                         />
                         <div className="flex flex-col">
                         <span className="text-sm font-medium">Olivia Martin</span>
@@ -64,6 +64,28 @@ import Image from 'next/image'
                         Status
                     </div>
                 </Card>
+
+                {/* The single card component for mapping. */}
+                {/* <Card className="flex items-center justify-between w-full max-w-md p-3 border rounded-lg">
+                    <div className="flex items-center gap-3">
+                        <Image 
+                        src={user_avatar_url} 
+                        alt="User image" 
+                        width={40} 
+                        height={40}
+                        className="rounded-full"    
+                        />
+                        <div className="flex flex-col">
+                        <span className="text-sm font-medium">{user_name}</span>
+                        <span className="text-xs text-muted-foreground">{user_mail}</span>
+                        </div>
+                    </div>
+                    <div className="px-2.5 py-0.5 text-xs font-medium text-red-500 bg-red-50 rounded-full">
+                        {state}
+                    </div>
+                </Card> */}
+
+
             </div>
         )
     }
