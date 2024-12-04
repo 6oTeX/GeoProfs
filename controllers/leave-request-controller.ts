@@ -76,6 +76,7 @@ class LeaveRequestController {
                 success = false;
             }
         }
+        console.log(returnData);
         return {success, returnData, errors_txt};
     }
 

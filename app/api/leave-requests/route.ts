@@ -4,7 +4,17 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   const data = await request.json();
 
-  const response = await LeaveRequestController.createRequest(data.reason,data.comments,new Date(data.dateStart),new Date(data.dateEnd));
+  let reason: string;
+  if (data.reason == "Anders")
+  {
+    reason = data.customReason;
+  }
+  else
+  {
+    reason = data.reason;
+  }
+
+  const response = await LeaveRequestController.createRequest(reason,data.comments,new Date(data.dateStart),new Date(data.dateEnd));
 
   return NextResponse.json({
     success: response.success,
@@ -13,5 +23,7 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
-  return NextResponse.json({ message: "This is a GET request to /api/dump" });
+
+  const response = await LeaveRequestController.getMyRequests();
+  return NextResponse.json(response);
 }
