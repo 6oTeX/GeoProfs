@@ -4,9 +4,10 @@ import LeaveRequestController from "@/controllers/leave-request-controller";
 
 export default async function Dashboard() {
 
-    const test = async () => {
-        LeaveRequestController.getMyRequests();
-    }; // form rekwest
+    async function test()
+    {
+        console.log(await LeaveRequestController.getMyRequests())
+    }
 
     test();
 
