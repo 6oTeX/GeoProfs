@@ -20,27 +20,11 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={GeistSans.className} suppressHydrationWarning>
-      <body className="bg-background text-foreground">
-        <NotificationContextProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <TooltipProvider>
-              <Navbar />
-              <main className="min-h-screen  flex flex-col items-center">
-                <div className="flex-1 w-full flex flex-col gap-20 items-center">
-                  {children}
-                  <ThemeSwitcher />
-                </div>
-              </main>
-            </TooltipProvider>
-          </ThemeProvider>
-        </NotificationContextProvider>
-      </body>
-    </html>
+    <main className="min-h-screen flex flex-col items-center">
+      <Navbar />
+      <div className="flex-1 w-full flex flex-col gap-20 pt-8 items-center">
+        {children}
+      </div>
+    </main>
   );
 }

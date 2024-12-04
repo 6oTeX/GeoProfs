@@ -1,12 +1,9 @@
 import Link from "next/link";
+import { ReactNode } from "react";
 
-export default async function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className="max-w-full w-full flex flex-col justify-around h-svh p-4">
+    <div className="max-w-full w-full flex flex-col justify-around p-4">
       <header className="flex justify-between items-start w-full">
         <Link href="/" className="text-2xl">
           GeoProfs
