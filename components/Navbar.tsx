@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Logo } from "@/components/icons/Logo";
+// import { Logo } from "@/components/icons/Logo";
 import {
   Home,
   LineChart,
@@ -46,7 +46,7 @@ const Navbar = () => {
             href="#"
             className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground"
           >
-            <Logo />
+            {/* <Logo /> */}
             <span className="sr-only">Dashboard</span>
           </Link>
           <Tooltip>
