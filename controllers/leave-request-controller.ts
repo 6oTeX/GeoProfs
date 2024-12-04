@@ -68,11 +68,8 @@ class LeaveRequestController {
             const { data, error } = await supabase.from('leave_requests').select("*").eq("user_id", user.id)
             // check if fetch was successful
             if (data) {
-                errors_txt.push("Could not get profile data");
-                success = false;
                 const profile = await supabase.from('profiles').select("*").eq("id", user.id);
-                if (profile.data)
-                {
+                if (profile.data) {
                     returnData = data.map((new_data) => {
                         return {
                             ...new_data,
@@ -81,6 +78,10 @@ class LeaveRequestController {
                             user_avatar_url: profile.data[0].user_avatar_url,
                         }
                     })
+                }
+                else {
+                    errors_txt.push("Could not get profile data");
+                    success = false;
                 }
             }
             else if (error) {
@@ -112,8 +113,7 @@ class LeaveRequestController {
             // check if fetch was successful
             if (data) {
                 const profile = await supabase.from('profiles').select("*").eq("id", user.id);
-                if (profile.data)
-                {
+                if (profile.data) {
                     returnData = data.map((new_data) => {
                         return {
                             ...new_data,
@@ -122,6 +122,10 @@ class LeaveRequestController {
                             user_avatar_url: profile.data[0].user_avatar_url,
                         }
                     })
+                }
+                else {
+                    errors_txt.push("Could not get profile data");
+                    success = false;
                 }
             }
             else if (error) {
