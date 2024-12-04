@@ -50,7 +50,7 @@ async function serverWrapper(payload: LeaveRequestFormProps) {
 }
 
 export default function LeaveRequestForm() {
-  //List with resons for leave.
+  //List with reasons for leave.
   const leaveReasons = [
     "Ziek",
     "Vakantie",
@@ -63,6 +63,7 @@ export default function LeaveRequestForm() {
   //Checking if the custom reason is selected.
   const [isCustomReason, setIsCustomReason] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm({
     //Default values for the form fields.
@@ -76,15 +77,16 @@ export default function LeaveRequestForm() {
   });
 
   //Checking if there is a custom reason.
-  // useEffect(() => {
-  //   if (!isCustomReason) {
-  //     form.setValue("customReason", "");
-  //   }
-  // }, [isCustomReason, form]);
+  useEffect(() => {
+    if (!isCustomReason) {
+      form.setValue("customReason", "");
+    }
+  }, [isCustomReason, form]);
 
   //Form submit.
   const onSubmit = async (data: LeaveRequestFormProps) => {
-    // Fetching the daterange and turning it into two seperate values.
+    setIsLoading(true);
+    // Fetching the daterange and turning it into two separate values.
     const payload = {
       ...data,
       dateStart: dateRange?.from || null,
@@ -109,9 +111,10 @@ export default function LeaveRequestForm() {
       });
 
     form.reset();
-    // Resetting the daterange after sumbitting.
+    // Resetting the daterange after submitting.
     setDateRange(undefined);
     setIsCustomReason(false);
+    setIsLoading(false);
   };
 
   //Form component.
@@ -285,6 +288,7 @@ export default function LeaveRequestForm() {
             <Button
               type="submit"
               className="bg-emerald-600 hover:bg-emerald-700"
+              disabled={isLoading}
             >
               Verlof aanvragen
             </Button>

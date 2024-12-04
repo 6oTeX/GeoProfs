@@ -6,7 +6,7 @@ export default async function Dashboard() {
 
     const test = async () => {
         LeaveRequestController.getMyRequests();
-    };
+    }; // form rekwest
 
     test();
 
