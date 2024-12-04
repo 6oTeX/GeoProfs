@@ -1,7 +1,10 @@
+"use server";
 import { createClient } from "@/utils/supabase/server";
 
 /**
  * @brief A controller which has access to the leave requests.
+ * 
+ * @param reason the given reason
  * 
  * @file leave-request-controller.ts
  * @author N.Janssen
@@ -36,8 +39,6 @@ class LeaveRequestController {
                 success = false;
             }
         }
-
-        console.log(errors_txt);
         return {success, errors_txt};
     }
 

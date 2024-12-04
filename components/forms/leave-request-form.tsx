@@ -31,6 +31,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { DateRange } from "react-day-picker";
+import { Card } from '../ui/card';
+import LeaveRequestController from '@/controllers/leave-request-controller';
 
 interface LeaveRequestFormProps {
   reason: string;
@@ -38,6 +40,13 @@ interface LeaveRequestFormProps {
   dateStart: Date | null;
   dateEnd: Date | null;
   comments: string;
+}
+
+async function serverWrapper(payload: LeaveRequestFormProps) {
+  if (payload.dateStart && payload.dateEnd) {
+    await LeaveRequestController.createRequest(payload.reason, payload.comments, payload.dateStart, payload.dateEnd);
+  }
+
 }
 
 export default function LeaveRequestForm() {
@@ -57,24 +66,24 @@ export default function LeaveRequestForm() {
 
   const form = useForm({
     //Default values for the form fields.
-      defaultValues: {
-        reason: "",
-        customReason: "",
-        dateStart: null, 
-        dateEnd: null,
-        comments: "",
-      } as LeaveRequestFormProps,
-    });
+    defaultValues: {
+      reason: "",
+      customReason: "",
+      dateStart: null,
+      dateEnd: null,
+      comments: "",
+    } as LeaveRequestFormProps,
+  });
 
   //Checking if there is a custom reason.
-  useEffect(() => {
-    if (!isCustomReason) {
-      form.setValue("customReason", "");
-    }
-  }, [isCustomReason, form]);
+  // useEffect(() => {
+  //   if (!isCustomReason) {
+  //     form.setValue("customReason", "");
+  //   }
+  // }, [isCustomReason, form]);
 
   //Form submit.
-  const onSubmit = (data: LeaveRequestFormProps) => {
+  const onSubmit = async (data: LeaveRequestFormProps) => {
     // Fetching the daterange and turning it into two seperate values.
     const payload = {
       ...data,
@@ -107,7 +116,7 @@ export default function LeaveRequestForm() {
 
   //Form component.
   return (
-    <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+    <Card className="w-full p-10 max-w-md p-6rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6">Verlof aanvragen</h2>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -213,7 +222,7 @@ export default function LeaveRequestForm() {
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
-                      // Changing the data based on if 1 or 2 dates have been selected.
+                        // Changing the data based on if 1 or 2 dates have been selected.
                         mode="range"
                         selected={dateRange}
                         onSelect={(selectedDateRange) => {
@@ -282,6 +291,6 @@ export default function LeaveRequestForm() {
           </div>
         </form>
       </Form>
-    </div>
+    </Card>
   );
 }
