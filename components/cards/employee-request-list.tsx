@@ -10,7 +10,7 @@ import Image from 'next/image'
         console.log(employeeRequestList.returnData)
         return(
             // List with cards.
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2">
                 {employeeRequestList.returnData.map((element) => (
                     // The single request card.
                       <Card key={element.id} className="flex items-center justify-between w-full max-w-md p-3 border rounded-lg">
@@ -31,7 +31,7 @@ import Image from 'next/image'
                         </div>
                         <div className="flex gap-2">
                             <div className="flex ">
-                                <span className="text-sm font-medium flex justify-end">
+                                <span className="text-sm font-medium flex justify-start">
                                     {new Intl.DateTimeFormat('en-GB').format(new Date(element.start_date))} - {new Intl.DateTimeFormat('en-GB').format(new Date(element.end_date))}
                                 </span>
                             </div>

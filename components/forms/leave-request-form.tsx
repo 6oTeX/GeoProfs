@@ -170,7 +170,7 @@ export default function LeaveRequestForm() {
                 <FormItem>
                   <FormLabel>Geef een reden</FormLabel>
                   <FormControl>
-                    <Input placeholder="Typ hier uw reden" {...field} autoComplete="off" />
+                    <Input maxLength={40} placeholder="Typ hier uw reden" {...field} autoComplete="off" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
