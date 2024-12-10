@@ -1,10 +1,10 @@
 import LeaveRequestController from "@/controllers/leave-request-controller";
 import { Card } from '../ui/card';
 import Image from 'next/image'
+import { date } from "zod";
 
     export default async function EmployeeRequestList()
     {
-        
         const employeeRequestList = await LeaveRequestController.getMyRequests();
 
         console.log(employeeRequestList.returnData)
@@ -13,16 +13,17 @@ import Image from 'next/image'
             <div className="flex flex-col gap-2">
                 {employeeRequestList.returnData.map((element) => (
                     // The single request card.
-                      <Card key={element.id} className="flex items-center justify-between w-full max-w-md p-3 border rounded-lg">
+                    <Card 
+                        key={element.id} 
+                        className={`flex items-center justify-between w-full max-w-md p-3 border rounded-lg ${
+                            //element.reason === 'Vakantie'
+                            element.dateStart < new Date() && new Date() < element.dateEnd
+                            ? 'border-white'
+                            : ''
+                        }`}
+                    >   
                         
                         <div className="flex items-center gap-3">
-                            {/* <Image 
-                            src={element.user_avatar_url} 
-                            alt="User image" 
-                            width={40} 
-                            height={40}
-                            className="rounded-full"    
-                            /> */}
                             <div className="flex flex-col">
                                 <span className="text-sm font-medium">{element.reason}</span>
                                 <span className="text-xs text-muted-foreground">{element.user_name}</span>
