@@ -36,14 +36,14 @@ import Image from 'next/image'
                                 </span>
                             </div>
                             <div
-                                className={`px-2.5 py-0.5 text-xs font-medium rounded-full flex items-center ${
+                                className={`px-2.5 py-0.1 text-xs font-medium rounded-lg flex items-center ${
                                 element.state === 'accepted'
-                                ? 'text-green-500 bg-green-50'
+                                ? 'text-green-500 bg-green-200'
                                 : element.state === 'submitted'
-                                ? 'text-orange-500 bg-orange-50'
+                                ? 'text-orange-500 bg-orange-200'
                                 : element.state === 'declined'
-                                ? 'text-red-500 bg-red-50'
-                                : 'text-gray-500 bg-gray-50'
+                                ? 'text-red-500 bg-red-200'
+                                : 'text-gray-500 bg-gray-200'
                                 }`}
                             >
                                 {element.state}
