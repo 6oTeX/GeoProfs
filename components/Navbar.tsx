@@ -1,8 +1,7 @@
 // components/Navbar.tsx
 import React, { useState } from "react";
 import Link from "next/link";
-import { Logo } from "@/components/icons/Logo";
-import { Menu, X, Search, Settings } from "lucide-react";
+import { Menu, X, Search, Aperture, Settings } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -39,7 +38,7 @@ const Navbar = () => {
           href="#"
           className="flex h-9 w-9 items-center justify-center rounded-lg text-primary-foreground"
         >
-          <Logo />
+          <Aperture className="h-5 w-5 text-foreground" />
           <span className="sr-only">Dashboard</span>
         </Link>
         {/* Desktop Navigation Links */}
@@ -171,7 +170,7 @@ const Navbar = () => {
       </div>
       {/* Mobile Menu Overlay */}
       <div
-        className={`fixed inset-0 z-50 bg-white flex flex-col transform transition-transform duration-300 ${
+        className={`fixed inset-0 z-50 bg-foreground flex flex-col transform transition-transform duration-300 ${
           isMobileMenuOpen
             ? "translate-x-0 pointer-events-auto"
             : "translate-x-full pointer-events-none"
@@ -181,7 +180,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between px-4 py-4 border-b h-14">
           {/* Logo */}
           <Link href="#" className="flex items-center">
-            <Logo />
+          <Aperture className="h-5 w-5 text-foreground" />
             <span className="sr-only">Logo</span>
           </Link>
           {/* Search Input */}

@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import DayOverview from '../components/DayOverview';
 
 export default {
-  title: 'Components/day-overview',
+  title: 'Components/DayOverview',
   component: DayOverview,
   argTypes: {
     onClose: { action: 'onClose' },

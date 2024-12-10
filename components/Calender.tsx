@@ -1,16 +1,21 @@
-// components/Calender.tsx
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button'; // Adjust the import path as necessary
-import { User } from "lucide-react";
-import DayOverview from './DayOverview'; // Import the modal component
+import { Button } from '@/components/ui/button';
+import { User } from 'lucide-react';
+import DayOverview from './DayOverview';
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogClose,
+} from './ui/dialog';
 
 interface CalenderDay {
   date: Date;
   isCurrentMonth: boolean;
   verlof: number;
   ziek: number;
-  verlofNames: string[]; // Added to hold names for verlof
-  ziekNames: string[];   // Added to hold names for ziek
+  verlofNames: string[];
+  ziekNames: string[];
 }
 
 interface CalenderProps {
@@ -18,15 +23,14 @@ interface CalenderProps {
     [key: string]: {
       verlof: number;
       ziek: number;
-      verlofNames: string[]; // Added to receive names from events
-      ziekNames: string[];   // Added to receive names from events
+      verlofNames: string[];
+      ziekNames: string[];
     };
   };
 }
 
 const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
-  const [selectedDay, setSelectedDay] = useState<CalenderDay | null>(null); // State for the selected day
 
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -35,20 +39,18 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
 
   const getDateKey = (date: Date): string => {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`; // Format: 'YYYY-MM-DD'
+    return `${year}-${month}-${day}`;
   };
 
   const getCalenderDates = (date: Date): CalenderDay[] => {
     const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
     const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
-    // Start from the Sunday of the first week
     const startDate = new Date(startOfMonth);
     startDate.setDate(startDate.getDate() - startDate.getDay());
 
-    // End on the Saturday of the last week
     const endDate = new Date(endOfMonth);
     endDate.setDate(endDate.getDate() + (6 - endDate.getDay()));
 
@@ -111,12 +113,6 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
     setCurrentDate(new Date(newYear, currentDate.getMonth(), 1));
   };
 
-  const handleDayClick = (day: CalenderDay) => {
-    if (day.verlof > 0 || day.ziek > 0) {
-      setSelectedDay(day);
-    }
-  };
-
   return (
     <div className="p-2 sm:p-4">
       {/* Header Section */}
@@ -163,14 +159,14 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
         ))}
       </div>
 
-      {/* Calender Grid */}
+      {/* Calendar Grid */}
       {weeks.map((week, index) => (
         <div key={index} className="grid grid-cols-7 text-left">
           {week.map((day, idx) => {
             const isToday = day.date.toDateString() === today.toDateString();
 
             let cellClasses =
-              'border border-gray-200 h-16 sm:h-24 p-1 flex flex-row items-start cursor-pointer';
+              'border border-gray-200 h-16 sm:h-24 p-1 flex flex-col items-start cursor-pointer';
 
             if (isToday) {
               cellClasses += ' bg-yellow-50';
@@ -185,7 +181,6 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
             } else {
               size = 12;
             }
-
             let afwezig = null;
             if (day.verlof || day.ziek) {
               afwezig = (
@@ -207,30 +202,37 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
             }
 
             return (
+              <Dialog key={idx}>
+                <DialogTrigger asChild>
+               
               <div
                 key={idx}
                 className={cellClasses}
-                onClick={() => handleDayClick(day)} // Added onClick handler
               >
                 <span className="font-bold text-xs sm:text-base flex w-full sm:w-10/12">
                   {day.date.getDate()}
                 </span>
                 {afwezig}
               </div>
+          
+                </DialogTrigger>
+                <DialogContent>
+                  <DayOverview
+                    date={day.date}
+                    verlofNames={day.verlofNames}
+                    ziekNames={day.ziekNames}
+                  />
+                  <DialogClose asChild>
+                    <Button variant="destructive" className="mt-4">
+                      Sluiten
+                    </Button>
+                  </DialogClose>
+                </DialogContent>
+              </Dialog>
             );
           })}
         </div>
       ))}
-
-      {/* Day Overview Modal */}
-      {selectedDay && (
-        <DayOverview
-          date={selectedDay.date}
-          verlofNames={selectedDay.verlofNames}
-          ziekNames={selectedDay.ziekNames}
-          onClose={() => setSelectedDay(null)}
-        />
-      )}
     </div>
   );
 };
