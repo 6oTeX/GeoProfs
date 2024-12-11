@@ -281,13 +281,13 @@ export default function LeaveRequestForm() {
 
           <div className="flex justify-between">
             {/* Close form button. */}
-            <Button type="button" variant="destructive" className='text-red-500 bg-red-200 hover:bg-red-300'>
+            <Button type="button" variant="destructive" className='text-red-900 bg-red-500 hover:bg-red-600'>
               Sluiten
             </Button>
             {/* Submit form button. */}
             <Button
               type="submit"
-              className="text-green-500 bg-green-200 hover:bg-green-300"
+              className="text-green-900 bg-green-500 hover:bg-green-600"
               disabled={isLoading}
             >
               Verlof aanvragen
