@@ -8,29 +8,41 @@ export default async function EmployeeRequestList() {
 
     console.log(employeeRequestList.returnData);
 
-    // Parse the requests and sort by start date in ascending order.
-    const parsedRequests = employeeRequestList.returnData
-        .map((element) => ({
-            ...element,
-            // Dates from returnData parsed into Date types.
-            startDate: new Date(element.start_date),
-            endDate: new Date(element.end_date),
-        }))
-        .sort((a, b) => a.startDate - b.startDate); // Sort by startDate (ascending).
+    const parsedRequests = employeeRequestList.returnData.map((element) => ({
+        ...element,
+        // Dates from returnData parsed into Date types.
+        startDate: new Date(element.start_date),
+        endDate: new Date(element.end_date),
+    }));
+
+    // Sort the requests based on if they have passed or not.
+    const upcomingOrActiveRequests = parsedRequests.filter(
+        (element) => element.endDate >= currentDate
+    );
+    const pastRequests = parsedRequests.filter(
+        (element) => element.endDate < currentDate
+    );
+
+    // Sort each group by startDate.
+    upcomingOrActiveRequests.sort((a, b) => a.startDate - b.startDate);
+    pastRequests.sort((a, b) => a.startDate - b.startDate);
+
+    // Combine into one array.
+    const sortedRequests = [...upcomingOrActiveRequests, ...pastRequests];
 
     return (
         <div className="flex flex-col gap-2">
-            {parsedRequests.map((element) => (
+            {sortedRequests.map((element) => (
                 // The single request card.
                 <Card
                     key={element.id}
                     className={`flex items-center justify-between w-full max-w-md p-3 border rounded-lg ${
                         // Check if a leave request is active.
                         element.startDate <= currentDate && currentDate <= element.endDate
-                        ? 'border-white'
-                        : element.endDate < currentDate 
-                        ? 'opacity-25'
-                        : ''
+                        ? 'border-white hover:opacity-80 hover:shadow-lg transition'
+                        : currentDate < element.startDate
+                        ? 'hover:opacity-75 hover:shadow-md transition' 
+                        : 'opacity-50'
                     }`}
                 >
                     <div className="flex items-center gap-3">
