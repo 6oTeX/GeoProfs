@@ -177,7 +177,7 @@ const Navbar = () => {
         }`}
       >
         {/* Mobile Menu Header */}
-        <div className="flex items-center justify-between px-4 py-4 border-b h-14">
+        <div className="flex items-center justify-between bg-background px-4 py-4 border-b h-14">
           {/* Logo */}
           <Link href="#" className="flex items-center">
           <Aperture className="h-5 w-5 text-foreground" />
@@ -202,7 +202,7 @@ const Navbar = () => {
         </div>
         {/* Mobile Menu Content */}
         <div className="border-t flex-1 flex flex-col">
-          <nav className="flex flex-col px-4 py-4 space-y-4 flex-1">
+          <nav className="flex flex-col px-4 py-4 space-y-4 text-foreground bg-background flex-1">
             <Link href="#" className="text-lg font-medium">
               Dashboard
             </Link>
