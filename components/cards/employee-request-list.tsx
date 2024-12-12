@@ -1,6 +1,7 @@
 import LeaveRequestController from "@/controllers/leave-request-controller";
 import { Card } from '../ui/card';
-import Image from 'next/image';
+import { Separator } from "@/components/ui/separator"
+
 
 export default async function EmployeeRequestList() {
     const employeeRequestList = await LeaveRequestController.getMyRequests();
@@ -10,77 +11,101 @@ export default async function EmployeeRequestList() {
 
     const parsedRequests = employeeRequestList.returnData.map((element) => ({
         ...element,
-        // Dates from returnData parsed into Date types.
+        // Parse dates from returnData into Date objects.
         startDate: new Date(element.start_date),
         endDate: new Date(element.end_date),
     }));
 
-    // Sort the requests based on if they have passed or not.
-    const upcomingOrActiveRequests = parsedRequests.filter(
-        (element) => element.endDate >= currentDate
+    // Separate into active, upcoming, and past requests.
+    const activeRequests = parsedRequests.filter(
+        (element) => element.startDate <= currentDate && element.endDate >= currentDate
+    );
+    const upcomingRequests = parsedRequests.filter(
+        (element) => element.startDate > currentDate
     );
     const pastRequests = parsedRequests.filter(
         (element) => element.endDate < currentDate
     );
 
-    // Sort each group by startDate.
-    upcomingOrActiveRequests.sort((a, b) => a.startDate - b.startDate);
+    // Sort each list by startDate.
+    activeRequests.sort((a, b) => a.startDate - b.startDate);
+    upcomingRequests.sort((a, b) => a.startDate - b.startDate);
     pastRequests.sort((a, b) => a.startDate - b.startDate);
 
-    // Combine into one array.
-    const sortedRequests = [...upcomingOrActiveRequests, ...pastRequests];
+    const separator = { isSeparator: true, type: null };
 
+    // Place all in one list with seperators between if there is a request in each group
+    const sortedRequests = [
+        ...activeRequests,
+        activeRequests.length > 0 && upcomingRequests.length > 0 ? { ...separator, type: 'active-upcoming' } : null,
+        ...upcomingRequests,
+        upcomingRequests.length > 0 && pastRequests.length > 0 ? { ...separator, type: 'upcoming-past' } : null,
+        ...pastRequests,
+    ].filter(Boolean);
+
+    // Render the requests and separators.
     return (
         <div className="flex flex-col gap-2">
             {sortedRequests.length > 0 ? (
-                sortedRequests.map((element) => (
-                    // The single request card.
-                    <Card
-                        key={element.id}
-                        className={`flex items-center justify-between w-full max-w-md p-3 border rounded-lg ${
-                            // Check if a leave request is active.
-                            element.startDate <= currentDate && currentDate <= element.endDate
-                                ? 'bg-accent hover:border-white hover:shadow-lg transition'
-                                : currentDate < element.startDate
-                                ? 'hover:bg-accent hover:shadow-md transition' 
-                                : 'bg-inactive'
-                        }`}
-                    >
-                        <div className="flex items-center gap-3">
-                            <div className="flex flex-col">
-                                <span className="text-sm font-medium">{element.reason}</span>
-                                <span className="text-xs text-muted-foreground">{element.user_name}</span>
-                                <span className="text-xs text-muted-foreground">{element.user_mail}</span>
+                sortedRequests.map((element, index) => {
+                    // Render separators based on type.
+                    if (element.isSeparator) {
+                        return (
+                            <Separator
+                                key={`separator-${index}`}
+                                className="my-2 border-t"
+                                label="Label"
+                            />
+                        );
+                    }
+
+                    // Render the request card.
+                    return (
+                        <Card
+                            key={element.id}
+                            className={`flex items-center justify-between w-full max-w-md p-3 border rounded-lg ${
+                                    currentDate < element.endDate
+                                    ? 'hover:bg-accent hover:shadow-md transition'
+                                    : 'bg-inactive'
+                            }`}
+                        >
+                            <div className="flex items-center gap-3">
+                                <div className="flex flex-col">
+                                    <span className="text-sm font-medium">{element.reason}</span>
+                                    <span className="text-xs text-muted-foreground">{element.user_name}</span>
+                                    <span className="text-xs text-muted-foreground">{element.user_mail}</span>
+                                </div>
                             </div>
-                        </div>
-                        <div className="flex gap-2">
-                            <div className="flex">
-                                <span className="text-sm font-medium flex justify-start">
-                                    {new Intl.DateTimeFormat('en-GB').format(element.startDate)} - {new Intl.DateTimeFormat('en-GB').format(element.endDate)}
-                                </span>
+                            <div className="flex gap-2">
+                                <div className="flex">
+                                    <span className="text-sm font-medium flex justify-start">
+                                        {new Intl.DateTimeFormat('en-GB').format(element.startDate)} - {new Intl.DateTimeFormat('en-GB').format(element.endDate)}
+                                    </span>
+                                </div>
+                                <div
+                                    className={`px-2.5 py-0.1 text-xs font-medium rounded-lg flex items-center ${
+                                        element.state === 'accepted'
+                                            ? 'text-green-800 bg-green-500'
+                                            : element.state === 'submitted'
+                                            ? 'text-orange-800 bg-orange-500'
+                                            : element.state === 'declined'
+                                            ? 'text-red-800 bg-red-500'
+                                            : 'text-gray-700 bg-gray-500'
+                                    }`}
+                                >
+                                    {element.state}
+                                </div>
                             </div>
-                            <div
-                                // Changing the color based on the state.
-                                className={`px-2.5 py-0.1 text-xs font-medium rounded-lg flex items-center ${
-                                    element.state === 'accepted'
-                                        ? 'text-green-800 bg-green-500'
-                                        : element.state === 'submitted'
-                                        ? 'text-orange-800 bg-orange-500'
-                                        : element.state === 'declined'
-                                        ? 'text-red-800 bg-red-500'
-                                        : 'text-gray-700 bg-gray-500'
-                                }`}
-                            >
-                                {element.state}
-                            </div>
-                        </div>
-                    </Card>
-                ))
+                        </Card>
+                    );
+                })
             ) : (
                 <div className="text-center text-sm text-muted-foreground">
                     Geen verlofaanvragen.
+                    <Separator />
                 </div>
             )}
         </div>
     );
 }
+
