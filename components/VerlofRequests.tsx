@@ -30,7 +30,7 @@ interface VerlofRequestsSectionProps {
   requests: VerlofRequest[];
 }
 
-const VerlofRequestsSection: React.FC<VerlofRequestsSectionProps> = ({
+const VerlofRequests: React.FC<VerlofRequestsSectionProps> = ({
   groups,
   requests,
 }) => {
@@ -89,4 +89,4 @@ const VerlofRequestsSection: React.FC<VerlofRequestsSectionProps> = ({
   );
 };
 
-export default VerlofRequestsSection;
+export default VerlofRequests;

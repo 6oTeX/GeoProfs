@@ -38,146 +38,205 @@ import {
 import { Switch } from "@/components/ui/switch";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { cn } from "@/utils/cn";
 
 const data: Users[] = [
   {
     id: "m5gr84i9",
-    verlofSaldo: 316,
+    saldo: 316,
     werknemer: {
       firstName: "Mark",
       lastName: "Johnson",
       email: "ken99@yahoo.com",
     },
-    status: "aanwezig",
+    status: "Present",
+    afdeling: {
+      team: "ICT",
+      role: "Manager",
+    },
   },
   {
     id: "m5gr84i9",
-    verlofSaldo: 316,
+    saldo: 316,
     werknemer: {
       firstName: "Jay",
       lastName: "Rock",
       email: "kegadsgn99@yahoo.com",
     },
-    status: "aanwezig",
+    status: "Present",
+    afdeling: {
+      team: "ICT",
+      role: "Manager",
+    },
   },
   {
     id: "m5gr84i9",
-    verlofSaldo: 316,
+    saldo: 316,
     werknemer: {
       firstName: "Rick",
       lastName: "Stan",
       email: "gasfaf@gmail.com",
     },
-    status: "aanwezig",
+    status: "Present",
+    afdeling: {
+      team: "ICT",
+      role: "Manager",
+    },
   },
   {
     id: "3u1reuv4",
-    verlofSaldo: 242,
+    saldo: 242,
     werknemer: {
       firstName: "Abe",
       lastName: "Smith",
       email: "Abe45@gmail.com",
     },
-    status: "afwezig",
+    status: "Absent",
+    afdeling: {
+      team: "ICT",
+      role: "Manager",
+    },
   },
   {
     id: "derv1ws0",
-    verlofSaldo: 837,
+    saldo: 837,
     werknemer: {
       firstName: "Monserrat",
       lastName: "Smith",
       email: "Monserrat44@gmail.com",
     },
-    status: "aanwezig",
+    status: "Present",
+    afdeling: {
+      team: "ICT",
+      role: "Manager",
+    },
   },
   {
     id: "5kma53ae",
-    verlofSaldo: 874,
+    saldo: 874,
     werknemer: {
       firstName: "Silas",
       lastName: "Smith",
       email: "Silas22@gmail.com",
     },
-    status: "afwezig",
+    status: "Absent",
+    afdeling: {
+      team: "ICT",
+      role: "Manager",
+    },
   },
   {
     id: "bhqecj4p",
-    verlofSaldo: 721,
+    saldo: 721,
     werknemer: {
       firstName: "Carmella",
       lastName: "Smith",
       email: "carmella@hotmail.com",
     },
-    status: "aanwezig",
+    status: "Present",
+    afdeling: {
+      team: "ICT",
+      role: "Manager",
+    },
   },
   {
     id: "bhqecj4p",
-    verlofSaldo: 721,
+    saldo: 721,
     werknemer: {
       firstName: "Carmella",
       lastName: "Smith",
       email: "carmella@hotmail.com",
     },
-    status: "aanwezig",
+    status: "Present",
+    afdeling: {
+      team: "ICT",
+      role: "Manager",
+    },
   },
   {
     id: "bhqecj4p",
-    verlofSaldo: 721,
+    saldo: 721,
     werknemer: {
       firstName: "Carmella",
       lastName: "Smith",
       email: "carmella@hotmail.com",
     },
-    status: "aanwezig",
+    status: "Present",
+    afdeling: {
+      team: "ICT",
+      role: "Manager",
+    },
   },
   {
     id: "bhqecj4p",
-    verlofSaldo: 721,
+    saldo: 721,
     werknemer: {
       firstName: "Carmella",
       lastName: "Smith",
       email: "carmella@hotmail.com",
     },
-    status: "aanwezig",
+    status: "Present",
+    afdeling: {
+      team: "ICT",
+      role: "Manager",
+    },
   },
   {
     id: "bhqecj4p",
-    verlofSaldo: 721,
+    saldo: 721,
     werknemer: {
       firstName: "Carmella",
       lastName: "Smith",
       email: "carmella@hotmail.com",
     },
-    status: "aanwezig",
+    status: "Present",
+    afdeling: {
+      team: "ICT",
+      role: "Manager",
+    },
   },
   {
     id: "bhqecj4p",
-    verlofSaldo: 721,
+    saldo: 721,
     werknemer: {
       firstName: "Carmella",
       lastName: "Smith",
       email: "carmella@hotmail.com",
     },
-    status: "aanwezig",
+    status: "Present",
+    afdeling: {
+      team: "ICT",
+      role: "Manager",
+    },
   },
   {
     id: "bhqecj4p",
-    verlofSaldo: 721,
+    saldo: 721,
     werknemer: {
       firstName: "Carmella",
       lastName: "Smith",
       email: "carmella@hotmail.com",
     },
-    status: "aanwezig",
+    status: "Present",
+    afdeling: {
+      team: "ICT",
+      role: "Manager",
+    },
   },
 ];
 
 export type Users = {
   id: string;
-  verlofSaldo: number;
+  saldo: number;
   werknemer: any;
-  status: "aanwezig" | "afwezig";
+  status: "Present" | "Absent";
+  afdeling: {
+    team: string;
+    role: EmployeeRole;
+  };
 };
+
+export type EmployeeRole = "Manager" | "Employee";
 
 export const columns: ColumnDef<Users>[] = [
   {
@@ -195,29 +254,21 @@ export const columns: ColumnDef<Users>[] = [
     ),
   },
   {
-    accessorKey: "verlofSaldo",
-    header: () => <div className="text-right">verlofSaldo</div>,
+    accessorKey: "saldo",
+    header: () => <div>Saldo</div>,
     cell: ({ row }) => {
-      const verlofSaldo = parseFloat(row.getValue("verlofSaldo"));
-
-      const formatted = new Intl.NumberFormat("nl-NL", {
-        style: "currency",
-        currency: "EUR",
-      }).format(verlofSaldo);
-
-      return <div className="text-right font-medium">{formatted}</div>;
+      return <div className="font-medium ">{row.getValue("saldo")}</div>;
     },
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: () => <div className="text-right">Status</div>,
     cell: ({ row }) => (
       <div
-        className={
-          row.original.status === "aanwezig"
-            ? "text-green-600 font-bold"
-            : "text-red-600 font-bold"
-        }
+        className={cn(
+          row.original.status === "Present" ? "text-green-600" : "text-red-600",
+          "text-right font-bold"
+        )}
       >
         {row.original.status}
       </div>
@@ -232,7 +283,7 @@ export const columns: ColumnDef<Users>[] = [
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
+            <Button variant="ghost" className="h-8 w-8 p-0 flex">
               <span className="sr-only">Open menu</span>
               <MoreHorizontal />
             </Button>
@@ -304,14 +355,14 @@ export function UsersTable() {
   const exportToPDF = () => {
     const doc = new jsPDF();
     autoTable(doc, {
-      head: [["Werknemer", "Email", "VerlofSaldo", "Status"]],
+      head: [["Werknemer", "Email", "saldo", "Status"]],
       body: filteredData.map((user) => [
         `${user.werknemer.firstName} ${user.werknemer.lastName}`,
         user.werknemer.email,
         new Intl.NumberFormat("nl-NL", {
           style: "currency",
           currency: "EUR",
-        }).format(user.verlofSaldo),
+        }).format(user.saldo),
         user.status,
       ]),
     });
@@ -323,7 +374,7 @@ export function UsersTable() {
       <div className="flex items-center justify-between pb-4">
         <div className="flex flex-col">
           <h1 className="text-2xl font-bold">Personeel</h1>
-          <h3 className="text-base">Aanwezigheid van actiefe werknemers</h3>
+          <h3 className="text-base">Presentheid van actiefe werknemers</h3>
         </div>
         <div className="flex items-center space-x-2">
           <Input
@@ -351,25 +402,25 @@ export function UsersTable() {
           </Button>
           <Button
             variant="outline"
-            onClick={() => setFilterStatus("aanwezig")}
+            onClick={() => setFilterStatus("Present")}
             className={
-              filterStatus === "aanwezig"
+              filterStatus === "Present"
                 ? "bg-background"
                 : "bg-transparent text-muted-foreground"
             }
           >
-            Aanwezig
+            Present
           </Button>
           <Button
             variant="outline"
-            onClick={() => setFilterStatus("afwezig")}
+            onClick={() => setFilterStatus("Absent")}
             className={
-              filterStatus === "afwezig"
+              filterStatus === "Absent"
                 ? "bg-background"
                 : "bg-transparent text-muted-foreground"
             }
           >
-            Afwezig
+            Absent
           </Button>
         </div>
       </div>
