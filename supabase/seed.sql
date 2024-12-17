@@ -71,7 +71,7 @@ INSERT INTO
             current_timestamp,
             current_timestamp,
             '{"provider":"email","providers":["email"]}',
-            format('{"full_name": "User %s", "avatar_url": "https://randomuser.me/api/portraits", "username": "user%s", "saldo": %s}', gs::text, gs::text, gs * 10)::jsonb,
+            format('{"full_name": "User %s", "avatar_url": "https://api.dicebear.com/9.x/miniavs/svg?seed=%s", "username": "user%s", "saldo": %s}', gs::text, gs::text, gs::text,gs * 10)::jsonb,
             current_timestamp,
             current_timestamp,
             '',

@@ -41,7 +41,7 @@ begin
         'user_' || new.id::text,
         new.raw_user_meta_data->>'full_name',
         new.raw_user_meta_data->>'avatar_url',
-        0 -- default saldo value
+        (new.raw_user_meta_data->>'saldo')::integer
     );
     return new;
 end;
