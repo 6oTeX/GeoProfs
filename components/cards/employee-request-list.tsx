@@ -36,10 +36,11 @@ export default async function EmployeeRequestList() {
 
     // Place all in one list with seperators between if there is a request in each group
     const sortedRequests = [
+        activeRequests.length > 0 ? { ...separator, type: 'active' } : null,
         ...activeRequests,
-        activeRequests.length > 0 && upcomingRequests.length > 0 ? { ...separator, type: 'active-upcoming' } : null,
+        activeRequests.length > 0 && upcomingRequests.length > 0 ? { ...separator, type: 'upcoming' } : null,
         ...upcomingRequests,
-        upcomingRequests.length > 0 && pastRequests.length > 0 ? { ...separator, type: 'upcoming-past' } : null,
+        upcomingRequests.length > 0 && pastRequests.length > 0 ? { ...separator, type: 'past' } : null,
         ...pastRequests,
     ].filter(Boolean);
 
@@ -53,9 +54,18 @@ export default async function EmployeeRequestList() {
                         return (
                             <Separator
                                 key={`separator-${index}`}
-                                className="my-2 border-t"
-                                label="Label"
+                                className="my-4 border-t-2"
+                                label={
+                                    element.type === 'active'
+                                    ? 'Huidige Verloven'
+                                    : element.type === 'upcoming'
+                                    ? 'Toekomstige Verloven'
+                                    : element.type === 'past'
+                                    ? 'Afgelopen Verloven'
+                                    : ''
+                                }
                             />
+
                         );
                     }
 
@@ -85,12 +95,12 @@ export default async function EmployeeRequestList() {
                                 <div
                                     className={`px-2.5 py-0.1 text-xs font-medium rounded-lg flex items-center ${
                                         element.state === 'accepted'
-                                            ? 'text-green-800 bg-green-500'
+                                            ? 'text-green-500'
                                             : element.state === 'submitted'
-                                            ? 'text-orange-800 bg-orange-500'
+                                            ? 'text-orange-500'
                                             : element.state === 'declined'
-                                            ? 'text-red-800 bg-red-500'
-                                            : 'text-gray-700 bg-gray-500'
+                                            ? 'text-red-500'
+                                            : 'text-gray-700'
                                     }`}
                                 >
                                     {element.state}
