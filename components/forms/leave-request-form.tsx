@@ -54,7 +54,7 @@ async function serverWrapper(payload: LeaveRequestFormProps) {
 }
 
 export default function LeaveRequestForm() {
-  //List with reasons for leave.
+  //List with resons for leave.
   const leaveReasons = [
     "Ziek",
     "Vakantie",
@@ -67,7 +67,6 @@ export default function LeaveRequestForm() {
   //Checking if the custom reason is selected.
   const [isCustomReason, setIsCustomReason] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
-  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm({
     //Default values for the form fields.
@@ -81,16 +80,15 @@ export default function LeaveRequestForm() {
   });
 
   //Checking if there is a custom reason.
-  useEffect(() => {
-    if (!isCustomReason) {
-      form.setValue("customReason", "");
-    }
-  }, [isCustomReason, form]);
+  // useEffect(() => {
+  //   if (!isCustomReason) {
+  //     form.setValue("customReason", "");
+  //   }
+  // }, [isCustomReason, form]);
 
   //Form submit.
   const onSubmit = async (data: LeaveRequestFormProps) => {
-    setIsLoading(true);
-    // Fetching the daterange and turning it into two separate values.
+    // Fetching the daterange and turning it into two seperate values.
     const payload = {
       ...data,
       dateStart: dateRange?.from || null,
@@ -115,10 +113,9 @@ export default function LeaveRequestForm() {
       });
 
     form.reset();
-    // Resetting the daterange after submitting.
+    // Resetting the daterange after sumbitting.
     setDateRange(undefined);
     setIsCustomReason(false);
-    setIsLoading(false);
   };
 
   //Form component.
@@ -314,14 +311,13 @@ export default function LeaveRequestForm() {
 
           <div className="flex justify-between">
             {/* Close form button. */}
-            <Button type="button" variant="destructive" className='text-red-900 bg-red-500 hover:bg-red-600'>
+            <Button type="button" variant="destructive">
               Sluiten
             </Button>
             {/* Submit form button. */}
             <Button
               type="submit"
-              className="text-green-900 bg-green-500 hover:bg-green-600"
-              disabled={isLoading}
+              className="bg-emerald-600 hover:bg-emerald-700"
             >
               Verlof aanvragen
             </Button>

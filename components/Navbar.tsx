@@ -1,21 +1,6 @@
 "use client";
 import Link from "next/link";
-// import { Logo } from "@/components/icons/Logo";
-import {
-  Home,
-  LineChart,
-  Package,
-  Package2,
-  Search,
-  ShoppingCart,
-  Users2,
-  Aperture,
-} from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Aperture, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
@@ -81,8 +66,6 @@ const Navbar = () => {
             href="#"
             className="flex h-9 w-9 items-center justify-center rounded-lg  text-foreground"
           >
-            {/* <Logo /> */}
-            <span className="sr-only">Dashboard</span>
             <Aperture className="h-5 w-5" />
           </Link>
           <Link
