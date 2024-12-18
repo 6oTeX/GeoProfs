@@ -43,6 +43,7 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.53.0",
+    "react-modal": "^3.16.1",
     "react-toastify": "^10.0.5",
     "supabase": "^1.200.3",
     "zod": "^3.23.8"
