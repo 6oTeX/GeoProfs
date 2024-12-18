@@ -9,13 +9,13 @@ import {
   Search,
   ShoppingCart,
   Users2,
+  Aperture,
 } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Aperture, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
