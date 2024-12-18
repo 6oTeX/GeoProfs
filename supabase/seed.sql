@@ -23,14 +23,14 @@ INSERT INTO
             '00000000-0000-0000-0000-000000000000',
             uuid_generate_v4 (),
             'authenticated',
-            'admin',
+            'supabase_admin',
             'info@geoprofs.com',
             crypt ('password', gen_salt ('bf')),
             current_timestamp,
             current_timestamp,
             current_timestamp,
             '{"provider":"email","providers":["email"]}',
-            '{}',
+            '{"full_name": "Admin", "avatar_url": "https://api.dicebear.com/9.x/miniavs/png?seed=admin", "username": "admin", "saldo": 0 }'::jsonb,
             current_timestamp,
             current_timestamp,
             '',
@@ -71,7 +71,7 @@ INSERT INTO
             current_timestamp,
             current_timestamp,
             '{"provider":"email","providers":["email"]}',
-            format('{"full_name": "User %s", "avatar_url": "https://api.dicebear.com/9.x/miniavs/svg?seed=%s", "username": "user%s", "saldo": %s}', gs::text, gs::text, gs::text,gs * 10)::jsonb,
+            format('{"full_name": "User %s", "avatar_url": "https://api.dicebear.com/9.x/miniavs/png?seed=%s", "username": "user%s", "saldo": %s}', gs::text, gs::text, gs::text,gs * 10)::jsonb,
             current_timestamp,
             current_timestamp,
             '',
@@ -81,6 +81,9 @@ INSERT INTO
         FROM
             generate_series(1, 10) AS gs
     );
+
+
+
 
 -- Test user email identities with non-null provider_id
 INSERT INTO

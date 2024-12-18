@@ -8,6 +8,12 @@ const nextConfig = {
         port: "54321",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "api.dicebear.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };

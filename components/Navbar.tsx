@@ -20,7 +20,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getProfileAction, signOutAction } from "@/app/actions";
 
 interface profileProps {
@@ -35,17 +35,28 @@ const Navbar = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const profile = await getProfileAction();
-      console.log(profile);
-      setProfileData(profile);
+      try {
+        const profile = await getProfileAction();
+        console.log(profile);
+        setProfileData(profile);
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      }
     };
-    fetchProfile();
+    fetchProfile().then((r) => console.log(r));
   }, []);
 
   const logout = () => {
-    signOutAction();
+    signOutAction().then((r) => console.log(r));
     console.log("Logged out successfully");
   };
+
+  const avatarUrl = useMemo(() => {
+    return (
+      profileData?.avatar_url ||
+      encodeURI("https://api.dicebear.com/9.x/miniavs/png?seed=1")
+    );
+  }, [profileData]);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex flex-col border-b bg-background">
@@ -99,10 +110,7 @@ const Navbar = () => {
                 className="overflow-hidden rounded-full"
               >
                 <Image
-                  src={
-                    profileData?.avatar_url ||
-                    "https://avatars.dicebear.com/api/avataaars/john-doe.svg"
-                  }
+                  src={avatarUrl}
                   width={36}
                   height={36}
                   alt="Avatar"
