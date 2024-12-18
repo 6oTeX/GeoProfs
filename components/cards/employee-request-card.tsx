@@ -14,7 +14,9 @@ export default function EmployeeRequestCard({ element, currentDate }: EmployeeRe
 
     return (
         <Card
+            // Show response 
             onClick={showResponse}
+            // Change hover based on if request has passed.
             className={`flex items-center justify-between w-full max-w-md p-3 border rounded-lg ${
                 currentDate < element.endDate
                 ? 'hover:bg-accent hover:shadow-md transition cursor-pointer'
@@ -35,6 +37,7 @@ export default function EmployeeRequestCard({ element, currentDate }: EmployeeRe
                     </span>
                 </div>
                 <div
+                // Display based on request state.
                     className={`px-2.5 py-0.1 text-xs font-medium rounded-lg flex items-center ${
                         element.state === 'accepted'
                             ? 'text-green-500'
