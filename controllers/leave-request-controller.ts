@@ -39,7 +39,7 @@ class LeaveRequestController {
                 success = false;
             }
         }
-        return {success, errors_txt};
+        return { success, errors_txt };
     }
 
     /**
@@ -65,19 +65,32 @@ class LeaveRequestController {
         }
         else {
             // insert the request
-            const { data, error } = await supabase.from('leave_requests').select("*").eq("user_id",user.id)
+            const { data, error } = await supabase.from('leave_requests').select("*").eq("user_id", user.id)
             // check if fetch was successful
             if (data) {
-                returnData = data;
+                const profile = await supabase.from('profiles').select("*").eq("id", user.id);
+                if (profile.data) {
+                    returnData = data.map((new_data) => {
+                        return {
+                            ...new_data,
+                            user_mail: user.email ? user.email : "ERROR_EMAIL",
+                            user_name: profile.data[0].full_name ? profile.data[0].full_name : "ERROR_USERNAME",
+                            user_avatar_url: profile.data[0].user_avatar_url,
+                        }
+                    })
+                }
+                else {
+                    errors_txt.push("Could not get profile data");
+                    success = false;
+                }
             }
-            else if (error)
-            {
+            else if (error) {
                 errors_txt.push(error.message);
                 success = false;
             }
         }
         console.log(returnData);
-        return {success, returnData, errors_txt};
+        return { success, returnData, errors_txt };
     }
 
     public static async getMyRequestsFiltered(state: string) {
@@ -85,30 +98,43 @@ class LeaveRequestController {
         let errors_txt: string[] = [];
         let returnData = {};
 
-         // get the auth-session
-         const supabase = createClient();
-         const {
-             data: { user },
-         } = await supabase.auth.getUser();
-         if (!user) {
-             errors_txt.push("No auth-session");
-             success = false;
-         }
-         else {
-             // insert the request
-             const { data, error } = await supabase.from('leave_requests').select("*").eq("user_id",user.id).eq("state", state);
-             // check if fetch was successful
-             if (data) {
-                 returnData = data;
-             }
-             else if (error)
-             {
-                 errors_txt.push(error.message);
-                 success = false;
-             }
-         }
-    
-        return {success, returnData, errors_txt};
+        // get the auth-session
+        const supabase = createClient();
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+        if (!user) {
+            errors_txt.push("No auth-session");
+            success = false;
+        }
+        else {
+            // insert the request
+            const { data, error } = await supabase.from('leave_requests').select("*").eq("user_id", user.id).eq("state", state);
+            // check if fetch was successful
+            if (data) {
+                const profile = await supabase.from('profiles').select("*").eq("id", user.id);
+                if (profile.data) {
+                    returnData = data.map((new_data) => {
+                        return {
+                            ...new_data,
+                            user_mail: user.email ? user.email : "ERROR_EMAIL",
+                            user_name: profile.data[0].full_name ? profile.data[0].full_name : "ERROR_USERNAME",
+                            user_avatar_url: profile.data[0].user_avatar_url,
+                        }
+                    })
+                }
+                else {
+                    errors_txt.push("Could not get profile data");
+                    success = false;
+                }
+            }
+            else if (error) {
+                errors_txt.push(error.message);
+                success = false;
+            }
+        }
+
+        return { success, returnData, errors_txt };
 
     }
 }
