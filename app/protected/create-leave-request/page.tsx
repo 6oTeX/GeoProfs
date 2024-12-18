@@ -4,7 +4,9 @@ import EmployeeRequestList from "@/components/cards/employee-request-list";
 import { Button } from "@/components/ui/button";
 
 export default async function Dashboard() {
-
+  const test = async () => {
+    LeaveRequestController.getMyRequests();
+  };
     // async function test()
     // {
     //     console.log(await LeaveRequestController.getMyRequests())

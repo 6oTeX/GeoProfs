@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { nl } from "date-fns/locale";
 import { cn } from "@/lib/utils";
@@ -31,8 +31,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { DateRange } from "react-day-picker";
-import { Card } from '../ui/card';
-import LeaveRequestController from '@/controllers/leave-request-controller';
+import { Card } from "../ui/card";
+import LeaveRequestController from "@/controllers/leave-request-controller";
 
 interface LeaveRequestFormProps {
   reason: string;
@@ -44,9 +44,13 @@ interface LeaveRequestFormProps {
 
 async function serverWrapper(payload: LeaveRequestFormProps) {
   if (payload.dateStart && payload.dateEnd) {
-    await LeaveRequestController.createRequest(payload.reason, payload.comments, payload.dateStart, payload.dateEnd);
+    await LeaveRequestController.createRequest(
+      payload.reason,
+      payload.comments,
+      payload.dateStart,
+      payload.dateEnd,
+    );
   }
-
 }
 
 export default function LeaveRequestForm() {
@@ -170,7 +174,11 @@ export default function LeaveRequestForm() {
                 <FormItem>
                   <FormLabel>Geef een reden</FormLabel>
                   <FormControl>
-                    <Input maxLength={40} placeholder="Typ hier uw reden" {...field} autoComplete="off" />
+                    <Input
+                      placeholder="Typ hier uw reden"
+                      {...field}
+                      autoComplete="off"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -197,22 +205,38 @@ export default function LeaveRequestForm() {
                           variant={"outline"}
                           className={cn(
                             "w-full pl-3 text-left font-normal",
-                            !dateRange && "text-muted-foreground"
+                            !dateRange && "text-muted-foreground",
                           )}
                         >
                           {/* Displaying the selected date(s) based on if 1 or 2 dates have been selected. */}
                           {dateRange?.from ? (
                             dateRange.to && dateRange.to !== dateRange.from ? (
                               <>
-                                <span>{format(dateRange.from, "d MMMM yyyy", { locale: nl })}</span>
+                                <span>
+                                  {format(dateRange.from, "d MMMM yyyy", {
+                                    locale: nl,
+                                  })}
+                                </span>
                                 {" - "}
-                                <span>{format(dateRange.to, "d MMMM yyyy", { locale: nl })}</span>
+                                <span>
+                                  {format(dateRange.to, "d MMMM yyyy", {
+                                    locale: nl,
+                                  })}
+                                </span>
                               </>
                             ) : (
                               <>
-                                <span>{format(dateRange.from, "d MMMM yyyy", { locale: nl })}</span>
+                                <span>
+                                  {format(dateRange.from, "d MMMM yyyy", {
+                                    locale: nl,
+                                  })}
+                                </span>
                                 {" - "}
-                                <span>{format(dateRange.from, "d MMMM yyyy", { locale: nl })}</span>
+                                <span>
+                                  {format(dateRange.from, "d MMMM yyyy", {
+                                    locale: nl,
+                                  })}
+                                </span>
                               </>
                             )
                           ) : (
@@ -232,15 +256,24 @@ export default function LeaveRequestForm() {
                           if (selectedDateRange?.from) {
                             const newDateRange = {
                               from: selectedDateRange.from,
-                              to: selectedDateRange.to || selectedDateRange.from
+                              to:
+                                selectedDateRange.to || selectedDateRange.from,
                             };
                             setDateRange(newDateRange);
-                            form.setValue('dateStart', newDateRange.from, { shouldValidate: true });
-                            form.setValue('dateEnd', newDateRange.to, { shouldValidate: true });
+                            form.setValue("dateStart", newDateRange.from, {
+                              shouldValidate: true,
+                            });
+                            form.setValue("dateEnd", newDateRange.to, {
+                              shouldValidate: true,
+                            });
                           } else {
                             setDateRange(undefined);
-                            form.setValue('dateStart', null, { shouldValidate: true });
-                            form.setValue('dateEnd', null, { shouldValidate: true });
+                            form.setValue("dateStart", null, {
+                              shouldValidate: true,
+                            });
+                            form.setValue("dateEnd", null, {
+                              shouldValidate: true,
+                            });
                           }
                           if (selectedDateRange?.from && selectedDateRange.to) {
                             setPopoverOpen(false);

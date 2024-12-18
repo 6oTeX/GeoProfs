@@ -137,10 +137,11 @@ export const getProfileAction = async () => {
     console.error(userError.message);
     return null;
   }
+
   const { data: profileData, error: profileError } = await supabase
     .from("profiles")
     .select("updated_at, username,full_name, avatar_url")
-    .eq("id", userData?.user?.id)
+    .eq("id", userData.user.id)
     .single();
 
   if (profileError) {
