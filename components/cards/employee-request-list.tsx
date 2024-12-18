@@ -73,6 +73,7 @@ export default async function EmployeeRequestList() {
                     return (
                         <Card
                             key={element.id}
+                            // Change hover based on if request has passed.
                             className={`flex items-center justify-between w-full max-w-md p-3 border rounded-lg ${
                                     currentDate < element.endDate
                                     ? 'hover:bg-accent hover:shadow-md transition'
@@ -93,6 +94,7 @@ export default async function EmployeeRequestList() {
                                     </span>
                                 </div>
                                 <div
+                                // Display based on request state.
                                     className={`px-2.5 py-0.1 text-xs font-medium rounded-lg flex items-center ${
                                         element.state === 'accepted'
                                             ? 'text-green-500'
@@ -110,6 +112,7 @@ export default async function EmployeeRequestList() {
                     );
                 })
             ) : (
+                // Display message if there are no requests.
                 <div className="text-center text-sm text-muted-foreground">
                     Geen verlofaanvragen.
                     <Separator />
