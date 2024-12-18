@@ -100,7 +100,7 @@ export default async function EmployeeRequestList() {
                                             ? 'text-orange-500'
                                             : element.state === 'declined'
                                             ? 'text-red-500'
-                                            : 'text-gray-700'
+                                            : 'text-gray-600'
                                     }`}
                                 >
                                     {element.state}
