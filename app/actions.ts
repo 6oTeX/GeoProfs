@@ -128,3 +128,24 @@ export const signOutAction = async () => {
   await supabase.auth.signOut();
   return redirect("/sign-in");
 };
+
+export const getProfileAction = async () => {
+  const supabase = createClient();
+
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userError) {
+    console.error(userError.message);
+    return null;
+  }
+  const { data: profileData, error: profileError } = await supabase
+    .from("profiles")
+    .select("updated_at, username,full_name, avatar_url")
+    .eq("id", userData?.user?.id)
+    .single();
+
+  if (profileError) {
+    console.error(profileError.message);
+    return null;
+  }
+  return profileData;
+};
