@@ -1,6 +1,13 @@
-import { useState } from "react";
+"use client";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { Menu, X, Search, Aperture, Settings } from "lucide-react";
+import {
+  Menu,
+  X,
+  Search,
+  Aperture,
+  Settings,
+} from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -23,10 +30,44 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { getProfileAction, signOutAction } from "@/app/actions";
+
+interface ProfileProps {
+  updated_at: Date;
+  username: string;
+  full_name: string;
+  avatar_url: string;
+}
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [profileData, setProfileData] = useState<ProfileProps | null>(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const profile = await getProfileAction();
+        console.log(profile);
+        setProfileData(profile);
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      }
+    };
+    fetchProfile();
+  }, []);
+
+  const logout = () => {
+    signOutAction().then(() => {
+      console.log("Logged out successfully");
+    });
+  };
+
+  const avatarUrl = useMemo(() => {
+    return (
+      profileData?.avatar_url ||
+      encodeURI("https://api.dicebear.com/9.x/miniavs/png?seed=1")
+    );
+  }, [profileData]);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex flex-col border-b bg-background">
@@ -40,9 +81,9 @@ const Navbar = () => {
           <Aperture className="h-5 w-5 text-foreground" />
           <span className="sr-only">Dashboard</span>
         </Link>
+
         {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center space-x-6 ml-6">
-          {/* Navigation Links */}
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
@@ -59,42 +100,20 @@ const Navbar = () => {
             <TooltipTrigger asChild>
               <Link
                 href="#"
-                className="flex h-9 items-center rounded-lg text-foreground transition-colors hover:text-foreground"
-              >
-                Calender
-                <span className="sr-only">Calender</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">Calender</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="#"
                 className="flex h-9 items-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
               >
-                Status
-                <span className="sr-only">Status</span>
+                Calendar
+                <span className="sr-only">Calendar</span>
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="bottom">Status</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="#"
-                className="flex h-9 items-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
-              >
-                Aanvragen
-                <span className="sr-only">Aanvragen</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">Aanvragen</TooltipContent>
+            <TooltipContent side="bottom">Calendar</TooltipContent>
           </Tooltip>
           {/* Add more navigation items as needed */}
         </nav>
+
         {/* Spacer */}
         <div className="flex-1"></div>
+
         {/* Search Input (Desktop Only) */}
         <div className="relative hidden md:block">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -104,36 +123,32 @@ const Navbar = () => {
             className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
           />
         </div>
-        {/* Settings Dropdown (Desktop Only) */}
+
+        {/* Profile Dropdown */}
         <div className="hidden md:flex items-center ml-4">
-          <DropdownMenu
-            open={isSettingsOpen}
-            onOpenChange={setIsSettingsOpen}
-          >
+          <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="overflow-hidden rounded-full"
-              >
-                <Settings
-                  className={`h-5 w-5 text-muted-foreground transition-transform duration-200 ${
-                    isSettingsOpen ? "rotate-90" : ""
-                  }`}
+              <Button variant="outline" size="icon" className="overflow-hidden rounded-full">
+                <img
+                  src={avatarUrl}
+                  alt="Avatar"
+                  className="h-8 w-8 rounded-full"
                 />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>
+                Welcome, {profileData?.full_name || "John Doe"}
+              </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-red-600">
-                Logout
-              </DropdownMenuItem>
+              <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
+
         {/* Mobile Menu Button */}
         <button
           className="md:hidden ml-auto"
@@ -148,97 +163,6 @@ const Navbar = () => {
             {isMobileMenuOpen ? "Close Menu" : "Open Menu"}
           </span>
         </button>
-      </div>
-      {/* Breadcrumb (Desktop Only) */}
-      <div className="border-t px-4 py-2 sm:px-6">
-        <Breadcrumb className="hidden md:flex">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="#">Home</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="#">Calender</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
-      {/* Mobile Menu Overlay */}
-      <div
-        className={`fixed inset-0 z-50 bg-foreground flex flex-col transform transition-transform duration-300 ${
-          isMobileMenuOpen
-            ? "translate-x-0 pointer-events-auto"
-            : "translate-x-full pointer-events-none"
-        }`}
-      >
-        {/* Mobile Menu Header */}
-        <div className="flex items-center justify-between bg-background px-4 py-4 border-b h-14">
-          {/* Logo */}
-          <Link href="#" className="flex items-center">
-          <Aperture className="h-5 w-5 text-foreground" />
-            <span className="sr-only">Logo</span>
-          </Link>
-          {/* Search Input */}
-          <div className="flex-1 mx-4">
-            <Input
-              type="search"
-              placeholder="Search..."
-              className="w-full rounded-lg bg-background pl-8"
-            />
-          </div>
-          {/* Close Menu Button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="text-gray-700"
-          >
-            <X className="h-6 w-6" />
-            <span className="sr-only">Close Menu</span>
-          </button>
-        </div>
-        {/* Mobile Menu Content */}
-        <div className="border-t flex-1 flex flex-col">
-          <nav className="flex flex-col px-4 py-4 space-y-4 text-foreground bg-background flex-1">
-            <Link href="#" className="text-lg font-medium">
-              Dashboard
-            </Link>
-            <Link href="#" className="text-lg font-medium">
-              Verlof aanvragen
-            </Link>
-            <Link href="#" className="text-lg font-medium">
-              Verlof overzicht
-            </Link>
-            <Link href="#" className="text-lg font-medium">
-              Ziektemeldingen
-            </Link>
-            <hr className="my-4" />
-            <Link href="#" className="text-lg font-medium">
-              Teamplanning
-            </Link>
-            <Link href="#" className="text-lg font-medium">
-              Afdelingsoverzicht
-            </Link>
-            <hr className="my-4" />
-            <Link href="#" className="text-lg font-medium">
-              Settings
-            </Link>
-            {/* Logout Button */}
-            <div className="mt-auto flex h-full items-end mb-4">
-              <Button
-                variant="destructive"
-                className="w-full"
-                onClick={() => {
-                  // Handle logout
-                }}
-              >
-                Logout
-              </Button>
-            </div>
-          </nav>
-        </div>
       </div>
     </header>
   );
