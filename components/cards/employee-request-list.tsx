@@ -11,6 +11,7 @@ export default async function EmployeeRequestList() {
         // Parse dates from returnData into Date objects.
         startDate: new Date(element.start_date),
         endDate: new Date(element.end_date),
+        createdAtDate: new Date(element.created_at),
     }));
 
     // Separate into active, upcoming, and past requests.

@@ -34,9 +34,9 @@ export default function EmployeeRequestCard({ element, currentDate }: EmployeeRe
             >
                 <div className="flex items-center gap-3">
                     <div className="flex flex-col">
-                        <span className="text-sm font-medium">{element.reason}</span>
-                        <span className="text-xs text-muted-foreground">{element.user_name}</span>
-                        <span className="text-xs text-muted-foreground">{element.user_mail}</span>
+                        <span className="text-sm font-medium">{element.reason || "Niet beschikbaar."}</span>
+                        <span className="text-xs text-muted-foreground">{element.user_name || "Niet beschikbaar."}</span>
+                        <span className="text-xs text-muted-foreground">{element.user_mail || "Niet beschikbaar."}</span>
                     </div>
                 </div>
                 <div className="flex gap-2">
@@ -57,37 +57,43 @@ export default function EmployeeRequestCard({ element, currentDate }: EmployeeRe
                                 : 'text-gray-600'
                         }`}
                     >
-                        {element.state}
+                        {element.state || "Niet beschikbaar"}
                     </div>
                 </div>
             </Card>
 
             {isModalOpen && (
-                <Modal onClose={closeModal} title="Verlofaanvraag:">
+                <Modal onClose={closeModal} title="Verlofaanvraag">
                     <div className="space-y-4">
                         <div>
                             <h3 className="text-lg font-semibold">Reden:</h3>
-                            <p>{element.reason}</p>
+                            <p>{element.reason || "Niet beschikbaar."}</p>
                         </div>
                         <div>
-                            <h3 className="text-lg font-semibold">User Information:</h3>
-                            <p>Naam: {element.user_name}</p>
-                            <p>Email: {element.user_mail}</p>
+                            <h3 className="text-lg font-semibold">Opmerking:</h3>
+                            <p>{element.explanation || "Niet beschikbaar."}</p>
                         </div>
                         <div>
-                            <h3 className="text-lg font-semibold">Dates:</h3>
+                            <h3 className="text-lg font-semibold">Gebruiker Informatie:</h3>
+                            <p>Naam: {element.user_name || "Niet beschikbaar."}</p>
+                            <p>Email: {element.user_mail || "Niet beschikbaar."}</p>
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-semibold">Datum:</h3>
                             <p>Vanaf: {new Intl.DateTimeFormat('en-GB').format(element.startDate)}</p>
                             <p>Tot: {new Intl.DateTimeFormat('en-GB').format(element.endDate)}</p>
                         </div>
                         <div>
                             <h3 className="text-lg font-semibold">Status:</h3>
-                            <p>{element.state}</p>
+                            <p>{element.state || "Niet beschikbaar."}</p>
                         </div>
                         <div>
                             <h3 className="text-lg font-semibold">Reactie:</h3>
-                            <p>Beoordeeld door: {element.reviewed_by}</p>
-                            <p>Reactie: 
-                                {element.response}</p>
+                            <p>Beoordeeld door: {element.reviewed_by || "Niet beschikbaar."}</p>
+                            <p>Reactie: {element.response || "Niet beschikbaar."}</p>
+                        </div>
+                        <div>
+                            <p>Verlof aangevraagd op: {new Intl.DateTimeFormat('en-GB').format(element.createdAtDate)}</p>
                         </div>
                     </div>
                     {/* Modal close button */}
