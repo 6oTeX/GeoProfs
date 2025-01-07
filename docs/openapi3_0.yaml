@@ -13,7 +13,7 @@ tags:
   - name: calendar
     description: Access to calendar data
 paths:
-  /leave-request:
+  /leave-requests:
     post:
       tags:
         - leave-requests
@@ -54,8 +54,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ActionStatus"
-
-  /leave-requests:
     get:
       tags:
         - leave-requests

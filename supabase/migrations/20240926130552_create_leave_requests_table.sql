@@ -21,7 +21,7 @@ create table
     created_at timestamp with time zone not null default now(),
     start_date timestamp with time zone not null,
     end_date timestamp with time zone not null,
-    reasons public.leave_request_reasons not null,
+    reason text not null,
     explanation text not null,
     state public.leave_request_state not null,
     reviewed_by uuid null,
