@@ -50,7 +50,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import ConnectSupabaseSteps from "@/components/tutorial/connect-supabase-steps";
-import LeaveRequestController from "@/controllers/leave-request-controller";
 
 export default async function Dashboard() {
   return (
