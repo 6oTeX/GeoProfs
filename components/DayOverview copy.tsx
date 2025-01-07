@@ -1,5 +1,3 @@
-// components/DayOverview.tsx
-import React from 'react';
 import { Button } from './ui/button'; // Adjust the import path as necessary
 import {
   Dialog,
