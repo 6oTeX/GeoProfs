@@ -1,13 +1,7 @@
 "use client";
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import {
-  Menu,
-  X,
-  Search,
-  Aperture,
-  Settings,
-} from "lucide-react";
+import { Menu, X, Search, Aperture, Settings } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -23,13 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+
 import { getProfileAction, signOutAction } from "@/app/actions";
 
 interface ProfileProps {
@@ -128,7 +116,11 @@ const Navbar = () => {
         <div className="hidden md:flex items-center ml-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon" className="overflow-hidden rounded-full">
+              <Button
+                variant="outline"
+                size="icon"
+                className="overflow-hidden rounded-full"
+              >
                 <img
                   src={avatarUrl}
                   alt="Avatar"
