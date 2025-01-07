@@ -7,7 +7,6 @@ import { NotificationContextProvider } from "@/components/providers/Notification
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ReactNode } from "react";
 
-
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
