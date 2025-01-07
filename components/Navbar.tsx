@@ -1,5 +1,4 @@
-// components/Navbar.tsx
-import React, { useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Menu, X, Search, Aperture, Settings } from "lucide-react";
 import {
