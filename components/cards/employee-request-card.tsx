@@ -64,47 +64,51 @@ export default function EmployeeRequestCard({ element, currentDate }: EmployeeRe
 
             {isModalOpen && (
                 <Modal onClose={closeModal} title="Verlofaanvraag">
-                    <div className="space-y-4">
-                        <div>
-                            <h3 className="text-lg font-semibold">Reden:</h3>
-                            <p>{element.reason || "Niet beschikbaar."}</p>
-                        </div>
-                        <div>
-                            <h3 className="text-lg font-semibold">Opmerking:</h3>
-                            <p>{element.explanation || "Niet beschikbaar."}</p>
-                        </div>
-                        <div>
-                            <h3 className="text-lg font-semibold">Gebruiker Informatie:</h3>
-                            <p>Naam: {element.user_name || "Niet beschikbaar."}</p>
-                            <p>Email: {element.user_mail || "Niet beschikbaar."}</p>
-                        </div>
-                        <div>
-                            <h3 className="text-lg font-semibold">Datum:</h3>
-                            <p>Vanaf: {new Intl.DateTimeFormat('en-GB').format(element.startDate)}</p>
-                            <p>Tot: {new Intl.DateTimeFormat('en-GB').format(element.endDate)}</p>
-                        </div>
-                        <div>
-                            <h3 className="text-lg font-semibold">Status:</h3>
-                            <p>{element.state || "Niet beschikbaar."}</p>
-                        </div>
-                        <div>
-                            <h3 className="text-lg font-semibold">Reactie:</h3>
-                            <p>Beoordeeld door: {element.reviewed_by || "Niet beschikbaar."}</p>
-                            <p>Reactie: {element.response || "Niet beschikbaar."}</p>
-                        </div>
-                        <div>
-                            <p>Verlof aangevraagd op: {new Intl.DateTimeFormat('en-GB').format(element.createdAtDate)}</p>
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4">
+                        <div className="bg-white rounded-lg w-full max-w-lg p-6">
+                            <div className="space-y-4">
+                                <div>
+                                    <h3 className="text-lg font-semibold">Reden:</h3>
+                                    <p>{element.reason || "Niet beschikbaar."}</p>
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-semibold">Opmerking:</h3>
+                                    <p>{element.explanation || "Niet beschikbaar."}</p>
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-semibold">Gebruiker Informatie:</h3>
+                                    <p>Naam: {element.user_name || "Niet beschikbaar."}</p>
+                                    <p>Email: {element.user_mail || "Niet beschikbaar."}</p>
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-semibold">Datum:</h3>
+                                    <p>Vanaf: {new Intl.DateTimeFormat('en-GB').format(element.startDate)}</p>
+                                    <p>Tot: {new Intl.DateTimeFormat('en-GB').format(element.endDate)}</p>
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-semibold">Status:</h3>
+                                    <p>{element.state || "Niet beschikbaar."}</p>
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-semibold">Reactie:</h3>
+                                    <p>Beoordeeld door: {element.reviewed_by || "Niet beschikbaar."}</p>
+                                    <p>Reactie: {element.response || "Niet beschikbaar."}</p>
+                                </div>
+                                <div>
+                                    <p>Verlof aangevraagd op: {new Intl.DateTimeFormat('en-GB').format(element.createdAtDate)}</p>
+                                </div>
+                            </div>
+                            <button
+                                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg"
+                                onClick={closeModal}
+                            >
+                                Close
+                            </button>
                         </div>
                     </div>
-                    {/* Modal close button */}
-                    <button
-                        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg"
-                        onClick={closeModal}
-                    >
-                        Close
-                    </button>
                 </Modal>
             )}
+
         </>
     );
 }
