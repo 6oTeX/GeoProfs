@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -12,9 +13,16 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, ChevronDown, MoreHorizontal, Users } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -38,6 +46,7 @@ import { Switch } from "@/components/ui/switch";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { cn } from "@/utils/cn";
+import { set } from "cypress/types/lodash";
 
 const data: Users[] = [
   {
@@ -64,7 +73,7 @@ const data: Users[] = [
     },
     status: "Present",
     afdeling: {
-      team: "ICT",
+      team: "HRM",
       role: "Manager",
     },
   },
@@ -92,7 +101,7 @@ const data: Users[] = [
     },
     status: "Absent",
     afdeling: {
-      team: "ICT",
+      team: "Finance",
       role: "Manager",
     },
   },
@@ -106,7 +115,7 @@ const data: Users[] = [
     },
     status: "Present",
     afdeling: {
-      team: "ICT",
+      team: "HRM",
       role: "Manager",
     },
   },
@@ -120,7 +129,7 @@ const data: Users[] = [
     },
     status: "Absent",
     afdeling: {
-      team: "ICT",
+      team: "HRM",
       role: "Manager",
     },
   },
@@ -305,6 +314,11 @@ export const columns: ColumnDef<Users>[] = [
 ];
 
 export function UsersTable() {
+  const afdelingen = data
+    .map((user) => user.afdeling.team)
+    .filter((team, index, arr) => {
+      return arr.indexOf(team) === index;
+    });
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -314,6 +328,9 @@ export function UsersTable() {
   const [rowSelection, setRowSelection] = React.useState({});
   const [filterStatus, setFilterStatus] = React.useState<string>("alle");
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [selectedAfdeling, setSelectedAfdeling] = React.useState<string>(
+    afdelingen[0]
+  );
 
   const filteredData = React.useMemo(() => {
     let filtered = data;
@@ -329,8 +346,16 @@ export function UsersTable() {
           user.werknemer.email.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
+    filtered = filtered.filter(
+      (user) => user.afdeling.team === selectedAfdeling
+    );
+
     return filtered;
-  }, [filterStatus, searchQuery]);
+  }, [filterStatus, searchQuery, selectedAfdeling]);
+
+  // const updateFilterChange = (filter: string) => {
+  //   setFilterStatus(filter);
+  // };
 
   const table = useReactTable({
     data: filteredData,
@@ -376,6 +401,18 @@ export function UsersTable() {
           <h3 className="text-base">Presentheid van actiefe werknemers</h3>
         </div>
         <div className="flex items-center space-x-2">
+          <Select value={selectedAfdeling} onValueChange={setSelectedAfdeling}>
+            <SelectTrigger className="w-fit">
+              <SelectValue placeholder="Select a group" />
+            </SelectTrigger>
+            <SelectContent>
+              {afdelingen.map((afdelingen) => (
+                <SelectItem key={afdelingen} value={afdelingen}>
+                  {afdelingen}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           <Input
             placeholder="Search by name or email"
             value={searchQuery}
