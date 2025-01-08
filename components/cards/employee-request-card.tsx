@@ -26,9 +26,9 @@ export default function EmployeeRequestCard({ element, currentDate }: EmployeeRe
                 // Show response
                 onClick={showResponse}
                 // Change hover based on if request has passed.
-                className={`flex items-center justify-between w-full max-w-md p-3 border rounded-lg ${
+                className={`flex items-center justify-between w-full max-w-md p-3 border rounded-lg gap-3 cursor-pointer ${
                     currentDate < element.endDate
-                        ? 'hover:bg-accent hover:shadow-md transition cursor-pointer'
+                        ? 'hover:bg-accent hover:shadow-md transition'
                         : 'bg-inactive'
                 }`}
             >
