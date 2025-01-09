@@ -39,7 +39,7 @@ const AccountCreationForm: React.FC<AccountCreationFormProps> = ({
       className="space-y-4 p-4 bg-white rounded-md shadow"
     >
       <div>
-        <Label htmlFor="firstName">First Name</Label>
+        <Label htmlFor="firstName">Voornaam</Label>
         <Input
           id="firstName"
           value={firstName}
@@ -48,7 +48,7 @@ const AccountCreationForm: React.FC<AccountCreationFormProps> = ({
         />
       </div>
       <div>
-        <Label htmlFor="lastName">Last Name</Label>
+        <Label htmlFor="lastName">Achternaam</Label>
         <Input
           id="lastName"
           value={lastName}
@@ -67,7 +67,7 @@ const AccountCreationForm: React.FC<AccountCreationFormProps> = ({
         />
       </div>
       <div>
-        <Label htmlFor="password">Password</Label>
+        <Label htmlFor="password">Wachtwoord</Label>
         <Input
           type="password"
           id="password"
@@ -77,7 +77,7 @@ const AccountCreationForm: React.FC<AccountCreationFormProps> = ({
         />
       </div>
       <div>
-        <Label htmlFor="role">Role</Label>
+        <Label htmlFor="role">Rol</Label>
         <select
           id="role"
           value={role}
@@ -107,7 +107,7 @@ const AccountCreationForm: React.FC<AccountCreationFormProps> = ({
         </select>
       </div>
       <Button type="submit" variant="default">
-        Create Account
+        Account aanmaken
       </Button>
     </form>
   );

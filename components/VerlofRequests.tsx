@@ -43,7 +43,7 @@ const VerlofRequests: React.FC<VerlofRequestsSectionProps> = ({
   return (
     <Card className="p-4">
       <CardHeader>
-        <CardTitle>Verlof Requests</CardTitle>
+        <CardTitle>Verlof Aanvragen</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="mb-4">
@@ -64,10 +64,10 @@ const VerlofRequests: React.FC<VerlofRequestsSectionProps> = ({
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>User</TableHead>
-                <TableHead>Start Date</TableHead>
-                <TableHead>End Date</TableHead>
-                <TableHead>Reason</TableHead>
+                <TableHead>Gebruiker</TableHead>
+                <TableHead>Begin datum</TableHead>
+                <TableHead>Eind Datum</TableHead>
+                <TableHead>Reden</TableHead>
                 <TableHead>Status</TableHead>
               </TableRow>
             </TableHeader>

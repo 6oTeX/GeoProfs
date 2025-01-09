@@ -1,5 +1,5 @@
 "use client";
-import * as React from "react";
+import React from "react";
 import { useState } from "react";
 import {
   ColumnDef,
@@ -42,298 +42,137 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { cn } from "@/utils/cn";
-import { set } from "cypress/types/lodash";
 
-const data: Users[] = [
-  {
-    id: "m5gr84i9",
-    saldo: 316,
-    werknemer: {
-      firstName: "Mark",
-      lastName: "Johnson",
-      email: "ken99@yahoo.com",
-    },
-    status: "Present",
-    afdeling: {
-      team: "ICT",
-      role: "Manager",
-    },
-  },
-  {
-    id: "m5gr84i9",
-    saldo: 316,
-    werknemer: {
-      firstName: "Jay",
-      lastName: "Rock",
-      email: "kegadsgn99@yahoo.com",
-    },
-    status: "Present",
-    afdeling: {
-      team: "HRM",
-      role: "Manager",
-    },
-  },
-  {
-    id: "m5gr84i9",
-    saldo: 316,
-    werknemer: {
-      firstName: "Rick",
-      lastName: "Stan",
-      email: "gasfaf@gmail.com",
-    },
-    status: "Present",
-    afdeling: {
-      team: "ICT",
-      role: "Manager",
-    },
-  },
-  {
-    id: "3u1reuv4",
-    saldo: 242,
-    werknemer: {
-      firstName: "Abe",
-      lastName: "Smith",
-      email: "Abe45@gmail.com",
-    },
-    status: "Absent",
-    afdeling: {
-      team: "Finance",
-      role: "Manager",
-    },
-  },
-  {
-    id: "derv1ws0",
-    saldo: 837,
-    werknemer: {
-      firstName: "Monserrat",
-      lastName: "Smith",
-      email: "Monserrat44@gmail.com",
-    },
-    status: "Present",
-    afdeling: {
-      team: "HRM",
-      role: "Manager",
-    },
-  },
-  {
-    id: "5kma53ae",
-    saldo: 874,
-    werknemer: {
-      firstName: "Silas",
-      lastName: "Smith",
-      email: "Silas22@gmail.com",
-    },
-    status: "Absent",
-    afdeling: {
-      team: "HRM",
-      role: "Manager",
-    },
-  },
-  {
-    id: "bhqecj4p",
-    saldo: 721,
-    werknemer: {
-      firstName: "Carmella",
-      lastName: "Smith",
-      email: "carmella@hotmail.com",
-    },
-    status: "Present",
-    afdeling: {
-      team: "ICT",
-      role: "Manager",
-    },
-  },
-  {
-    id: "bhqecj4p",
-    saldo: 721,
-    werknemer: {
-      firstName: "Carmella",
-      lastName: "Smith",
-      email: "carmella@hotmail.com",
-    },
-    status: "Present",
-    afdeling: {
-      team: "ICT",
-      role: "Manager",
-    },
-  },
-  {
-    id: "bhqecj4p",
-    saldo: 721,
-    werknemer: {
-      firstName: "Carmella",
-      lastName: "Smith",
-      email: "carmella@hotmail.com",
-    },
-    status: "Present",
-    afdeling: {
-      team: "ICT",
-      role: "Manager",
-    },
-  },
-  {
-    id: "bhqecj4p",
-    saldo: 721,
-    werknemer: {
-      firstName: "Carmella",
-      lastName: "Smith",
-      email: "carmella@hotmail.com",
-    },
-    status: "Present",
-    afdeling: {
-      team: "ICT",
-      role: "Manager",
-    },
-  },
-  {
-    id: "bhqecj4p",
-    saldo: 721,
-    werknemer: {
-      firstName: "Carmella",
-      lastName: "Smith",
-      email: "carmella@hotmail.com",
-    },
-    status: "Present",
-    afdeling: {
-      team: "ICT",
-      role: "Manager",
-    },
-  },
-  {
-    id: "bhqecj4p",
-    saldo: 721,
-    werknemer: {
-      firstName: "Carmella",
-      lastName: "Smith",
-      email: "carmella@hotmail.com",
-    },
-    status: "Present",
-    afdeling: {
-      team: "ICT",
-      role: "Manager",
-    },
-  },
-  {
-    id: "bhqecj4p",
-    saldo: 721,
-    werknemer: {
-      firstName: "Carmella",
-      lastName: "Smith",
-      email: "carmella@hotmail.com",
-    },
-    status: "Present",
-    afdeling: {
-      team: "ICT",
-      role: "Manager",
-    },
-  },
-];
-
-export type Users = {
+export type User = {
   id: string;
   saldo: number;
-  werknemer: any;
-  status: "Present" | "Absent";
+  werknemer: {
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+  status: "Aanwezig" | "Afwezig";
   afdeling: {
     team: string;
-    role: EmployeeRole;
+    role: string;
   };
 };
 
-export type EmployeeRole = "Manager" | "Employee";
+export interface IUserView {
+  // Additional or different fields as needed
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  saldo: number;
+  status: string;
+  team: string;
+  role: string;
+}
 
-export const columns: ColumnDef<Users>[] = [
+// Column definitions: outside the component for clarity
+export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "werknemer",
     header: "Werknemer",
-    cell: ({ row }) => (
-      <div>
-        <div className="capitalize font-semibold">
-          {row.original.werknemer.firstName} {row.original.werknemer.lastName}
+    cell: ({ row }) => {
+      const { firstName, lastName, email } = row.original.werknemer;
+      return (
+        <div>
+          <div className="capitalize font-semibold">
+            {firstName} {lastName}
+          </div>
+          <div className="lowercase text-muted-foreground">{email}</div>
         </div>
-        <div className="lowercase text-muted-foreground">
-          {row.original.werknemer.email}
-        </div>
-      </div>
-    ),
+      );
+    },
   },
   {
     accessorKey: "saldo",
-    header: () => <div>Saldo</div>,
+    header: "Saldo",
     cell: ({ row }) => {
-      return <div className="font-medium ">{row.getValue("saldo")}</div>;
+      return <div className="font-medium">{row.original.saldo}</div>;
     },
   },
   {
     accessorKey: "status",
     header: () => <div className="text-right">Status</div>,
-    cell: ({ row }) => (
-      <div
-        className={cn(
-          row.original.status === "Present" ? "text-green-600" : "text-red-600",
-          "text-right font-bold"
-        )}
-      >
-        {row.original.status}
-      </div>
-    ),
-  },
-  {
-    id: "actions",
-    enableHiding: false,
     cell: ({ row }) => {
-      const Users = row.original;
-
+      const status = row.original.status;
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0 flex">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(Users.id)}
-            >
-              Copy Users ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View Users details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div
+          className={cn(
+            status === "Aanwezig" ? "text-green-600" : "text-red-600",
+            "text-right font-bold"
+          )}
+        >
+          {status}
+        </div>
       );
     },
   },
 ];
 
-export function UsersTable() {
-  const afdelingen = data
-    .map((user) => user.afdeling.team)
-    .filter((team, index, arr) => {
-      return arr.indexOf(team) === index;
-    });
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [filterStatus, setFilterStatus] = React.useState<string>("alle");
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [selectedAfdeling, setSelectedAfdeling] = React.useState<string>(
-    afdelingen[0]
+interface UsersTableProps {
+  users: User[];
+}
+
+export function UsersTable({ users }: UsersTableProps) {
+  // Local copy of user data so we can update on edit
+  const [internalUsers, setInternalUsers] = useState<User[]>(users);
+
+  // Extract all unique teams from initial users (ensure no duplicates)
+  const UserTeams = React.useMemo(() => {
+    const teamsSet = new Set(users.map((user) => user.afdeling.team));
+    return Array.from(teamsSet);
+  }, [users]);
+
+  const UserRol = React.useMemo(() => {
+    const RolSet = new Set(users.map((user) => user.afdeling.role));
+    return Array.from(RolSet);
+  }, [users]);
+
+  // Table states
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
+  const [filterStatus, setFilterStatus] = useState<string>("alle");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedAfdeling, setSelectedAfdeling] = useState<string>(
+    UserTeams[0] || ""
   );
 
+  // Dialog states
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [showDialog, setShowDialog] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+
+  // Editable fields in the dialog
+  const [editFirstName, setEditFirstName] = useState("");
+  const [editLastName, setEditLastName] = useState("");
+  const [editEmail, setEditEmail] = useState("");
+  const [editSaldo, setEditSaldo] = useState(0);
+  const [editStatus, setEditStatus] = useState<"Aanwezig" | "Afwezig">(
+    "Aanwezig"
+  );
+  const [editTeam, setEditTeam] = useState("");
+  const [editRole, setEditRole] = useState("");
+
+  // Filtered data
   const filteredData = React.useMemo(() => {
-    let filtered = data;
+    let filtered = [...internalUsers];
     if (filterStatus !== "alle") {
       filtered = filtered.filter((user) => user.status === filterStatus);
     }
@@ -346,17 +185,15 @@ export function UsersTable() {
           user.werknemer.email.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
-    filtered = filtered.filter(
-      (user) => user.afdeling.team === selectedAfdeling
-    );
-
+    if (selectedAfdeling) {
+      filtered = filtered.filter(
+        (user) => user.afdeling.team === selectedAfdeling
+      );
+    }
     return filtered;
-  }, [filterStatus, searchQuery, selectedAfdeling]);
+  }, [internalUsers, filterStatus, searchQuery, selectedAfdeling]);
 
-  // const updateFilterChange = (filter: string) => {
-  //   setFilterStatus(filter);
-  // };
-
+  // Table
   const table = useReactTable({
     data: filteredData,
     columns,
@@ -376,21 +213,70 @@ export function UsersTable() {
     },
   });
 
+  // Export to PDF
   const exportToPDF = () => {
     const doc = new jsPDF();
     autoTable(doc, {
-      head: [["Werknemer", "Email", "saldo", "Status"]],
+      head: [["Werknemer", "Email", "Saldo", "Status"]],
       body: filteredData.map((user) => [
         `${user.werknemer.firstName} ${user.werknemer.lastName}`,
         user.werknemer.email,
-        new Intl.NumberFormat("nl-NL", {
-          style: "currency",
-          currency: "EUR",
-        }).format(user.saldo),
+        user.saldo.toString(),
         user.status,
       ]),
     });
     doc.save("users_table.pdf");
+  };
+
+  // Handle row click -> open dialog
+  const handleRowClick = (user: User) => {
+    setSelectedUser(user);
+    setEditFirstName(user.werknemer.firstName);
+    setEditLastName(user.werknemer.lastName);
+    setEditEmail(user.werknemer.email);
+    setEditSaldo(user.saldo);
+    setEditStatus(user.status);
+    setEditTeam(user.afdeling.team);
+    setEditRole(user.afdeling.role);
+    setShowDialog(true);
+    setEditMode(false);
+  };
+
+  const closeDialog = () => {
+    setShowDialog(false);
+    setSelectedUser(null);
+  };
+
+  // Toggle edit mode
+  const handleEdit = () => {
+    setEditMode(!editMode);
+  };
+
+  // Save changes
+  const handleSave = () => {
+    if (!selectedUser) return;
+
+    const updatedUser: User = {
+      ...selectedUser,
+      saldo: editSaldo,
+      status: editStatus,
+      werknemer: {
+        ...selectedUser.werknemer,
+        firstName: editFirstName,
+        lastName: editLastName,
+        email: editEmail,
+      },
+      afdeling: {
+        ...selectedUser.afdeling,
+        team: editTeam,
+        role: editRole,
+      },
+    };
+
+    setInternalUsers((prev) =>
+      prev.map((u) => (u.id === selectedUser.id ? updatedUser : u))
+    );
+    setEditMode(false);
   };
 
   return (
@@ -398,7 +284,7 @@ export function UsersTable() {
       <div className="flex items-center justify-between pb-4">
         <div className="flex flex-col">
           <h1 className="text-2xl font-bold">Personeel</h1>
-          <h3 className="text-base">Presentheid van actiefe werknemers</h3>
+          <h3 className="text-base">Aanwezigheid van actieve werknemers</h3>
         </div>
         <div className="flex items-center space-x-2">
           <Select value={selectedAfdeling} onValueChange={setSelectedAfdeling}>
@@ -406,9 +292,9 @@ export function UsersTable() {
               <SelectValue placeholder="Select a group" />
             </SelectTrigger>
             <SelectContent>
-              {afdelingen.map((afdelingen) => (
-                <SelectItem key={afdelingen} value={afdelingen}>
-                  {afdelingen}
+              {UserTeams.map((afdeling) => (
+                <SelectItem key={afdeling} value={afdeling}>
+                  {afdeling}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -419,7 +305,7 @@ export function UsersTable() {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
           <Button variant="outline" onClick={exportToPDF}>
-            Export as PDF
+            Exporteren als PDF
           </Button>
         </div>
       </div>
@@ -438,25 +324,25 @@ export function UsersTable() {
           </Button>
           <Button
             variant="outline"
-            onClick={() => setFilterStatus("Present")}
+            onClick={() => setFilterStatus("Aanwezig")}
             className={
-              filterStatus === "Present"
+              filterStatus === "Aanwezig"
                 ? "bg-background"
                 : "bg-transparent text-muted-foreground"
             }
           >
-            Present
+            Aanwezig
           </Button>
           <Button
             variant="outline"
-            onClick={() => setFilterStatus("Absent")}
+            onClick={() => setFilterStatus("Afwezig")}
             className={
-              filterStatus === "Absent"
+              filterStatus === "Afwezig"
                 ? "bg-background"
                 : "bg-transparent text-muted-foreground"
             }
           >
-            Absent
+            Afwezig
           </Button>
         </div>
       </div>
@@ -483,7 +369,12 @@ export function UsersTable() {
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} className="border-b">
+                <TableRow
+                  key={row.id}
+                  className="border-b hover:bg-accent cursor-pointer"
+                  // When a row is clicked, open the dialog
+                  onClick={() => handleRowClick(row.original)}
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
@@ -500,7 +391,7 @@ export function UsersTable() {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  Geen resultaten gevonden.
                 </TableCell>
               </TableRow>
             )}
@@ -515,7 +406,7 @@ export function UsersTable() {
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            Vorige
           </Button>
           <Button
             variant="outline"
@@ -523,10 +414,118 @@ export function UsersTable() {
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            Volgende
           </Button>
         </div>
       </div>
+
+      {/* Dialog for user details */}
+      {showDialog && selectedUser && (
+        <Dialog open={showDialog} onOpenChange={closeDialog}>
+          <DialogContent className="max-w-lg">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">Gebruiker Details</h2>
+              <Button variant="ghost" onClick={closeDialog}>
+                X
+              </Button>
+            </div>
+            {/* Editable fields */}
+            <div className="space-y-4">
+              <div>
+                <Label>Voornaam</Label>
+                <Input
+                  value={
+                    editMode ? editFirstName : selectedUser.werknemer.firstName
+                  }
+                  onChange={(e) => setEditFirstName(e.target.value)}
+                  disabled={!editMode}
+                />
+              </div>
+              <div>
+                <Label>Achternaam</Label>
+                <Input
+                  value={
+                    editMode ? editLastName : selectedUser.werknemer.lastName
+                  }
+                  onChange={(e) => setEditLastName(e.target.value)}
+                  disabled={!editMode}
+                />
+              </div>
+              <div>
+                <Label>Email</Label>
+                <Input
+                  value={editMode ? editEmail : selectedUser.werknemer.email}
+                  onChange={(e) => setEditEmail(e.target.value)}
+                  disabled={!editMode}
+                />
+              </div>
+              <div>
+                <Label>Saldo</Label>
+                <Input
+                  type="number"
+                  value={editMode ? editSaldo : selectedUser.saldo}
+                  onChange={(e) => setEditSaldo(Number(e.target.value))}
+                  disabled={!editMode}
+                />
+              </div>
+              <div>
+                <Label>Status</Label>
+                <select
+                  value={editMode ? editStatus : selectedUser.status}
+                  onChange={(e) =>
+                    setEditStatus(e.target.value as "Aanwezig" | "Afwezig")
+                  }
+                  disabled={!editMode}
+                  className="border border-gray-300 rounded p-2 w-full"
+                >
+                  <option value="Aanwezig">Aanwezig</option>
+                  <option value="Afwezig">Afwezig</option>
+                </select>
+              </div>
+              <div>
+                <Label>Team</Label>
+                <select
+                  value={editTeam}
+                  onChange={(e) => setEditTeam(e.target.value)}
+                  disabled={!editMode}
+                  className="border border-gray-300 rounded p-2 w-full"
+                >
+                  {UserTeams.map((team) => (
+                    <option key={team} value={team}>
+                      {team}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <Label>Rol</Label>
+                <select
+                  value={editRole}
+                  onChange={(e) => setEditRole(e.target.value)}
+                  disabled={!editMode}
+                  className="border border-gray-300 rounded p-2 w-full"
+                >
+                  {UserRol.map((rol) => (
+                    <option key={rol} value={rol}>
+                      {rol}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <DialogFooter className="mt-4">
+              {!editMode ? (
+                <Button onClick={handleEdit}>Bewerken</Button>
+              ) : (
+                <Button onClick={handleSave}>Opslaan</Button>
+              )}
+              <Button variant="outline" onClick={closeDialog}>
+                Sluiten
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }

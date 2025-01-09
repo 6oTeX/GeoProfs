@@ -90,11 +90,11 @@ const Navbar = () => {
                 href="#"
                 className="flex h-9 items-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
               >
-                Calendar
-                <span className="sr-only">Calendar</span>
+                Kalender
+                <span className="sr-only">Kalender</span>
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="bottom">Calendar</TooltipContent>
+            <TooltipContent side="bottom">Kalender</TooltipContent>
           </Tooltip>
           {/* Add more navigation items as needed */}
         </nav>
@@ -130,13 +130,13 @@ const Navbar = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>
-                Welcome, {profileData?.full_name || "John Doe"}
+                Welkom, {profileData?.full_name || "John Doe"}
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
+              <DropdownMenuItem>Instellingen</DropdownMenuItem>
+              <DropdownMenuItem>Hulp</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
+              <DropdownMenuItem onClick={logout}>Uitloggen</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

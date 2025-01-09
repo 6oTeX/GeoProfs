@@ -1,13 +1,8 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { User } from 'lucide-react';
-import DayOverview from './DayOverview';
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogClose,
-} from './ui/dialog';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { User } from "lucide-react";
+import DayOverview from "./DayOverview";
+import { Dialog, DialogTrigger, DialogContent, DialogClose } from "./ui/dialog";
 
 interface CalenderDay {
   date: Date;
@@ -33,14 +28,24 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
   const months = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December',
+    "Januari",
+    "Februari",
+    "Maart",
+    "April",
+    "Mei",
+    "Juni",
+    "Juli",
+    "Augustus",
+    "September",
+    "Oktober",
+    "November",
+    "December",
   ];
 
   const getDateKey = (date: Date): string => {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
 
@@ -119,7 +124,7 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
       <div className="flex flex-col sm:flex-row sm:justify-between items-center mb-4">
         <div className="mb-2 sm:mb-0">
           <h2 className="text-xl sm:text-2xl font-bold">
-            {currentDate.toLocaleString('default', { month: 'long' })}{' '}
+            {currentDate.toLocaleString("default", { month: "long" })}{" "}
             {currentDate.getFullYear()}
           </h2>
         </div>
@@ -141,18 +146,26 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
             onChange={handleYearChange}
             className="border rounded px-2 py-1 w-20 h-10 mb-2 sm:mb-0"
           />
-          <Button onClick={handlePrevMonth} variant="default" className="mb-2 sm:mb-0">
-            Previous
+          <Button
+            onClick={handlePrevMonth}
+            variant="default"
+            className="mb-2 sm:mb-0"
+          >
+            Vorige
           </Button>
-          <Button onClick={handleNextMonth} variant="default" className="mb-2 sm:mb-0">
-            Next
+          <Button
+            onClick={handleNextMonth}
+            variant="default"
+            className="mb-2 sm:mb-0"
+          >
+            Volgende
           </Button>
         </div>
       </div>
 
       {/* Days of the Week */}
       <div className="grid grid-cols-7 text-center font-bold">
-        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((dayName) => (
+        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((dayName) => (
           <div key={dayName} className="py-2 text-xs sm:text-base">
             {dayName}
           </div>
@@ -166,14 +179,14 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
             const isToday = day.date.toDateString() === today.toDateString();
 
             let cellClasses =
-              'border border-gray-200 h-16 sm:h-24 p-1 flex flex-col items-start cursor-pointer';
+              "border border-gray-200 h-16 sm:h-24 p-1 flex flex-col items-start cursor-pointer";
 
             if (isToday) {
-              cellClasses += ' bg-yellow-50';
+              cellClasses += " bg-yellow-50";
             } else if (!day.isCurrentMonth) {
-              cellClasses += ' bg-gray-100';
+              cellClasses += " bg-gray-100";
             } else if (day.verlof >= 5 || day.ziek >= 5) {
-              cellClasses += ' bg-red-200';
+              cellClasses += " bg-red-200";
             }
             let size: number;
             if (window.innerWidth > 700) {
@@ -187,7 +200,7 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
                 <div className="flex flex-col w-6/12 sm:w-auto text-right justify-end items-center h-full divide-y divide-gray-500">
                   {day.verlof ? (
                     <div className="flex flex-row justify-center sm:text-base text-xs items-center text-red-600 px-1">
-                     <User size={size} />
+                      <User size={size} />
                       {day.verlof}
                     </div>
                   ) : null}
@@ -204,17 +217,12 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
             return (
               <Dialog key={idx}>
                 <DialogTrigger asChild>
-               
-              <div
-                key={idx}
-                className={cellClasses}
-              >
-                <span className="font-bold text-xs sm:text-base flex w-full sm:w-10/12">
-                  {day.date.getDate()}
-                </span>
-                {afwezig}
-              </div>
-          
+                  <div key={idx} className={cellClasses}>
+                    <span className="font-bold text-xs sm:text-base flex w-full sm:w-10/12">
+                      {day.date.getDate()}
+                    </span>
+                    {afwezig}
+                  </div>
                 </DialogTrigger>
                 <DialogContent>
                   <DayOverview
