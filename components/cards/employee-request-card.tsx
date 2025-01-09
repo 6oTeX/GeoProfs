@@ -65,13 +65,13 @@ export default function EmployeeRequestCard({ element, currentDate }: EmployeeRe
             {isModalOpen && (
                 <Modal onClose={closeModal} title="Verlofaanvraag">
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4">
-                        <div className="bg-white rounded-lg w-full max-w-lg p-6">
+                        <div className="bg-background border rounded-lg w-full max-w-lg p-6">
                             <div className="space-y-4">
                                 <div>
                                     <h3 className="text-lg font-semibold">Reden:</h3>
                                     <p>{element.reason || "Niet beschikbaar."}</p>
                                 </div>
-                                <div>
+                                <div>   
                                     <h3 className="text-lg font-semibold">Opmerking:</h3>
                                     <p>{element.explanation || "Niet beschikbaar."}</p>
                                 </div>
