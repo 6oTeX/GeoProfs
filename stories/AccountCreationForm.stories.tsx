@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import AccountCreationForm from '../components/AccountCreationForm';
+import type { Meta, StoryObj } from "@storybook/react";
+import AccountCreationForm from "../components/AccountCreationForm";
 
 const meta: Meta<typeof AccountCreationForm> = {
-  title: 'Admin/AccountCreationForm',
+  title: "Admin/AccountCreationForm",
   component: AccountCreationForm,
 };
 
@@ -13,8 +13,8 @@ type Story = StoryObj<typeof AccountCreationForm>;
 export const Default: Story = {
   args: {
     onCreateAccount: (data: any) => {
-      console.log('Account created:', data);
+      console.log("Account created:", data);
     },
-    roles: ['admin', 'user', 'manager']
+    roles: ["Beheerder", "Werknemer", "Manager"],
   },
 };

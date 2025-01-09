@@ -18,15 +18,15 @@ interface AccountCreationFormProps {
 
 const AccountCreationForm: React.FC<AccountCreationFormProps> = ({
   onCreateAccount,
-  roles = ["admin", "user", "manager"],
-  teams = ["ict", "finance", "hrm"],
+  roles = ["Beheerder", "Werknemer", "Manager"],
+  teams = ["ICT", "Financier", "HRM"],
 }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("user");
-  const [team, setTeam] = useState("ict");
+  const [role, setRole] = useState("Werknemer");
+  const [team, setTeam] = useState("ICT");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
