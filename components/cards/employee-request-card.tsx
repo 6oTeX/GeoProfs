@@ -91,8 +91,14 @@ export default function EmployeeRequestCard({ element, currentDate }: EmployeeRe
                                 </div>
                                 <div>
                                     <h3 className="text-lg font-semibold">Reactie:</h3>
-                                    <p>Beoordeeld door: {element.reviewed_by || "Niet beschikbaar."}</p>
-                                    <p>Reactie: {element.response || "Niet beschikbaar."}</p>
+                                    <p>Beoordeeld door: {element.state === 'submitted' && !element.reviewed_by 
+                                            ? "Nog geen beoordeling" 
+                                            : element.reviewed_by || "Niet beschikbaar."}
+                                    </p>
+                                    <p>Reactie: {element.state === 'submitted' && !element.response 
+                                            ? "Nog geen reactie" 
+                                            : element.response || "Niet beschikbaar."}
+                                    </p>
                                 </div>
                                 <div>
                                     <p>Verlof aangevraagd op: {new Intl.DateTimeFormat('en-GB').format(element.createdAtDate)}</p>
