@@ -42,7 +42,6 @@ class LeaveRequestController {
         errors_txt.push(error.message);
         success = false;
       }
-
     }
     return { success, errors_txt };
   }

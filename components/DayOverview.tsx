@@ -14,10 +14,10 @@ const DayOverview: React.FC<DayOverviewProps> = ({
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold">Dag overzicht</h2>
         <span className="text-gray-600">
-          {date.toLocaleDateString('default', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
+          {date.toLocaleDateString("NL", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
           })}
         </span>
       </div>

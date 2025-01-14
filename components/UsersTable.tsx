@@ -114,7 +114,7 @@ export const columns: ColumnDef<User>[] = [
         <div
           className={cn(
             status === "Aanwezig" ? "text-green-600" : "text-red-600",
-            "text-right font-bold"
+            "text-right font-bold",
           )}
         >
           {status}
@@ -151,7 +151,7 @@ export function UsersTable({ users }: UsersTableProps) {
   const [filterStatus, setFilterStatus] = useState<string>("alle");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedAfdeling, setSelectedAfdeling] = useState<string>(
-    UserTeams[0] || ""
+    UserTeams[0] || "",
   );
 
   // Dialog states
@@ -165,7 +165,7 @@ export function UsersTable({ users }: UsersTableProps) {
   const [editEmail, setEditEmail] = useState("");
   const [editSaldo, setEditSaldo] = useState(0);
   const [editStatus, setEditStatus] = useState<"Aanwezig" | "Afwezig">(
-    "Aanwezig"
+    "Aanwezig",
   );
   const [editTeam, setEditTeam] = useState("");
   const [editRole, setEditRole] = useState("");
@@ -182,12 +182,14 @@ export function UsersTable({ users }: UsersTableProps) {
           `${user.werknemer.firstName} ${user.werknemer.lastName}`
             .toLowerCase()
             .includes(searchQuery.toLowerCase()) ||
-          user.werknemer.email.toLowerCase().includes(searchQuery.toLowerCase())
+          user.werknemer.email
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()),
       );
     }
     if (selectedAfdeling) {
       filtered = filtered.filter(
-        (user) => user.afdeling.team === selectedAfdeling
+        (user) => user.afdeling.team === selectedAfdeling,
       );
     }
     return filtered;
@@ -274,7 +276,7 @@ export function UsersTable({ users }: UsersTableProps) {
     };
 
     setInternalUsers((prev) =>
-      prev.map((u) => (u.id === selectedUser.id ? updatedUser : u))
+      prev.map((u) => (u.id === selectedUser.id ? updatedUser : u)),
     );
     setEditMode(false);
   };
@@ -300,7 +302,7 @@ export function UsersTable({ users }: UsersTableProps) {
             </SelectContent>
           </Select>
           <Input
-            placeholder="Search by name or email"
+            placeholder="Zoeken (naam of email)"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -358,7 +360,7 @@ export function UsersTable({ users }: UsersTableProps) {
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -379,7 +381,7 @@ export function UsersTable({ users }: UsersTableProps) {
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}

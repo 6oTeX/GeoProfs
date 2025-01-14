@@ -7,19 +7,19 @@ import { Dialog, DialogTrigger, DialogContent, DialogClose } from "./ui/dialog";
 interface CalenderDay {
   date: Date;
   isCurrentMonth: boolean;
-  verlof: number;
-  ziek: number;
-  verlofNames: string[];
-  ziekNames: string[];
+  furlough: number;
+  sick: number;
+  furloughNames: string[];
+  sickNames: string[];
 }
 
 interface CalenderProps {
   events?: {
     [key: string]: {
-      verlof: number;
-      ziek: number;
-      verlofNames: string[];
-      ziekNames: string[];
+      furlough: number;
+      sick: number;
+      furloughNames: string[];
+      sickNames: string[];
     };
   };
 }
@@ -28,18 +28,18 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
   const months = [
-    "Januari",
-    "Februari",
-    "Maart",
-    "April",
-    "Mei",
-    "Juni",
-    "Juli",
-    "Augustus",
-    "September",
-    "Oktober",
-    "November",
-    "December",
+    "januari",
+    "februari",
+    "maart",
+    "april",
+    "mei",
+    "juni",
+    "juli",
+    "augustus",
+    "september",
+    "oktober",
+    "november",
+    "december",
   ];
 
   const getDateKey = (date: Date): string => {
@@ -68,19 +68,19 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
     ) {
       const dateKey = getDateKey(d);
       const event = events[dateKey] || {
-        verlof: 0,
-        ziek: 0,
-        verlofNames: [],
-        ziekNames: [],
+        furlough: 0,
+        sick: 0,
+        furloughNames: [],
+        sickNames: [],
       };
 
       dates.push({
         date: new Date(d),
         isCurrentMonth: d.getMonth() === date.getMonth(),
-        verlof: event.verlof,
-        ziek: event.ziek,
-        verlofNames: event.verlofNames,
-        ziekNames: event.ziekNames,
+        furlough: event.furlough,
+        sick: event.sick,
+        furloughNames: event.furloughNames,
+        sickNames: event.sickNames,
       });
     }
 
@@ -98,13 +98,13 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
 
   const handlePrevMonth = () => {
     setCurrentDate(
-      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
+      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1),
     );
   };
 
   const handleNextMonth = () => {
     setCurrentDate(
-      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
+      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1),
     );
   };
 
@@ -124,7 +124,7 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
       <div className="flex flex-col sm:flex-row sm:justify-between items-center mb-4">
         <div className="mb-2 sm:mb-0">
           <h2 className="text-xl sm:text-2xl font-bold">
-            {currentDate.toLocaleString("default", { month: "long" })}{" "}
+            {currentDate.toLocaleString("NL", { month: "long" })}{" "}
             {currentDate.getFullYear()}
           </h2>
         </div>
@@ -185,7 +185,7 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
               cellClasses += " bg-yellow-50";
             } else if (!day.isCurrentMonth) {
               cellClasses += " bg-gray-100";
-            } else if (day.verlof >= 5 || day.ziek >= 5) {
+            } else if (day.furlough >= 5 || day.sick >= 5) {
               cellClasses += " bg-red-200";
             }
             let size: number;
@@ -195,19 +195,19 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
               size = 12;
             }
             let afwezig = null;
-            if (day.verlof || day.ziek) {
+            if (day.furlough || day.sick) {
               afwezig = (
                 <div className="flex flex-col w-6/12 sm:w-auto text-right justify-end items-center h-full divide-y divide-gray-500">
-                  {day.verlof ? (
+                  {day.furlough ? (
                     <div className="flex flex-row justify-center sm:text-base text-xs items-center text-red-600 px-1">
                       <User size={size} />
-                      {day.verlof}
+                      {day.furlough}
                     </div>
                   ) : null}
-                  {day.ziek ? (
+                  {day.sick ? (
                     <div className="flex flex-row justify-center sm:text-base text-xs items-center text-yellow-500 px-1">
                       <User size={size} />
-                      {day.ziek}
+                      {day.sick}
                     </div>
                   ) : null}
                 </div>
@@ -227,8 +227,8 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
                 <DialogContent>
                   <DayOverview
                     date={day.date}
-                    verlofNames={day.verlofNames}
-                    ziekNames={day.ziekNames}
+                    verlofNames={day.furloughNames}
+                    ziekNames={day.sickNames}
                   />
                   <DialogClose asChild>
                     <Button variant="destructive" className="mt-4">

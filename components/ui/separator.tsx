@@ -27,9 +27,7 @@ const Separator = React.forwardRef<
     <div
       className={cn(
         "relative flex items-center",
-        orientation === "horizontal"
-          ? "w-full flex-row"
-          : "h-full flex-col",
+        orientation === "horizontal" ? "w-full flex-row" : "h-full flex-col",
       )}
     >
       {orientation === "horizontal" ? (
@@ -38,10 +36,7 @@ const Separator = React.forwardRef<
             ref={ref}
             decorative={decorative}
             orientation={orientation}
-            className={cn(
-              "bg-border flex-grow h-[1px]",
-              className,
-            )}
+            className={cn("bg-border flex-grow h-[1px]", className)}
             {...props}
           />
           {label && (
@@ -53,10 +48,7 @@ const Separator = React.forwardRef<
             ref={ref}
             decorative={decorative}
             orientation={orientation}
-            className={cn(
-              "bg-border flex-grow h-[1px]",
-              className,
-            )}
+            className={cn("bg-border flex-grow h-[1px]", className)}
             {...props}
           />
         </>
@@ -66,10 +58,7 @@ const Separator = React.forwardRef<
             ref={ref}
             decorative={decorative}
             orientation={orientation}
-            className={cn(
-              "bg-border w-[1px] flex-grow",
-              className,
-            )}
+            className={cn("bg-border w-[1px] flex-grow", className)}
             {...props}
           />
           {label && (
@@ -81,10 +70,7 @@ const Separator = React.forwardRef<
             ref={ref}
             decorative={decorative}
             orientation={orientation}
-            className={cn(
-              "bg-border w-[1px] flex-grow",
-              className,
-            )}
+            className={cn("bg-border w-[1px] flex-grow", className)}
             {...props}
           />
         </>

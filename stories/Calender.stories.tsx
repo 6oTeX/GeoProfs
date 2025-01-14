@@ -1,9 +1,9 @@
 // components/Calendar.stories.tsx
-import type { Meta, StoryObj } from '@storybook/react';
-import Calender from '../components/Calender';
+import type { Meta, StoryObj } from "@storybook/react";
+import Calender from "../components/Calender";
 
 const meta: Meta<typeof Calender> = {
-  title: 'Components/Calender',
+  title: "Components/Calender",
   component: Calender,
 };
 
@@ -13,17 +13,17 @@ type Story = StoryObj<typeof Calender>;
 
 // Sample events data with names
 const events = {
-  '2024-12-03': {
-    verlofNames: ['Alice', 'Bob'],
-    ziekNames: ['Charlie'],
+  "2024-12-03": {
+    verlofNames: ["Alice", "Bob"],
+    ziekNames: ["Charlie"],
   },
-  '2024-12-02': {
-    verlofNames: ['David'],
-    ziekNames: ['Eve', 'Frank'],
+  "2024-12-02": {
+    verlofNames: ["David"],
+    ziekNames: ["Eve", "Frank"],
   },
-  '2024-11-29': {
-    verlofNames: ['David', 'Eve', 'Frank', 'Alice', 'Bob', 'Charlie'],
-    ziekNames: ['Dave', 'Jake'],
+  "2024-11-29": {
+    verlofNames: ["David", "Eve", "Frank", "Alice", "Bob", "Charlie"],
+    ziekNames: ["Dave", "Jake"],
   },
 };
 
@@ -37,7 +37,7 @@ const processedEvents = Object.fromEntries(
       verlofNames,
       ziekNames,
     },
-  ])
+  ]),
 );
 
 export const Default: Story = {
