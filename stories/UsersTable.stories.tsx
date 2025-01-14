@@ -14,13 +14,13 @@ const sampleUsers: User[] = [
   {
     id: "1",
     balance: 316,
-    werknemer: {
+    employee: {
       firstName: "Alice",
       lastName: "Smith",
       email: "alice@example.com",
     },
     status: "Aanwezig",
-    afdeling: {
+    section: {
       team: "ICT",
       role: "Manager",
     },
@@ -28,27 +28,27 @@ const sampleUsers: User[] = [
   {
     id: "2",
     balance: 242,
-    werknemer: {
+    employee: {
       firstName: "Bob",
       lastName: "Johnson",
       email: "bob@example.com",
     },
     status: "Afwezig",
-    afdeling: {
+    section: {
       team: "Financier",
-      role: "Werknemer",
+      role: "employee",
     },
   },
   {
     id: "3",
     balance: 500,
-    werknemer: {
+    employee: {
       firstName: "Charlie",
       lastName: "Brown",
       email: "charlie@example.com",
     },
     status: "Aanwezig",
-    afdeling: {
+    section: {
       team: "HRM",
       role: "Beheerder",
     },

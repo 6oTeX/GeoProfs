@@ -57,7 +57,7 @@ import { cn } from "@/utils/cn";
 export type User = {
   id: string;
   balance: number;
-  werknemer: {
+  employee: {
     firstName: string;
     lastName: string;
     email: string;
@@ -84,10 +84,10 @@ export interface IUserView {
 // Column definitions: outside the component for clarity
 export const columns: ColumnDef<User>[] = [
   {
-    accessorKey: "werknemer",
+    accessorKey: "employee",
     header: "Werknemer",
     cell: ({ row }) => {
-      const { firstName, lastName, email } = row.original.werknemer;
+      const { firstName, lastName, email } = row.original.employee;
       return (
         <div>
           <div className="capitalize font-semibold">
@@ -179,10 +179,10 @@ export function UsersTable({ users }: UsersTableProps) {
     if (searchQuery) {
       filtered = filtered.filter(
         (user) =>
-          `${user.werknemer.firstName} ${user.werknemer.lastName}`
+          `${user.employee.firstName} ${user.employee.lastName}`
             .toLowerCase()
             .includes(searchQuery.toLowerCase()) ||
-          user.werknemer.email.toLowerCase().includes(searchQuery.toLowerCase())
+          user.employee.email.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
     if (selectedsection) {
@@ -219,8 +219,8 @@ export function UsersTable({ users }: UsersTableProps) {
     autoTable(doc, {
       head: [["Werknemer", "Email", "Saldo", "Status"]],
       body: filteredData.map((user) => [
-        `${user.werknemer.firstName} ${user.werknemer.lastName}`,
-        user.werknemer.email,
+        `${user.employee.firstName} ${user.employee.lastName}`,
+        user.employee.email,
         user.balance.toString(),
         user.status,
       ]),
@@ -231,9 +231,9 @@ export function UsersTable({ users }: UsersTableProps) {
   // Handle row click -> open dialog
   const handleRowClick = (user: User) => {
     setSelectedUser(user);
-    setEditFirstName(user.werknemer.firstName);
-    setEditLastName(user.werknemer.lastName);
-    setEditEmail(user.werknemer.email);
+    setEditFirstName(user.employee.firstName);
+    setEditLastName(user.employee.lastName);
+    setEditEmail(user.employee.email);
     setEditbalance(user.balance);
     setEditStatus(user.status);
     setEditTeam(user.section.team);
@@ -260,8 +260,8 @@ export function UsersTable({ users }: UsersTableProps) {
       ...selectedUser,
       balance: editbalance,
       status: editStatus,
-      werknemer: {
-        ...selectedUser.werknemer,
+      employee: {
+        ...selectedUser.employee,
         firstName: editFirstName,
         lastName: editLastName,
         email: editEmail,
@@ -284,7 +284,7 @@ export function UsersTable({ users }: UsersTableProps) {
       <div className="flex items-center justify-between pb-4">
         <div className="flex flex-col">
           <h1 className="text-2xl font-bold">Personeel</h1>
-          <h3 className="text-base">Aanwezigheid van actieve werknemers</h3>
+          <h3 className="text-base">Aanwezigheid van actieve employees</h3>
         </div>
         <div className="flex items-center space-x-2">
           <Select value={selectedsection} onValueChange={setSelectedsection}>
@@ -435,7 +435,7 @@ export function UsersTable({ users }: UsersTableProps) {
                 <Label>Voornaam</Label>
                 <Input
                   value={
-                    editMode ? editFirstName : selectedUser.werknemer.firstName
+                    editMode ? editFirstName : selectedUser.employee.firstName
                   }
                   onChange={(e) => setEditFirstName(e.target.value)}
                   disabled={!editMode}
@@ -445,7 +445,7 @@ export function UsersTable({ users }: UsersTableProps) {
                 <Label>Achternaam</Label>
                 <Input
                   value={
-                    editMode ? editLastName : selectedUser.werknemer.lastName
+                    editMode ? editLastName : selectedUser.employee.lastName
                   }
                   onChange={(e) => setEditLastName(e.target.value)}
                   disabled={!editMode}
@@ -454,7 +454,7 @@ export function UsersTable({ users }: UsersTableProps) {
               <div>
                 <Label>Email</Label>
                 <Input
-                  value={editMode ? editEmail : selectedUser.werknemer.email}
+                  value={editMode ? editEmail : selectedUser.employee.email}
                   onChange={(e) => setEditEmail(e.target.value)}
                   disabled={!editMode}
                 />
