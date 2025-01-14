@@ -1,3 +1,1 @@
-const CreateLeaveRequest = (payload: any) => {
-    
-}
+const CreateLeaveRequest = (payload: any) => {};

@@ -5,6 +5,7 @@ create table profiles (
     username text unique,
     full_name text,
     avatar_url text,
+    saldo integer default 0,
 constraint username_length check (char_length(username) >= 3)
 );
  
@@ -22,6 +23,11 @@ create policy "Users can insert their own profile." on profiles
 create policy "Users can update own profile." on profiles
   for update using ((select auth.uid()) = id);
 
+-- Modify the update policy to prevent users from updating their saldo
+create policy "Users can update own profile except saldo." on profiles
+  for update using ((select auth.uid()) = id)
+  with check (saldo = saldo);
+
 -- This trigger automatically creates a profile entry when a new user signs up via Supabase Auth.
 -- See https://supabase.com/docs/guides/auth/managing-user-data#using-triggers for more details.
 create function public.handle_new_user()
@@ -29,9 +35,15 @@ create function public.handle_new_user()
     set search_path = ''
 as $$
 begin
-insert into public.profiles (id, full_name, avatar_url)
-values (new.id, new.raw_user_meta_data->>'full_name', new.raw_user_meta_data->>'avatar_url');
-return new;
+    insert into public.profiles (id, username, full_name, avatar_url, saldo)
+    values (
+        new.id,
+        'user_' || new.id::text,
+        new.raw_user_meta_data->>'full_name',
+        new.raw_user_meta_data->>'avatar_url',
+        (new.raw_user_meta_data->>'saldo')::integer
+    );
+    return new;
 end;
 $$ language plpgsql security definer;
 create trigger on_auth_user_created
