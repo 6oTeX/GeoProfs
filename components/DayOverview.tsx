@@ -1,12 +1,12 @@
 interface DayOverviewProps {
   date: Date;
-  leaveNames: string[];
+  furloughNames: string[];
   sickNames: string[];
 }
 
 const DayOverview: React.FC<DayOverviewProps> = ({
   date,
-  leaveNames,
+  furloughNames,
   sickNames,
 }) => {
   return (
@@ -31,9 +31,9 @@ const DayOverview: React.FC<DayOverviewProps> = ({
         <tbody>
           <tr>
             <td>
-              {leaveNames.length > 0 ? (
+              {furloughNames.length > 0 ? (
                 <ul>
-                  {leaveNames.map((name, index) => (
+                  {furloughNames.map((name, index) => (
                     <li key={index}>{name}</li>
                   ))}
                 </ul>
