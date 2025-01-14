@@ -11,6 +11,7 @@ export default async function EmployeeRequestList() {
         // Parse dates from returnData into Date objects.
         startDate: new Date(element.start_date),
         endDate: new Date(element.end_date),
+        createdAtDate: new Date(element.created_at),
     }));
 
     // Separate into active, upcoming, and past requests.
@@ -35,9 +36,9 @@ export default async function EmployeeRequestList() {
     const sortedRequests = [
         activeRequests.length > 0 ? { ...separator, type: 'active' } : null,
         ...activeRequests,
-        activeRequests.length > 0 && upcomingRequests.length > 0 ? { ...separator, type: 'upcoming' } : null,
+        upcomingRequests.length > 0 ? { ...separator, type: 'upcoming' } : null,
         ...upcomingRequests,
-        upcomingRequests.length > 0 && pastRequests.length > 0 ? { ...separator, type: 'past' } : null,
+        pastRequests.length > 0 ? { ...separator, type: 'past' } : null,
         ...pastRequests,
     ].filter(Boolean);
 
