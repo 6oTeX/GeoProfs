@@ -14,7 +14,7 @@ type Story = StoryObj<typeof DayOverview>;
 export const Default: Story = {
   args: {
     date: new Date(),
-    leaveNames: ["Alice", "Bob"],
+    furloughNames: ["Alice", "Bob"],
     sickNames: ["Charlie"],
   },
 };

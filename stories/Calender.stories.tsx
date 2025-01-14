@@ -14,27 +14,27 @@ type Story = StoryObj<typeof Calender>;
 // Sample events data with names
 const events = {
   "2024-12-03": {
-    leaveNames: ["Alice", "Bob"],
+    furloughNames: ["Alice", "Bob"],
     sickNames: ["Charlie"],
   },
   "2024-12-02": {
-    leaveNames: ["David"],
+    furloughNames: ["David"],
     sickNames: ["Eve", "Frank"],
   },
   "2024-11-29": {
-    leaveNames: ["David", "Eve", "Frank", "Alice", "Bob", "Charlie"],
+    furloughNames: ["David", "Eve", "Frank", "Alice", "Bob", "Charlie"],
     sickNames: ["Dave", "Jake"],
   },
 };
 
 // Dynamically calculate the counts
 const processedEvents = Object.fromEntries(
-  Object.entries(events).map(([date, { leaveNames, sickNames }]) => [
+  Object.entries(events).map(([date, { furloughNames, sickNames }]) => [
     date,
     {
-      leave: leaveNames.length,
+      furlough: furloughNames.length,
       sick: sickNames.length,
-      leaveNames,
+      furloughNames,
       sickNames,
     },
   ])

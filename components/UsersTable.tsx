@@ -63,7 +63,7 @@ export type User = {
     email: string;
   };
   status: "Aanwezig" | "Afwezig";
-  afdeling: {
+  section: {
     team: string;
     role: string;
   };
@@ -134,12 +134,12 @@ export function UsersTable({ users }: UsersTableProps) {
 
   // Extract all unique teams from initial users (ensure no duplicates)
   const UserTeams = React.useMemo(() => {
-    const teamsSet = new Set(users.map((user) => user.afdeling.team));
+    const teamsSet = new Set(users.map((user) => user.section.team));
     return Array.from(teamsSet);
   }, [users]);
 
   const UserRol = React.useMemo(() => {
-    const RolSet = new Set(users.map((user) => user.afdeling.role));
+    const RolSet = new Set(users.map((user) => user.section.role));
     return Array.from(RolSet);
   }, [users]);
 
@@ -150,7 +150,7 @@ export function UsersTable({ users }: UsersTableProps) {
   const [rowSelection, setRowSelection] = useState({});
   const [filterStatus, setFilterStatus] = useState<string>("alle");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedAfdeling, setSelectedAfdeling] = useState<string>(
+  const [selectedsection, setSelectedsection] = useState<string>(
     UserTeams[0] || ""
   );
 
@@ -185,13 +185,13 @@ export function UsersTable({ users }: UsersTableProps) {
           user.werknemer.email.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
-    if (selectedAfdeling) {
+    if (selectedsection) {
       filtered = filtered.filter(
-        (user) => user.afdeling.team === selectedAfdeling
+        (user) => user.section.team === selectedsection
       );
     }
     return filtered;
-  }, [internalUsers, filterStatus, searchQuery, selectedAfdeling]);
+  }, [internalUsers, filterStatus, searchQuery, selectedsection]);
 
   // Table
   const table = useReactTable({
@@ -236,8 +236,8 @@ export function UsersTable({ users }: UsersTableProps) {
     setEditEmail(user.werknemer.email);
     setEditbalance(user.balance);
     setEditStatus(user.status);
-    setEditTeam(user.afdeling.team);
-    setEditRole(user.afdeling.role);
+    setEditTeam(user.section.team);
+    setEditRole(user.section.role);
     setShowDialog(true);
     setEditMode(false);
   };
@@ -266,8 +266,8 @@ export function UsersTable({ users }: UsersTableProps) {
         lastName: editLastName,
         email: editEmail,
       },
-      afdeling: {
-        ...selectedUser.afdeling,
+      section: {
+        ...selectedUser.section,
         team: editTeam,
         role: editRole,
       },
@@ -287,20 +287,20 @@ export function UsersTable({ users }: UsersTableProps) {
           <h3 className="text-base">Aanwezigheid van actieve werknemers</h3>
         </div>
         <div className="flex items-center space-x-2">
-          <Select value={selectedAfdeling} onValueChange={setSelectedAfdeling}>
+          <Select value={selectedsection} onValueChange={setSelectedsection}>
             <SelectTrigger className="w-fit">
               <SelectValue placeholder="Select a group" />
             </SelectTrigger>
             <SelectContent>
-              {UserTeams.map((afdeling) => (
-                <SelectItem key={afdeling} value={afdeling}>
-                  {afdeling}
+              {UserTeams.map((section) => (
+                <SelectItem key={section} value={section}>
+                  {section}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
           <Input
-            placeholder="Zoek met naam of email"
+            placeholder="Zoeken (naam of email)"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
