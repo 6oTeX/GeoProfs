@@ -48,7 +48,7 @@ async function serverWrapper(payload: LeaveRequestFormProps) {
       payload.reason,
       payload.comments,
       payload.dateStart,
-      payload.dateEnd,
+      payload.dateEnd
     );
   }
 }
@@ -205,7 +205,7 @@ export default function LeaveRequestForm() {
                           variant={"outline"}
                           className={cn(
                             "w-full pl-3 text-left font-normal",
-                            !dateRange && "text-muted-foreground",
+                            !dateRange && "text-muted-foreground"
                           )}
                         >
                           {/* Displaying the selected date(s) based on if 1 or 2 dates have been selected. */}
@@ -302,7 +302,7 @@ export default function LeaveRequestForm() {
                 <FormLabel>Opmerkingen</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Type your message here"
+                    placeholder="Typ hier uw opmerkingen"
                     className="resize-none"
                     {...field}
                   />
@@ -314,7 +314,11 @@ export default function LeaveRequestForm() {
 
           <div className="flex justify-between">
             {/* Close form button. */}
-            <Button type="button" variant="destructive" className='text-red-900 bg-red-500 hover:bg-red-600'>
+            <Button
+              type="button"
+              variant="destructive"
+              className="text-red-900 bg-red-500 hover:bg-red-600"
+            >
               Sluiten
             </Button>
             {/* Submit form button. */}

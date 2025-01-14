@@ -56,7 +56,7 @@ import { cn } from "@/utils/cn";
 
 export type User = {
   id: string;
-  saldo: number;
+  balance: number;
   werknemer: {
     firstName: string;
     lastName: string;
@@ -75,7 +75,7 @@ export interface IUserView {
   firstName: string;
   lastName: string;
   email: string;
-  saldo: number;
+  balance: number;
   status: string;
   team: string;
   role: string;
@@ -99,10 +99,10 @@ export const columns: ColumnDef<User>[] = [
     },
   },
   {
-    accessorKey: "saldo",
+    accessorKey: "balance",
     header: "Saldo",
     cell: ({ row }) => {
-      return <div className="font-medium">{row.original.saldo}</div>;
+      return <div className="font-medium">{row.original.balance}</div>;
     },
   },
   {
@@ -163,7 +163,7 @@ export function UsersTable({ users }: UsersTableProps) {
   const [editFirstName, setEditFirstName] = useState("");
   const [editLastName, setEditLastName] = useState("");
   const [editEmail, setEditEmail] = useState("");
-  const [editSaldo, setEditSaldo] = useState(0);
+  const [editbalance, setEditbalance] = useState(0);
   const [editStatus, setEditStatus] = useState<"Aanwezig" | "Afwezig">(
     "Aanwezig"
   );
@@ -221,7 +221,7 @@ export function UsersTable({ users }: UsersTableProps) {
       body: filteredData.map((user) => [
         `${user.werknemer.firstName} ${user.werknemer.lastName}`,
         user.werknemer.email,
-        user.saldo.toString(),
+        user.balance.toString(),
         user.status,
       ]),
     });
@@ -234,7 +234,7 @@ export function UsersTable({ users }: UsersTableProps) {
     setEditFirstName(user.werknemer.firstName);
     setEditLastName(user.werknemer.lastName);
     setEditEmail(user.werknemer.email);
-    setEditSaldo(user.saldo);
+    setEditbalance(user.balance);
     setEditStatus(user.status);
     setEditTeam(user.afdeling.team);
     setEditRole(user.afdeling.role);
@@ -258,7 +258,7 @@ export function UsersTable({ users }: UsersTableProps) {
 
     const updatedUser: User = {
       ...selectedUser,
-      saldo: editSaldo,
+      balance: editbalance,
       status: editStatus,
       werknemer: {
         ...selectedUser.werknemer,
@@ -300,7 +300,7 @@ export function UsersTable({ users }: UsersTableProps) {
             </SelectContent>
           </Select>
           <Input
-            placeholder="Search by name or email"
+            placeholder="Zoek met naam of email"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -463,8 +463,8 @@ export function UsersTable({ users }: UsersTableProps) {
                 <Label>Saldo</Label>
                 <Input
                   type="number"
-                  value={editMode ? editSaldo : selectedUser.saldo}
-                  onChange={(e) => setEditSaldo(Number(e.target.value))}
+                  value={editMode ? editbalance : selectedUser.balance}
+                  onChange={(e) => setEditbalance(Number(e.target.value))}
                   disabled={!editMode}
                 />
               </div>

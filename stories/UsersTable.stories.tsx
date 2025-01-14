@@ -13,7 +13,7 @@ type Story = StoryObj<typeof UsersTable>;
 const sampleUsers: User[] = [
   {
     id: "1",
-    saldo: 316,
+    balance: 316,
     werknemer: {
       firstName: "Alice",
       lastName: "Smith",
@@ -27,7 +27,7 @@ const sampleUsers: User[] = [
   },
   {
     id: "2",
-    saldo: 242,
+    balance: 242,
     werknemer: {
       firstName: "Bob",
       lastName: "Johnson",
@@ -41,7 +41,7 @@ const sampleUsers: User[] = [
   },
   {
     id: "3",
-    saldo: 500,
+    balance: 500,
     werknemer: {
       firstName: "Charlie",
       lastName: "Brown",

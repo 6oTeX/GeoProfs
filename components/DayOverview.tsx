@@ -1,23 +1,23 @@
 interface DayOverviewProps {
   date: Date;
-  verlofNames: string[];
-  ziekNames: string[];
+  leaveNames: string[];
+  sickNames: string[];
 }
 
 const DayOverview: React.FC<DayOverviewProps> = ({
   date,
-  verlofNames,
-  ziekNames,
+  leaveNames,
+  sickNames,
 }) => {
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold">Dag overzicht</h2>
         <span className="text-gray-600">
-          {date.toLocaleDateString('default', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
+          {date.toLocaleDateString("NL", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
           })}
         </span>
       </div>
@@ -31,9 +31,9 @@ const DayOverview: React.FC<DayOverviewProps> = ({
         <tbody>
           <tr>
             <td>
-              {verlofNames.length > 0 ? (
+              {leaveNames.length > 0 ? (
                 <ul>
-                  {verlofNames.map((name, index) => (
+                  {leaveNames.map((name, index) => (
                     <li key={index}>{name}</li>
                   ))}
                 </ul>
@@ -42,9 +42,9 @@ const DayOverview: React.FC<DayOverviewProps> = ({
               )}
             </td>
             <td>
-              {ziekNames.length > 0 ? (
+              {sickNames.length > 0 ? (
                 <ul>
-                  {ziekNames.map((name, index) => (
+                  {sickNames.map((name, index) => (
                     <li key={index}>{name}</li>
                   ))}
                 </ul>
