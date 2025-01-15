@@ -121,6 +121,10 @@ class LeaveRequestController {
           response.data[i].reviewByUser = reviewByUser.data[0];
         }
       }
+      else
+      {
+        response.data[i].reviewByUser = {};
+      }
     }
     console.log(response.data);
     return response;

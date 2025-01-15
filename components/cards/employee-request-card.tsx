@@ -35,8 +35,8 @@ export default function EmployeeRequestCard({ element, currentDate }: EmployeeRe
                 <div className="flex items-center gap-3">
                     <div className="flex flex-col">
                         <span className="text-sm font-medium">{element.reason || "Niet beschikbaar."}</span>
-                        <span className="text-xs text-muted-foreground">{element.user_name || "Niet beschikbaar."}</span>
-                        <span className="text-xs text-muted-foreground">{element.user_mail || "Niet beschikbaar."}</span>
+                        <span className="text-xs text-muted-foreground">{element.userData.full_name || "Niet beschikbaar."}</span>
+                        <span className="text-xs text-muted-foreground">{element.userData.email || "Niet beschikbaar."}</span>
                     </div>
                 </div>
                 <div className="flex gap-2">
@@ -77,8 +77,8 @@ export default function EmployeeRequestCard({ element, currentDate }: EmployeeRe
                                 </div>
                                 <div>
                                     <h3 className="text-lg font-semibold">Gebruiker Informatie:</h3>
-                                    <p>Naam: {element.user_name || "Niet beschikbaar."}</p>
-                                    <p>Email: {element.user_mail || "Niet beschikbaar."}</p>
+                                    <p>Naam: {element.userData.full_name || "Niet beschikbaar."}</p>
+                                    <p>Email: {element.userData.email || "Niet beschikbaar."}</p>
                                 </div>
                                 <div>
                                     <h3 className="text-lg font-semibold">Datum:</h3>
@@ -93,7 +93,7 @@ export default function EmployeeRequestCard({ element, currentDate }: EmployeeRe
                                     <h3 className="text-lg font-semibold">Reactie:</h3>
                                     <p>Beoordeeld door: {element.state === 'submitted' && !element.reviewed_by 
                                             ? "Nog geen beoordeling" 
-                                            : element.reviewed_by || "Niet beschikbaar."}
+                                            : element.reviewByUser?.full_name || "Niet beschikbaar."}
                                     </p>
                                     <p>Reactie: {element.state === 'submitted' && !element.response 
                                             ? "Nog geen reactie" 

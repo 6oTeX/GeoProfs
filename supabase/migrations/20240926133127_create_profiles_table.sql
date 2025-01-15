@@ -7,6 +7,7 @@ create table profiles (
     avatar_url text,
     saldo integer default 0,
     department_id uuid,
+    email text,
 constraint username_length check (char_length(username) >= 3)
 );
  
@@ -36,13 +37,14 @@ create function public.handle_new_user()
     set search_path = ''
 as $$
 begin
-    insert into public.profiles (id, username, full_name, avatar_url, saldo)
+    insert into public.profiles (id, username, full_name, avatar_url, saldo, email)
     values (
         new.id,
         'user_' || new.id::text,
         new.raw_user_meta_data->>'full_name',
         new.raw_user_meta_data->>'avatar_url',
-        (new.raw_user_meta_data->>'saldo')::integer
+        (new.raw_user_meta_data->>'saldo')::integer,
+        new.email
     );
     return new;
 end;
