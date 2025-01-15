@@ -6,6 +6,7 @@ create table profiles (
     full_name text,
     avatar_url text,
     saldo integer default 0,
+    department_id uuid,
 constraint username_length check (char_length(username) >= 3)
 );
  
