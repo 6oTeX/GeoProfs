@@ -37,7 +37,7 @@ const processedEvents = Object.fromEntries(
       furloughNames,
       sickNames,
     },
-  ])
+  ]),
 );
 
 export const Default: Story = {

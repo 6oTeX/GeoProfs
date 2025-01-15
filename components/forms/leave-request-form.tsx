@@ -48,7 +48,7 @@ async function serverWrapper(payload: LeaveRequestFormProps) {
       payload.reason,
       payload.comments,
       payload.dateStart,
-      payload.dateEnd
+      payload.dateEnd,
     );
   }
 }
@@ -205,7 +205,7 @@ export default function LeaveRequestForm() {
                           variant={"outline"}
                           className={cn(
                             "w-full pl-3 text-left font-normal",
-                            !dateRange && "text-muted-foreground"
+                            !dateRange && "text-muted-foreground",
                           )}
                         >
                           {/* Displaying the selected date(s) based on if 1 or 2 dates have been selected. */}

@@ -54,10 +54,14 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
     const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
     const startDate = new Date(startOfMonth);
-    startDate.setDate(startDate.getDate() - startDate.getDay());
+    const dayOfWeek = startDate.getDay();
+    const offset = dayOfWeek === 0 ? 6 : dayOfWeek - 1; // Shift Sunday to the end
+    startDate.setDate(startDate.getDate() - offset);
 
     const endDate = new Date(endOfMonth);
-    endDate.setDate(endDate.getDate() + (6 - endDate.getDay()));
+    const endDayOfWeek = endDate.getDay();
+    const endOffset = endDayOfWeek === 0 ? 0 : 7 - endDayOfWeek;
+    endDate.setDate(endDate.getDate() + endOffset);
 
     const dates: CalenderDay[] = [];
 
@@ -98,13 +102,13 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
 
   const handlePrevMonth = () => {
     setCurrentDate(
-      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
+      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1),
     );
   };
 
   const handleNextMonth = () => {
     setCurrentDate(
-      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
+      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1),
     );
   };
 
@@ -165,7 +169,7 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
 
       {/* Days of the Week */}
       <div className="grid grid-cols-7 text-center font-bold">
-        {["Zo", "Ma", "Di", "Wo", "Do", "Vr", "Za"].map((dayName) => (
+        {["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"].map((dayName) => (
           <div key={dayName} className="py-2 text-xs sm:text-base">
             {dayName}
           </div>
