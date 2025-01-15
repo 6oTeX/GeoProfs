@@ -43,15 +43,30 @@ interface LeaveRequestFormProps {
 }
 
 async function serverWrapper(payload: LeaveRequestFormProps) {
-  if (payload.dateStart && payload.dateEnd) {
-    await LeaveRequestController.createRequest(
-      payload.reason,
-      payload.comments,
-      payload.dateStart,
-      payload.dateEnd,
-    );
+  // Validate input fields on server side.
+  if (!payload.reason) {
+    throw new Error("Reden is verplicht!");
   }
+
+  if (payload.reason === "Anders" && !payload.customReason) {
+    throw new Error("Geef een reden voor 'Anders'!");
+  }
+
+  if (!payload.dateStart || !payload.dateEnd) {
+    throw new Error("Datum is verplicht!");
+  }
+
+  if (payload.dateStart > payload.dateEnd) {
+    throw new Error("De startdatum kan niet na de einddatum liggen!");
+  }
+
+  if (!payload.comments) {
+    throw new Error("Opmerking is verplicht!");
+  }
+
+  await LeaveRequestController.createRequest(payload.reason, payload.comments, payload.dateStart, payload.dateEnd);
 }
+
 
 export default function LeaveRequestForm() {
   //List with reasons for leave.
@@ -90,34 +105,35 @@ export default function LeaveRequestForm() {
   //Form submit.
   const onSubmit = async (data: LeaveRequestFormProps) => {
     setIsLoading(true);
-    // Fetching the daterange and turning it into two separate values.
+  
     const payload = {
       ...data,
       dateStart: dateRange?.from || null,
       dateEnd: dateRange?.to || null,
     };
-
-    console.log("Submitting Payload:", payload);
-
-    fetch("/api/leave-requests", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-        console.log("Success:", responseData);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
+  
+    try {
+      await fetch("/api/leave-requests", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      }).then((response) => {
+        if (!response.ok) {
+          throw new Error('Server error occurred');
+        }
+        return response.json();
+      }).then((responseData) => {
       });
-
-    form.reset();
-    // Resetting the daterange after submitting.
-    setDateRange(undefined);
-    setIsCustomReason(false);
+      
+      form.reset();
+      setDateRange(undefined);
+      setIsCustomReason(false);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  
     setIsLoading(false);
   };
 
@@ -314,13 +330,13 @@ export default function LeaveRequestForm() {
 
           <div className="flex justify-between">
             {/* Close form button. */}
-            <Button type="button" variant="destructive" className='text-red-900 bg-red-500 hover:bg-red-600'>
+            <Button type="button" variant="destructive" className='text-background bg-red-500 hover:bg-red-600'>
               Sluiten
             </Button>
             {/* Submit form button. */}
             <Button
               type="submit"
-              className="text-green-900 bg-green-500 hover:bg-green-600"
+              className="text-background bg-green-500 hover:bg-green-600"
               disabled={isLoading}
             >
               Verlof aanvragen
