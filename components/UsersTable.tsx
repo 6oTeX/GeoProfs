@@ -1,6 +1,4 @@
 "use client";
-import React from "react";
-import { useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -13,9 +11,12 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal, Users } from "lucide-react";
+import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -23,17 +24,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -42,17 +32,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
+import { cn } from "@/utils/cn";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { cn } from "@/utils/cn";
 
 export type User = {
   id: string;
@@ -114,7 +96,7 @@ export const columns: ColumnDef<User>[] = [
         <div
           className={cn(
             status === "Aanwezig" ? "text-green-600" : "text-red-600",
-            "text-right font-bold",
+            "text-right font-bold"
           )}
         >
           {status}
@@ -151,7 +133,7 @@ export function UsersTable({ users }: UsersTableProps) {
   const [filterStatus, setFilterStatus] = useState<string>("alle");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedsection, setSelectedsection] = useState<string>(
-    UserTeams[0] || "",
+    UserTeams[0] || ""
   );
 
   // Dialog states
@@ -165,7 +147,7 @@ export function UsersTable({ users }: UsersTableProps) {
   const [editEmail, setEditEmail] = useState("");
   const [editbalance, setEditbalance] = useState(0);
   const [editStatus, setEditStatus] = useState<"Aanwezig" | "Afwezig">(
-    "Aanwezig",
+    "Aanwezig"
   );
   const [editTeam, setEditTeam] = useState("");
   const [editRole, setEditRole] = useState("");
@@ -182,12 +164,12 @@ export function UsersTable({ users }: UsersTableProps) {
           `${user.employee.firstName} ${user.employee.lastName}`
             .toLowerCase()
             .includes(searchQuery.toLowerCase()) ||
-          user.employee.email.toLowerCase().includes(searchQuery.toLowerCase()),
+          user.employee.email.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
     if (selectedsection) {
       filtered = filtered.filter(
-        (user) => user.section.team === selectedsection,
+        (user) => user.section.team === selectedsection
       );
     }
     return filtered;
@@ -274,7 +256,7 @@ export function UsersTable({ users }: UsersTableProps) {
     };
 
     setInternalUsers((prev) =>
-      prev.map((u) => (u.id === selectedUser.id ? updatedUser : u)),
+      prev.map((u) => (u.id === selectedUser.id ? updatedUser : u))
     );
     setEditMode(false);
   };
@@ -358,7 +340,7 @@ export function UsersTable({ users }: UsersTableProps) {
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext(),
+                            header.getContext()
                           )}
                     </TableHead>
                   );
@@ -379,7 +361,7 @@ export function UsersTable({ users }: UsersTableProps) {
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext(),
+                        cell.getContext()
                       )}
                     </TableCell>
                   ))}

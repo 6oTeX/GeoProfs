@@ -1,8 +1,8 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { User } from "lucide-react";
+import { useState } from "react";
 import DayOverview from "./DayOverview";
-import { Dialog, DialogTrigger, DialogContent, DialogClose } from "./ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogTrigger } from "./ui/dialog";
 
 interface CalenderDay {
   date: Date;
@@ -102,13 +102,13 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
 
   const handlePrevMonth = () => {
     setCurrentDate(
-      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1),
+      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
     );
   };
 
   const handleNextMonth = () => {
     setCurrentDate(
-      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1),
+      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
     );
   };
 
