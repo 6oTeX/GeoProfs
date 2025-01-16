@@ -13,16 +13,24 @@ type Story = StoryObj<typeof Calender>;
 
 // Sample events data with names
 const events = {
-  "2024-12-03": {
-    furloughNames: ["Alice", "Bob"],
-    sickNames: ["Charlie"],
-  },
-  "2024-12-02": {
+  "2025-01-02": {
     furloughNames: ["David"],
     sickNames: ["Eve", "Frank"],
   },
-  "2024-11-29": {
+  "2025-01-03": {
+    furloughNames: ["Alice", "Bob"],
+    sickNames: ["Charlie"],
+  },
+  "2025-01-05": {
     furloughNames: ["David", "Eve", "Frank", "Alice", "Bob", "Charlie"],
+    sickNames: ["Dave", "Jake"],
+  },
+  "2025-01-07": {
+    furloughNames: ["David", "Eve"],
+    sickNames: ["Dave", "Jake"],
+  },
+  "2025-01-08": {
+    furloughNames: ["David",  "Bob", "Charlie"],
     sickNames: ["Dave", "Jake"],
   },
 };
