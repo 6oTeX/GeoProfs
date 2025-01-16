@@ -28,8 +28,15 @@ class LeaveRequestController {
     start_date: Date,
     end_date: Date,
   ) {
-    let response: BlankResponse = {success: false, errors: []};
+    let response: BlankResponse = {success: true, errors: []};
 
+    const current_date = new Date();
+    if (start_date < current_date || end_date < current_date || start_date > end_date)
+    {
+      response.errors.push("Invalid date range");
+      response.success = false;
+      return response;
+    }
 
     // get the auth-session
     const supabase = createClient();
