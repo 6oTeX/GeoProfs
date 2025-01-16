@@ -16,34 +16,40 @@ const events = {
   "2025-01-02": {
     furloughNames: ["David"],
     sickNames: ["Eve", "Frank"],
+    team: "ICT",
   },
   "2025-01-03": {
     furloughNames: ["Alice", "Bob"],
     sickNames: ["Charlie"],
+    team: "HRM",
   },
   "2025-01-05": {
     furloughNames: ["David", "Eve", "Frank", "Alice", "Bob", "Charlie"],
     sickNames: ["Dave", "Jake"],
+    team: "Finance",
   },
   "2025-01-07": {
     furloughNames: ["David", "Eve"],
     sickNames: ["Dave", "Jake"],
+    team: "Finance",
   },
   "2025-01-08": {
-    furloughNames: ["David",  "Bob", "Charlie"],
+    furloughNames: ["David", "Bob", "Charlie"],
     sickNames: ["Dave", "Jake"],
+    team: "ICT",
   },
 };
 
 // Dynamically calculate the counts
 const processedEvents = Object.fromEntries(
-  Object.entries(events).map(([date, { furloughNames, sickNames }]) => [
+  Object.entries(events).map(([date, { furloughNames, sickNames, team }]) => [
     date,
     {
       furlough: furloughNames.length,
       sick: sickNames.length,
       furloughNames,
       sickNames,
+      team,
     },
   ]),
 );
