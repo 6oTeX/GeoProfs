@@ -96,7 +96,7 @@ export const columns: ColumnDef<User>[] = [
         <div
           className={cn(
             status === "Aanwezig" ? "text-green-600" : "text-red-600",
-            "text-right font-bold"
+            "text-right font-bold",
           )}
         >
           {status}
@@ -133,7 +133,7 @@ export function UsersTable({ users }: UsersTableProps) {
   const [filterStatus, setFilterStatus] = useState<string>("alle");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedsection, setSelectedsection] = useState<string>(
-    UserTeams[0] || ""
+    UserTeams[0] || "",
   );
 
   // Dialog states
@@ -147,7 +147,7 @@ export function UsersTable({ users }: UsersTableProps) {
   const [editEmail, setEditEmail] = useState("");
   const [editbalance, setEditbalance] = useState(0);
   const [editStatus, setEditStatus] = useState<"Aanwezig" | "Afwezig">(
-    "Aanwezig"
+    "Aanwezig",
   );
   const [editTeam, setEditTeam] = useState("");
   const [editRole, setEditRole] = useState("");
@@ -164,12 +164,12 @@ export function UsersTable({ users }: UsersTableProps) {
           `${user.employee.firstName} ${user.employee.lastName}`
             .toLowerCase()
             .includes(searchQuery.toLowerCase()) ||
-          user.employee.email.toLowerCase().includes(searchQuery.toLowerCase())
+          user.employee.email.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     }
     if (selectedsection) {
       filtered = filtered.filter(
-        (user) => user.section.team === selectedsection
+        (user) => user.section.team === selectedsection,
       );
     }
     return filtered;
@@ -256,7 +256,7 @@ export function UsersTable({ users }: UsersTableProps) {
     };
 
     setInternalUsers((prev) =>
-      prev.map((u) => (u.id === selectedUser.id ? updatedUser : u))
+      prev.map((u) => (u.id === selectedUser.id ? updatedUser : u)),
     );
     setEditMode(false);
   };
@@ -340,7 +340,7 @@ export function UsersTable({ users }: UsersTableProps) {
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -361,7 +361,7 @@ export function UsersTable({ users }: UsersTableProps) {
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}

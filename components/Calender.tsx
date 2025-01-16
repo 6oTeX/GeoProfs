@@ -3,6 +3,13 @@ import { User } from "lucide-react";
 import { useState } from "react";
 import DayOverview from "./DayOverview";
 import { Dialog, DialogClose, DialogContent, DialogTrigger } from "./ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface CalenderDay {
   date: Date;
@@ -20,12 +27,14 @@ interface CalenderProps {
       sick: number;
       furloughNames: string[];
       sickNames: string[];
+      team: string;
     };
   };
 }
 
 const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [selectedTeam, setSelectedTeam] = useState<string>("All");
 
   const months = [
     "januari",
@@ -55,7 +64,7 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
 
     const startDate = new Date(startOfMonth);
     const dayOfWeek = startDate.getDay();
-    const offset = dayOfWeek === 0 ? 6 : dayOfWeek - 1; // Shift Sunday to the end
+    const offset = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
     startDate.setDate(startDate.getDate() - offset);
 
     const endDate = new Date(endOfMonth);
@@ -71,20 +80,36 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
       d.setDate(d.getDate() + 1)
     ) {
       const dateKey = getDateKey(d);
-      const event = events[dateKey] || {
+      const allEvents = events[dateKey] || {
         furlough: 0,
         sick: 0,
         furloughNames: [],
         sickNames: [],
+        team: "None",
       };
+
+      // Filter only the names and counts, not the grid
+      const filteredFurloughNames =
+        selectedTeam === "All"
+          ? allEvents.furloughNames
+          : allEvents.furloughNames.filter(
+              (name) => allEvents.team === selectedTeam,
+            );
+
+      const filteredSickNames =
+        selectedTeam === "All"
+          ? allEvents.sickNames
+          : allEvents.sickNames.filter(
+              (name) => allEvents.team === selectedTeam,
+            );
 
       dates.push({
         date: new Date(d),
         isCurrentMonth: d.getMonth() === date.getMonth(),
-        furlough: event.furlough,
-        sick: event.sick,
-        furloughNames: event.furloughNames,
-        sickNames: event.sickNames,
+        furlough: filteredFurloughNames.length,
+        sick: filteredSickNames.length,
+        furloughNames: filteredFurloughNames,
+        sickNames: filteredSickNames,
       });
     }
 
@@ -102,13 +127,13 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
 
   const handlePrevMonth = () => {
     setCurrentDate(
-      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
+      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1),
     );
   };
 
   const handleNextMonth = () => {
     setCurrentDate(
-      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
+      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1),
     );
   };
 
@@ -122,55 +147,45 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
     setCurrentDate(new Date(newYear, currentDate.getMonth(), 1));
   };
 
+  const teams = Array.from(
+    new Set(Object.values(events).map((event) => event.team)),
+  ).filter(Boolean);
+
   return (
     <div className="p-2 sm:p-4">
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row sm:justify-between items-center mb-4">
         <div className="mb-2 sm:mb-0">
           <h2 className="text-xl sm:text-2xl font-bold">
-            {currentDate.toLocaleString("NL", { month: "long" })}{" "}
+            {currentDate.toLocaleString("nl-NL", { month: "long" })}{" "}
             {currentDate.getFullYear()}
           </h2>
         </div>
         <div className="flex flex-wrap items-center space-x-2">
-          <select
-            value={currentDate.getMonth()}
-            onChange={handleMonthChange}
-            className="border rounded px-2 py-1 h-10 mb-2 sm:mb-0"
-          >
-            {months.map((month, index) => (
-              <option key={index} value={index}>
-                {month}
-              </option>
-            ))}
-          </select>
-          <input
-            type="number"
-            value={currentDate.getFullYear()}
-            onChange={handleYearChange}
-            className="border rounded px-2 py-1 w-20 h-10 mb-2 sm:mb-0"
-          />
-          <Button
-            onClick={handlePrevMonth}
-            variant="default"
-            className="mb-2 sm:mb-0"
-          >
-            Vorige
-          </Button>
-          <Button
-            onClick={handleNextMonth}
-            variant="default"
-            className="mb-2 sm:mb-0"
-          >
-            Volgende
-          </Button>
+          {/* Team Filter */}
+          <Select value={selectedTeam} onValueChange={setSelectedTeam}>
+            <SelectTrigger className="w-36">
+              <SelectValue placeholder="Filter op team" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="All">Alle teams</SelectItem>
+              {teams.map((team, index) => (
+                <SelectItem key={index} value={team}>
+                  {team}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Button onClick={handlePrevMonth}>Vorige</Button>
+          <Button onClick={handleNextMonth}>Volgende</Button>
         </div>
       </div>
 
       {/* Days of the Week */}
       <div className="grid grid-cols-7 text-center font-bold">
         {["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"].map((dayName) => (
-          <div key={dayName} className="py-2 text-xs sm:text-base">
+          <div key={dayName} className="py-2">
             {dayName}
           </div>
         ))}
