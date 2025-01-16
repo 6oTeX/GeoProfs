@@ -1,5 +1,6 @@
 "use server";
 import { createClient } from "@/utils/supabase/server";
+import UserController from "./user-controller";
 
 /**
  * @brief A controller which has access to the leave requests.
@@ -9,6 +10,17 @@ import { createClient } from "@/utils/supabase/server";
  * @file leave-request-controller.ts
  * @author N.Janssen
  */
+interface BlankResponse {
+  success: boolean,
+  errors: string[]
+}
+
+interface DataResponse {
+  success: boolean,
+  errors: string[],
+  data: any
+}
+
 class LeaveRequestController {
   public static async createRequest(
     reason: string,
@@ -16,8 +28,8 @@ class LeaveRequestController {
     start_date: Date,
     end_date: Date,
   ) {
-    let success = true;
-    let errors_txt: string[] = [];
+    let response: BlankResponse = {success: false, errors: []};
+
 
     // get the auth-session
     const supabase = createClient();
@@ -25,8 +37,8 @@ class LeaveRequestController {
       data: { user },
     } = await supabase.auth.getUser();
     if (!user) {
-      errors_txt.push("No auth-session");
-      success = false;
+      response.errors.push("No auth-session");
+      response.success = false;
     } else {
       // insert the request
       const { error } = await supabase.from("leave_requests").insert({
@@ -39,11 +51,11 @@ class LeaveRequestController {
 
       // check if insert was successful
       if (error) {
-        errors_txt.push(error.message);
-        success = false;
+        response.errors.push(error.message);
+        response.success = false;
       }
     }
-    return { success, errors_txt };
+    return response;
   }
 
   /**
@@ -54,9 +66,7 @@ class LeaveRequestController {
    * @returns errors
    */
   public static async getMyRequests() {
-    let success = true;
-    let errors_txt: string[] = [];
-    let returnData = {};
+    let response: DataResponse = {success: true,errors: [],data: {}};
 
     // get the auth-session
     const supabase = createClient();
@@ -64,8 +74,8 @@ class LeaveRequestController {
       data: { user },
     } = await supabase.auth.getUser();
     if (!user) {
-      errors_txt.push("No auth-session");
-      success = false;
+      response.errors.push("No auth-session");
+      response.success = false;
     } else {
       // insert the request
       const { data, error } = await supabase
@@ -74,14 +84,49 @@ class LeaveRequestController {
         .eq("user_id", user.id);
       // check if fetch was successful
       if (data) {
-        returnData = data;
+        response.data = data;
       } else if (error) {
-        errors_txt.push(error.message);
-        success = false;
+        response.errors.push(error.message);
+        response.success = false;
       }
     }
-    console.log(returnData);
-    return { success, returnData, errors_txt };
+
+    // get user data
+    for (let i = 0; i < response.data.length; ++i)
+    {
+      const user = await supabase.from("profiles").select("*").eq("id",response.data[i].user_id);
+      if (user.error)
+      {
+        response.errors.push(user.error.message);
+        response.errors.push("Could not fetch user data");
+        response.success = false;
+      }
+      else
+      {
+        response.data[i].userData = user.data[0];
+      }
+      if (response.data[i].reviewed_by)
+      {
+        const reviewByUser = await supabase.from("profiles").select('*').eq("id",response.data[i].reviewed_by);
+        if (reviewByUser.error)
+        {
+          response.errors.push(reviewByUser.error.message);
+          response.errors.push("Could not fetch reviewer user data");
+          response.success = false;
+        }
+        else
+        {
+          delete reviewByUser.data[0].saldo;
+          response.data[i].reviewByUser = reviewByUser.data[0];
+        }
+      }
+      else
+      {
+        response.data[i].reviewByUser = {};
+      }
+    }
+    console.log(response.data);
+    return response;
   }
 
   public static async getMyRequestsFiltered(state: string) {
@@ -114,6 +159,42 @@ class LeaveRequestController {
     }
 
     return { success, returnData, errors_txt };
+  }
+
+  public static async respond(id: string,to: string, response_text: string) : Promise<BlankResponse>
+  {
+    let response: BlankResponse = {success: true, errors: []};
+
+    // get userdata
+    const supabase = createClient();
+    
+    // get leave_request to accept
+    const request = await supabase.from("leave_requests").select("*").eq("id",id);
+    if (request.error)
+    {
+      response.success = false;
+      response.errors.push(request.error.message);
+      return response;
+    }
+    if (request.data.length <= 0)
+    {
+      response.success = false
+      response.errors.push(`Could not find leave request with id: ${id}`);
+      return response;
+    }
+
+    // check if user is manager of the user from the request
+    if (await !UserController.isManagerOf(request.data[0].user_id))
+    {
+      response.success = false;
+      response.errors.push(`You do not have permission to accept or decline this request`)
+      return response;
+    }
+
+    // update the request
+    await supabase.from("leave_requests").update({state: to,response: response_text}).eq("id",id);
+    
+    return response;
   }
 }
 
