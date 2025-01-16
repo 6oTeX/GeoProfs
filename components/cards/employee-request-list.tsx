@@ -3,7 +3,16 @@ import { Separator } from "@/components/ui/separator"
 import EmployeeRequestCard from "./employee-request-card";
 
 export default async function EmployeeRequestList() {
-    const employeeRequestList = await LeaveRequestController.getMyRequests();
+    // Check if user is a manager.
+    const isManager = true;
+    var requestsToGather;
+    if (isManager)  {
+        requestsToGather = LeaveRequestController.getMyRequests();
+        // requestsToGet = LeaveRequestController.getRequestsByDepartment();
+    } else {
+        requestsToGather = LeaveRequestController.getMyRequests();
+    }
+    const employeeRequestList = await requestsToGather;
     const currentDate = new Date();
     let sortedRequests: any[] = [];
     if (Array.isArray(employeeRequestList.data))
@@ -55,6 +64,7 @@ export default async function EmployeeRequestList() {
                             <Separator
                                 key={`separator-${index}`}
                                 className="my-4 border-t-2"
+                                // Label based on type of separator.
                                 label={
                                     element.type === 'active'
                                     ? 'Huidige Verloven'
@@ -69,10 +79,12 @@ export default async function EmployeeRequestList() {
                     }
 
                     return (
+                        // Render the request card.
                         <EmployeeRequestCard
                             key={element.id}
                             element={element}
                             currentDate={currentDate}
+                            isManager={isManager}
                         />
                     );
                 })

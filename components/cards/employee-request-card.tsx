@@ -3,13 +3,15 @@
 import { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Modal } from '@/components/ui/modal';
+import { FormField, FormItem } from '../ui/form';
 
 interface EmployeeRequestCardProps {
     element: any;
     currentDate: Date;
+    isManager: Boolean;
 }
 
-export default function EmployeeRequestCard({ element, currentDate }: EmployeeRequestCardProps) {
+export default function EmployeeRequestCard({ element, currentDate, isManager }: EmployeeRequestCardProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const showResponse = () => {
@@ -62,6 +64,7 @@ export default function EmployeeRequestCard({ element, currentDate }: EmployeeRe
                 </div>
             </Card>
 
+            {/* Modal with leave request info */}
             {isModalOpen && (
                 <Modal onClose={closeModal} title="Verlofaanvraag">
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4">
@@ -90,19 +93,28 @@ export default function EmployeeRequestCard({ element, currentDate }: EmployeeRe
                                     <p>{element.state || "Niet beschikbaar."}</p>
                                 </div>
                                 <div>
-                                    <h3 className="text-lg font-semibold">Reactie:</h3>
-                                    <p>Beoordeeld door: {element.state === 'submitted' && !element.reviewed_by 
-                                            ? "Nog geen beoordeling" 
-                                            : element.reviewByUser?.full_name || "Niet beschikbaar."}
-                                    </p>
-                                    <p>Reactie: {element.state === 'submitted' && !element.response 
-                                            ? "Nog geen reactie" 
-                                            : element.response || "Niet beschikbaar."}
-                                    </p>
-                                </div>
-                                <div>
                                     <p>Verlof aangevraagd op: {new Intl.DateTimeFormat('en-GB').format(element.createdAtDate)}</p>
                                 </div>
+                                {/* For manager display a review form. */}
+                                {isManager 
+                                    ?   <div>
+                                            <h3 className="text-lg font-semibold">Beoordeel:</h3>
+                                            {/* Accept / Decline */}
+                                            {/* Enter response text. */}
+                                        </div>
+                                        // For employee display the response.
+                                    :   <div>
+                                            <h3 className="text-lg font-semibold">Reactie:</h3>
+                                            <p>Beoordeeld door: {element.state === 'submitted' && !element.reviewed_by 
+                                                    ? "Nog geen beoordeling" 
+                                                    : element.reviewByUser?.full_name || "Niet beschikbaar."}
+                                            </p>
+                                            <p>Reactie: {element.state === 'submitted' && !element.response 
+                                                    ? "Nog geen reactie" 
+                                                    : element.response || "Niet beschikbaar."}
+                                            </p>
+                                        </div>
+                                }
                             </div>
                             <button
                                 className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg"
