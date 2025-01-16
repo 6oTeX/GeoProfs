@@ -198,9 +198,9 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
             } else {
               size = 12;
             }
-            let afwezig = null;
+            let absent = null;
             if (day.furlough || day.sick) {
-              afwezig = (
+              absent = (
                 <div className="flex flex-col w-6/12 sm:w-auto text-right justify-end items-center h-full divide-y divide-gray-500">
                   {day.furlough ? (
                     <div className="flex flex-row justify-center sm:text-base text-xs items-center text-red-600 px-1">
@@ -225,7 +225,7 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
                     <span className="font-bold text-xs sm:text-base flex w-full sm:w-10/12">
                       {day.date.getDate()}
                     </span>
-                    {afwezig}
+                    {absent}
                   </div>
                 </DialogTrigger>
                 <DialogContent>
