@@ -48,7 +48,7 @@ async function serverWrapper(payload: LeaveRequestFormProps) {
       payload.reason,
       payload.comments,
       payload.dateStart,
-      payload.dateEnd,
+      payload.dateEnd
     );
   }
 }
@@ -195,7 +195,7 @@ export default function LeaveRequestForm() {
               const [isPopoverOpen, setPopoverOpen] = useState(false);
 
               return (
-                <FormItem className="flex flex-col">
+                <FormItem className="flex flex-col bg-background">
                   <FormLabel>Datum</FormLabel>
                   {/* Opening the popup */}
                   <Popover open={isPopoverOpen} onOpenChange={setPopoverOpen}>
@@ -205,7 +205,7 @@ export default function LeaveRequestForm() {
                           variant={"outline"}
                           className={cn(
                             "w-full pl-3 text-left font-normal",
-                            !dateRange && "text-muted-foreground",
+                            !dateRange && "text-muted-foreground"
                           )}
                         >
                           {/* Displaying the selected date(s) based on if 1 or 2 dates have been selected. */}
@@ -317,14 +317,14 @@ export default function LeaveRequestForm() {
             <Button
               type="button"
               variant="destructive"
-              className="text-red-900 bg-red-500 hover:bg-red-600"
+              className="text-secondary font-medium bg-red-500 hover:bg-red-600"
             >
               Sluiten
             </Button>
             {/* Submit form button. */}
             <Button
               type="submit"
-              className="text-green-900 bg-green-500 hover:bg-green-600"
+              className="text-secondary font-medium bg-emerald-500 hover:bg-emerald-600"
               disabled={isLoading}
             >
               Verlof aanvragen
