@@ -318,7 +318,7 @@ export default function LeaveRequestForm() {
                 <FormLabel>Opmerkingen</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Type your message here"
+                    placeholder="Voer hier uw opmerkingen in..."
                     className="resize-none"
                     {...field}
                   />
