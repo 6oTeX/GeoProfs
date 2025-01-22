@@ -61,7 +61,6 @@ class LeaveRequestController {
         response.errors.push(error.message);
         response.success = false;
       }
-
     }
     return response;
   }

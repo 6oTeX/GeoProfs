@@ -1,22 +1,5 @@
 "use client";
-import Link from "next/link";
-// import { Logo } from "@/components/icons/Logo";
-import {
-  Home,
-  LineChart,
-  Package,
-  Package2,
-  Search,
-  ShoppingCart,
-  Users2,
-  Aperture,
-} from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,20 +8,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { Input } from "@/components/ui/input";
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Aperture, Menu, Search } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+
 import { getProfileAction, signOutAction } from "@/app/actions";
 
-interface profileProps {
+interface ProfileProps {
   updated_at: Date;
   username: string;
   full_name: string;
@@ -46,7 +28,8 @@ interface profileProps {
 }
 
 const Navbar = () => {
-  const [profileData, setProfileData] = useState<profileProps | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [profileData, setProfileData] = useState<ProfileProps | null>(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -58,12 +41,13 @@ const Navbar = () => {
         console.error("Error fetching profile data:", error);
       }
     };
-    fetchProfile().then((r) => console.log(r));
+    fetchProfile();
   }, []);
 
   const logout = () => {
-    signOutAction().then((r) => console.log(r));
-    console.log("Logged out successfully");
+    signOutAction().then(() => {
+      console.log("Logged out successfully");
+    });
   };
 
   const avatarUrl = useMemo(() => {
@@ -75,50 +59,61 @@ const Navbar = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex flex-col border-b bg-background">
-      <div className="flex h-14 items-center gap-4 px-4 sm:px-6">
-        <nav className="flex items-center space-x-16">
-          <Link
-            href="#"
-            className="flex h-9 w-9 items-center justify-center rounded-lg  text-foreground"
-          >
-            {/* <Logo /> */}
-            <span className="sr-only">Dashboard</span>
-            <Aperture className="h-5 w-5" />
-          </Link>
-          <Link
-            href="#"
-            className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-          >
-            <span>Dashboard</span>
-          </Link>
-          <Link
-            href="#"
-            className="flex h-9 w-9 items-center justify-center rounded-lg  text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-          >
-            <span>Calender</span>
-          </Link>
-          <Link
-            href="#"
-            className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-          >
-            <span>Status</span>
-          </Link>
-          <Link
-            href="#"
-            className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-          >
-            <span>Aanvragen</span>
-          </Link>
+      {/* Navbar Header */}
+      <div className="flex h-14 items-center px-4 sm:px-6">
+        {/* Logo */}
+        <Link
+          href="#"
+          className="flex h-9 w-9 items-center justify-center rounded-lg text-primary-foreground"
+        >
+          <Aperture className="h-5 w-5 text-foreground" />
+          <span className="sr-only">Dashboard</span>
+        </Link>
+
+        {/* Desktop Navigation Links */}
+        <nav className="hidden md:flex items-center space-x-6 ml-6">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                href="#"
+                className="flex h-9 items-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
+              >
+                Dashboard
+                <span className="sr-only">Dashboard</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">Dashboard</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                href="#"
+                className="flex h-9 items-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
+              >
+                Kalender
+                <span className="sr-only">Kalender</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">Kalender</TooltipContent>
+          </Tooltip>
+          {/* Add more navigation items as needed */}
         </nav>
-        <div className="flex ml-auto space-x-4">
-          <div className="relative ml-auto flex-1 md:grow-0 sm:hidden md:block">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search..."
-              className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
-            />
-          </div>
+
+        {/* Spacer */}
+        <div className="flex-1"></div>
+
+        {/* Search Input (Desktop Only) */}
+        <div className="relative hidden md:block">
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            type="search"
+            placeholder="Zoeken..."
+            className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
+          />
+        </div>
+
+        {/* Profile Dropdown */}
+        <div className="hidden md:flex items-center ml-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -126,48 +121,40 @@ const Navbar = () => {
                 size="icon"
                 className="overflow-hidden rounded-full"
               >
-                <Image
+                <img
                   src={avatarUrl}
-                  width={36}
-                  height={36}
                   alt="Avatar"
-                  className="overflow-hidden rounded-full"
+                  className="h-8 w-8 rounded-full"
                 />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>
-                Welkom,&nbsp;{profileData?.full_name || "John Doe"}
+                Welkom, {profileData?.full_name || "John Doe"}
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
+              <DropdownMenuItem>Instellingen</DropdownMenuItem>
+              <DropdownMenuItem>Hulp</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
+              <DropdownMenuItem onClick={logout}>Uitloggen</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-      </div>
-      <div className="border-t px-4 py-2 sm:px-6">
-        <Breadcrumb className="hidden md:flex">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="#">Dashboard</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="#">Orders</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Recent Orders</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden ml-auto"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          <Menu
+            className={`h-6 w-6 transition-transform duration-200 ${
+              isMobileMenuOpen ? "rotate-90" : ""
+            }`}
+          />
+          <span className="sr-only">
+            {isMobileMenuOpen ? "Close Menu" : "Open Menu"}
+          </span>
+        </button>
       </div>
     </header>
   );

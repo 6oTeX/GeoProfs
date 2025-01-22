@@ -71,7 +71,7 @@ export default function EmployeeRequestCard({ element, currentDate }: EmployeeRe
                                     <h3 className="text-lg font-semibold">Reden:</h3>
                                     <p>{element.reason || "Niet beschikbaar."}</p>
                                 </div>
-                                <div>   
+                                <div>
                                     <h3 className="text-lg font-semibold">Opmerking:</h3>
                                     <p>{element.explanation || "Niet beschikbaar."}</p>
                                 </div>
@@ -91,12 +91,12 @@ export default function EmployeeRequestCard({ element, currentDate }: EmployeeRe
                                 </div>
                                 <div>
                                     <h3 className="text-lg font-semibold">Reactie:</h3>
-                                    <p>Beoordeeld door: {element.state === 'submitted' && !element.reviewed_by 
-                                            ? "Nog geen beoordeling" 
+                                    <p>Beoordeeld door: {element.state === 'submitted' && !element.reviewed_by
+                                            ? "Nog geen beoordeling"
                                             : element.reviewByUser?.full_name || "Niet beschikbaar."}
                                     </p>
-                                    <p>Reactie: {element.state === 'submitted' && !element.response 
-                                            ? "Nog geen reactie" 
+                                    <p>Reactie: {element.state === 'submitted' && !element.response
+                                            ? "Nog geen reactie"
                                             : element.response || "Niet beschikbaar."}
                                     </p>
                                 </div>
