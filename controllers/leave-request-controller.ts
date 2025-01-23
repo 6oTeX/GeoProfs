@@ -2,7 +2,6 @@
 import { createClient } from "@/utils/supabase/server";
 import UserController from "./user-controller";
 
-
 // helper function to calculate the amount of workhours in a set date range
 function calculateWorkHours(startDate: string, endDate: string) {
   // Parse the input dates
@@ -10,17 +9,21 @@ function calculateWorkHours(startDate: string, endDate: string) {
   const end = new Date(endDate);
 
   if (!start || !end || start > end) {
-      return -1;
+    return -1;
   }
 
   let totalWorkHours = 0;
 
-  for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
-      const day = date.getDay();
-      // Monday to Friday are workdays (1 to 5)
-      if (day >= 1 && day <= 5) {
-          totalWorkHours += 8;
-      }
+  for (
+    let date = new Date(start);
+    date <= end;
+    date.setDate(date.getDate() + 1)
+  ) {
+    const day = date.getDay();
+    // Monday to Friday are workdays (1 to 5)
+    if (day >= 1 && day <= 5) {
+      totalWorkHours += 8;
+    }
   }
 
   return totalWorkHours;
@@ -35,14 +38,14 @@ function calculateWorkHours(startDate: string, endDate: string) {
  * @author N.Janssen
  */
 interface BlankResponse {
-  success: boolean,
-  errors: string[]
+  success: boolean;
+  errors: string[];
 }
 
 interface DataResponse {
-  success: boolean,
-  errors: string[],
-  data: any
+  success: boolean;
+  errors: string[];
+  data: any;
 }
 
 class LeaveRequestController {
@@ -50,20 +53,23 @@ class LeaveRequestController {
     reason: string,
     explanation: string,
     start_date: Date,
-    end_date: Date,
+    end_date: Date
   ) {
-    let response: BlankResponse = {success: true, errors: []};
+    let response: BlankResponse = { success: true, errors: [] };
 
     const current_date = new Date();
-    if (start_date < current_date || end_date < current_date || start_date > end_date)
-    {
+    if (
+      start_date < current_date ||
+      end_date < current_date ||
+      start_date > end_date
+    ) {
       response.errors.push("Invalid date range");
       response.success = false;
       return response;
     }
 
     // get the auth-session
-    const supabase = createClient();
+    const supabase = await createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -89,13 +95,12 @@ class LeaveRequestController {
     return response;
   }
 
-  public static async getRequestsByDepartment(department_id: string): Promise<DataResponse>
-  {
-    let response: DataResponse = {success: true, errors: [], data: {}};
+  public static async getRequestsByDepartment(
+    department_id: string
+  ): Promise<DataResponse> {
+    let response: DataResponse = { success: true, errors: [], data: {} };
 
     const supabase = createClient();
-
-
 
     return response;
   }
@@ -108,10 +113,10 @@ class LeaveRequestController {
    * @returns errors
    */
   public static async getMyRequests() {
-    let response: DataResponse = {success: true,errors: [],data: {}};
+    let response: DataResponse = { success: true, errors: [], data: {} };
 
     // get the auth-session
-    const supabase = createClient();
+    const supabase = await createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -134,36 +139,32 @@ class LeaveRequestController {
     }
 
     // get user data
-    for (let i = 0; i < response.data.length; ++i)
-    {
-      const user = await supabase.from("profiles").select("*").eq("id",response.data[i].user_id);
-      if (user.error)
-      {
+    for (let i = 0; i < response.data.length; ++i) {
+      const user = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", response.data[i].user_id);
+      if (user.error) {
         response.errors.push(user.error.message);
         response.errors.push("Could not fetch user data");
         response.success = false;
-      }
-      else
-      {
+      } else {
         response.data[i].userData = user.data[0];
       }
-      if (response.data[i].reviewed_by)
-      {
-        const reviewByUser = await supabase.from("profiles").select('*').eq("id",response.data[i].reviewed_by);
-        if (reviewByUser.error)
-        {
+      if (response.data[i].reviewed_by) {
+        const reviewByUser = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", response.data[i].reviewed_by);
+        if (reviewByUser.error) {
           response.errors.push(reviewByUser.error.message);
           response.errors.push("Could not fetch reviewer user data");
           response.success = false;
-        }
-        else
-        {
+        } else {
           delete reviewByUser.data[0].saldo;
           response.data[i].reviewByUser = reviewByUser.data[0];
         }
-      }
-      else
-      {
+      } else {
         response.data[i].reviewByUser = {};
       }
     }
@@ -176,7 +177,7 @@ class LeaveRequestController {
     let returnData = {};
 
     // get the auth-session
-    const supabase = createClient();
+    const supabase = await createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -202,107 +203,111 @@ class LeaveRequestController {
     return { success, returnData, errors_txt };
   }
 
-  public static async getMyManagedRequests(): Promise<DataResponse>
-  {
-    const supabase = createClient();
-    let response: DataResponse = {success: false, errors: [], data: {}};
-    
+  public static async getMyManagedRequests(): Promise<DataResponse> {
+    const supabase = await createClient();
+    let response: DataResponse = { success: false, errors: [], data: {} };
+
     // get user information
     const { user, error } = await UserController.getUser();
-    if (error)
-    {
+    if (error) {
       response.errors.push(error.message);
       response.success = false;
       return response;
     }
-    if (!user)
-    {
+    if (!user) {
       response.success = false;
       response.errors.push("No auth-session");
       return response;
     }
 
     // get the departments you are managing
-    const department = await supabase.from("departments").select("*").eq("manager_id",user.id);
-    if (department.error)
-    {
+    const department = await supabase
+      .from("departments")
+      .select("*")
+      .eq("manager_id", user.id);
+    if (department.error) {
       response.success = false;
       response.errors.push(department.error.message);
       return response;
     }
 
-    for (let i = 0;i < department.data.length; ++i)
-    {
+    for (let i = 0; i < department.data.length; ++i) {
       // get the users you are managing
-      const users = await supabase.from("profiles").select("*").eq("department_id",department.data[i].id);
-      if (users.error)
-      {
+      const users = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("department_id", department.data[i].id);
+      if (users.error) {
         response.success = false;
         response.errors.push(users.error.message);
-      }
-      else
-      {
-        for (let j = 0; j < users.data.length; ++i)
-        {
-          const requests = await supabase.from("leave_requests").select("*").eq("user_id",users.data[j].id);
-          if (requests.error)
-          {
+      } else {
+        for (let j = 0; j < users.data.length; ++i) {
+          const requests = await supabase
+            .from("leave_requests")
+            .select("*")
+            .eq("user_id", users.data[j].id);
+          if (requests.error) {
             response.errors.push(requests.error.message);
             response.success = false;
-          }
-          else
-          {
-
+          } else {
           }
         }
       }
     }
 
-
     return response;
   }
 
-  public static async respond(id: string,to: string, response_text: string) : Promise<BlankResponse>
-  {
-    let response: BlankResponse = {success: true, errors: []};
+  public static async respond(
+    id: string,
+    to: string,
+    response_text: string
+  ): Promise<BlankResponse> {
+    let response: BlankResponse = { success: true, errors: [] };
 
     // get userdata
-    const supabase = createClient();
-    
+    const supabase = await createClient();
+
     // get leave_request to accept
-    const request = await supabase.from("leave_requests").select("*").eq("id",id);
-    if (request.error)
-    {
+    const request = await supabase
+      .from("leave_requests")
+      .select("*")
+      .eq("id", id);
+    if (request.error) {
       response.success = false;
       response.errors.push(request.error.message);
       return response;
     }
-    if (request.data.length <= 0)
-    {
-      response.success = false
+    if (request.data.length <= 0) {
+      response.success = false;
       response.errors.push(`Could not find leave request with id: ${id}`);
       return response;
     }
 
     // check if user is manager of the user from the request
-    if (await !UserController.isManagerOf(request.data[0].user_id))
-    {
+    if (await !UserController.isManagerOf(request.data[0].user_id)) {
       response.success = false;
-      response.errors.push(`You do not have permission to accept or decline this request`)
+      response.errors.push(
+        `You do not have permission to accept or decline this request`
+      );
       return response;
     }
 
     // update the request
-    await supabase.from("leave_requests").update({state: to,response: response_text}).eq("id",id);
-    
-    
+    await supabase
+      .from("leave_requests")
+      .update({ state: to, response: response_text })
+      .eq("id", id);
+
     // update saldo
-    if (to == "accepted")
-    {
+    if (to == "accepted") {
       // calculate saldo
-      console.log("Editing saldo")
-      const diff = (new Date(request.data[0].start_date).getTime() - new Date(request.data[0].end_date).getTime()) / (60 * 60 * 1000 * 3);
-      console.log(diff);    
+      console.log("Editing saldo");
+      const diff =
+        (new Date(request.data[0].start_date).getTime() -
+          new Date(request.data[0].end_date).getTime()) /
+        (60 * 60 * 1000 * 3);
+      console.log(diff);
     }
 
     return response;
