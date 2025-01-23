@@ -246,7 +246,7 @@ const acceptRequest = async () => {
                                     type="button"
                                     onClick={() => handleFormSubmit('accepted')}
                                     disabled={isLoading || !review.trim()}
-                                    title={!review.trim() ? 'Response required' : ''}
+                                    title={!review.trim() ? 'Reactie is verplicht!' : ''}
                                     className={`mt-4 px-4 py-2 bg-green-500 text-white rounded-lg ${
                                         isLoading || !review.trim() ? 'opacity-50 cursor-not-allowed' : 'hover:bg-green-700'
                                     }`}
@@ -258,7 +258,7 @@ const acceptRequest = async () => {
                                     type="button"
                                     onClick={() => handleFormSubmit('declined')}
                                     disabled={isLoading || !review.trim()}
-                                    title={!review.trim() ? 'Response required' : ''}
+                                    title={!review.trim() ? 'Reactie is verplicht!' : ''}
                                     className={`mt-4 px-4 py-2 bg-red-500 text-white rounded-lg ${
                                         isLoading || !review.trim() ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-700'
                                     }`}
