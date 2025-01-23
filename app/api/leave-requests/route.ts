@@ -1,26 +1,42 @@
 import LeaveRequestController from "@/controllers/leave-request-controller";
+import { LeaveRequest } from "@/models/leave_request";
+import { User } from "@/models/user";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  const data = await request.json();
+  const submitData = await request.json();
 
   let reason: string;
-  if (data.reason == "Anders") {
-    reason = data.customReason;
+  if (submitData.reason == "Anders") {
+    reason = submitData.customReason;
   } else {
-    reason = data.reason;
+    reason = submitData.reason;
   }
+  
 
-  const response = await LeaveRequestController.createRequest(
-    reason,
-    data.comments,
-    new Date(data.dateStart),
-    new Date(data.dateEnd),
-  );
+  const user = new User();
+  await user.pull();
+  
+  // create a new, empty request object
+  const req = new LeaveRequest();
+  const data = req.get();
+
+  // set the new data
+  data.start_date = submitData.dateStart;
+  data.end_date = submitData.dateEnd;
+  data.reason = reason;
+  data.explanation = submitData.comments;
+  data.user_id = user.get().id;
+
+  // push the data to the db
+  req.set(data);
+  await req.push();
+
+  console.log("REQUEST MADE");
 
   return NextResponse.json({
-    success: response.success,
-    errors: response.errors_txt,
+    success: true,
+    errors: [],
   });
 }
 

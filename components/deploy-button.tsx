@@ -1,7 +1,7 @@
 "use client";
-import { Button } from "./ui/button";
-import { toast } from "react-toastify";
 import { supabaseClient } from "@/lib/supabaseClient";
+import { toast } from "react-toastify";
+import { Button } from "./ui/button";
 
 export default function DeployButton() {
   const handleInserts = (payload: { new: any }) => {
