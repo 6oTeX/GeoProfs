@@ -1,6 +1,5 @@
-import LeaveRequestController from "@/controllers/leave-request-controller";
+import { LeaveRequest } from "@/models/leave_request";
 import { NextRequest, NextResponse } from "next/server";
-import translate from "translate";
 
 interface ContextParams {
   params: {
@@ -8,9 +7,19 @@ interface ContextParams {
   };
 }
 
-export async function GET(request: NextRequest, context: ContextParams) {
-    const {id} = context.params;
+export async function PUT(request: NextRequest, context: ContextParams) {
+  const {id} = context.params;
+  const body = await request.json();
 
-    const response = await LeaveRequestController.respond(id,"accepted","Of course my friend");
-  return NextResponse.json(response);
+  // get the leave request in question
+  const leave_request = new LeaveRequest(id);
+  await leave_request.pull();
+
+  // accept the request
+  leave_request.accept(body.response);
+
+  // push the new request state to supabase
+  await leave_request.push();
+
+  return NextResponse.json({success: true, errors: []});
 }
