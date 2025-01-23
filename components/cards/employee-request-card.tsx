@@ -28,15 +28,24 @@ export default function EmployeeRequestCard({
   const [review, setReview] = useState('');
   const [status, setStatus] = useState('');
 
+//   Open modal
   const showResponse = () => {
     setIsModalOpen(true); // Open the modal to show detailed information
   };
 
+//   Close modal
   const closeModal = () => {
     setIsModalOpen(false); // Close the modal
   };
 
-  const acceptRequest = async () => {
+// Accept request
+const acceptRequest = async () => {
+    // Check if response is filled in
+    if (!review.trim()) {
+      alert("Response is required before accepting the request.");
+      return;
+    }
+  
     setIsLoading(true);
     const payload = {
       requestId: element.id,
@@ -45,6 +54,7 @@ export default function EmployeeRequestCard({
     };
     console.log(payload);
     try {
+    // Send request to accept the leave request
       const response = await fetch(`/api/leave-requests/${element.id}/accept`, { 
         method: "POST",
         headers: {
@@ -52,25 +62,32 @@ export default function EmployeeRequestCard({
         },
         body: JSON.stringify(payload),
       });
-
+  
       if (!response.ok) {
         throw new Error('Server error occurred');
       }
-
+  
       await response.json();
       alert("Request Accepted");
-
+  
       setReview('');
       setStatus('accepted');
     } catch (error) {
       console.error("Error:", error);
       alert("Failed to accept request");
     }
-
+  
     setIsLoading(false);
   };
-
+  
+  // Decline request
   const declineRequest = async () => {
+    // Check if response is filled in
+    if (!review.trim()) {
+      alert("Response is required before declining the request.");
+      return;
+    }
+  
     setIsLoading(true);
     const payload = {
       requestId: element.id,
@@ -79,6 +96,7 @@ export default function EmployeeRequestCard({
     };
     console.log(payload);
     try {
+    // Send request to decline the leave request
       const response = await fetch(`/api/leave-requests/${element.id}/decline`, {
         method: "POST",
         headers: {
@@ -86,23 +104,24 @@ export default function EmployeeRequestCard({
         },
         body: JSON.stringify(payload),
       });
-
+  
       if (!response.ok) {
         throw new Error('Server error occurred');
       }
-
+  
       await response.json();
       alert("Request Declined");
-
+  
       setReview('');
       setStatus('declined');
     } catch (error) {
       console.error("Error:", error);
       alert("Failed to decline request");
     }
-
+  
     setIsLoading(false);
   };
+  
 
   // Function to handle the form submission for accept or decline
   const handleFormSubmit = (action: 'accepted' | 'declined') => {
@@ -165,7 +184,7 @@ export default function EmployeeRequestCard({
       {isModalOpen && (
         <Modal onClose={closeModal} title="Verlofaanvraag">
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4">
-            <div className="bg-background border rounded-lg w-full max-w-lg p-6">
+            <div className="bg-background border rounded-lg w-full max-w-lg p-6 overflow-y-auto max-h-[90vh]">
               <div className="space-y-4">
                 {/* Display leave request data */}
                 <div>
@@ -212,33 +231,42 @@ export default function EmployeeRequestCard({
                         </p>
                       </div>
                     ) : (
-                      // Display form if the request hasn't been reviewed yet.
-                      <div>
-                        <textarea
-                          className="w-full p-2 border rounded-lg"
-                          placeholder="Reactie"
-                          value={review}
-                          onChange={(e) => setReview(e.target.value)}
-                        />
-                        <div className="flex gap-2 mt-4">
-                          <button
-                            type="button"
-                            onClick={() => handleFormSubmit('accepted')}
-                            disabled={isLoading}
-                            className={`mt-4 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                          >
-                            Accepteren
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => handleFormSubmit('declined')}
-                            disabled={isLoading}
-                            className={`mt-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                          >
-                            Afwijzen
-                          </button>
+                        // Display form if the request hasn't been reviewed yet.
+                        <div>
+                            {/* Response textarea */}
+                            <textarea
+                                className="w-full p-2 border rounded-lg"
+                                placeholder="Reactie"
+                                value={review}
+                                onChange={(e) => setReview(e.target.value)}
+                            />
+                            <div className="flex gap-2 mt-4">
+                                {/* Accept button (not active if no response filled in). */}
+                                <button
+                                    type="button"
+                                    onClick={() => handleFormSubmit('accepted')}
+                                    disabled={isLoading || !review.trim()}
+                                    title={!review.trim() ? 'Response required' : ''}
+                                    className={`mt-4 px-4 py-2 bg-green-500 text-white rounded-lg ${
+                                        isLoading || !review.trim() ? 'opacity-50 cursor-not-allowed' : 'hover:bg-green-700'
+                                    }`}
+                                >
+                                    Accepteren
+                                </button>
+                                {/* Decline button (not active if no response filled in). */}
+                                <button
+                                    type="button"
+                                    onClick={() => handleFormSubmit('declined')}
+                                    disabled={isLoading || !review.trim()}
+                                    title={!review.trim() ? 'Response required' : ''}
+                                    className={`mt-4 px-4 py-2 bg-red-500 text-white rounded-lg ${
+                                        isLoading || !review.trim() ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-700'
+                                    }`}
+                                >
+                                    Afwijzen
+                                </button>
+                            </div>
                         </div>
-                      </div>
                     )}
                   </div>
                 ) : (
@@ -258,6 +286,7 @@ export default function EmployeeRequestCard({
                   </div>
                 )}
               </div>
+              {/* Close modal */}
               <button
                 className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
                 onClick={closeModal}
