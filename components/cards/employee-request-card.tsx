@@ -56,7 +56,7 @@ const acceptRequest = async () => {
     try {
     // Send request to accept the leave request
       const response = await fetch(`/api/leave-requests/${element.id}/accept`, { 
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -98,7 +98,7 @@ const acceptRequest = async () => {
     try {
     // Send request to decline the leave request
       const response = await fetch(`/api/leave-requests/${element.id}/decline`, {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },

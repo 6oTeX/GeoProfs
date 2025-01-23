@@ -1,5 +1,5 @@
 import LeaveRequestController from "@/controllers/leave-request-controller";
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/components/ui/separator"
 import EmployeeRequestCard from "./employee-request-card";
 
 export default async function EmployeeRequestList() {
@@ -51,7 +51,8 @@ export default async function EmployeeRequestList() {
             ...upcomingRequests,
             pastRequests.length > 0 ? { ...separator, type: 'past' } : null,
             ...pastRequests,
-        ].filter(Boolean);        
+        ].filter(Boolean);
+        
     }
     // Render the requests and separators.
     return (
@@ -94,7 +95,5 @@ export default async function EmployeeRequestList() {
                 </div>
             )}
         </div>
-      )}
-    </div>
-  );
+    );
 }
