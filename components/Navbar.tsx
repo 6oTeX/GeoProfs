@@ -63,7 +63,7 @@ const Navbar = () => {
       <div className="flex h-14 items-center px-4 sm:px-6">
         {/* Logo */}
         <Link
-          href="#"
+          href="/dashboard"
           className="flex h-9 w-9 items-center justify-center rounded-lg text-primary-foreground"
         >
           <Aperture className="h-5 w-5 text-foreground" />
@@ -75,7 +75,7 @@ const Navbar = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="#"
+                href="/protected/home"
                 className="flex h-9 items-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
               >
                 Dashboard
@@ -87,7 +87,7 @@ const Navbar = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="#"
+                href="/protected/calendar"
                 className="flex h-9 items-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
               >
                 Kalender
@@ -147,9 +147,8 @@ const Navbar = () => {
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           <Menu
-            className={`h-6 w-6 transition-transform duration-200 ${
-              isMobileMenuOpen ? "rotate-90" : ""
-            }`}
+            className={`h-6 w-6 transition-transform duration-200 ${isMobileMenuOpen ? "rotate-90" : ""
+              }`}
           />
           <span className="sr-only">
             {isMobileMenuOpen ? "Close Menu" : "Open Menu"}
