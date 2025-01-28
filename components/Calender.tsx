@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { User } from "lucide-react";
 import { useState } from "react";
@@ -10,7 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
+import { format } from "date-fns";
+import { nl } from "date-fns/locale";
+import { DialogTitle } from "@radix-ui/react-dialog";
 interface CalenderDay {
   date: Date;
   isCurrentMonth: boolean;
@@ -28,7 +31,7 @@ interface CalenderProps {
       furloughNames: string[];
       sickNames: string[];
       team: string;
-    };
+    }[];
   };
 }
 
@@ -80,28 +83,14 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
       d.setDate(d.getDate() + 1)
     ) {
       const dateKey = getDateKey(d);
-      const allEvents = events[dateKey] || {
-        furlough: 0,
-        sick: 0,
-        furloughNames: [],
-        sickNames: [],
-        team: "None",
-      };
-
-      // Filter only the names and counts, not the grid
-      const filteredFurloughNames =
+      const dayEvents = events[dateKey] || [];
+      const relevantEvents =
         selectedTeam === "All"
-          ? allEvents.furloughNames
-          : allEvents.furloughNames.filter(
-              (name) => allEvents.team === selectedTeam,
-            );
+          ? dayEvents
+          : dayEvents.filter((e) => e.team === selectedTeam);
 
-      const filteredSickNames =
-        selectedTeam === "All"
-          ? allEvents.sickNames
-          : allEvents.sickNames.filter(
-              (name) => allEvents.team === selectedTeam,
-            );
+      const filteredFurloughNames = relevantEvents.flatMap((e) => e.furloughNames);
+      const filteredSickNames = relevantEvents.flatMap((e) => e.sickNames);
 
       dates.push({
         date: new Date(d),
@@ -148,7 +137,7 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
   };
 
   const teams = Array.from(
-    new Set(Object.values(events).map((event) => event.team)),
+    new Set(Object.values(events).flatMap((eventArray) => eventArray.map((event) => event.team))),
   ).filter(Boolean);
 
   return (
@@ -157,8 +146,7 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
       <div className="flex flex-col sm:flex-row sm:justify-between items-center mb-4">
         <div className="mb-2 sm:mb-0">
           <h2 className="text-xl sm:text-2xl font-bold">
-            {currentDate.toLocaleString("nl-NL", { month: "long" })}{" "}
-            {currentDate.getFullYear()}
+            {format(currentDate, "MMMM yyyy", { locale: nl })}
           </h2>
         </div>
         <div className="flex flex-wrap items-center space-x-2">
@@ -201,18 +189,18 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
               "border border-gray-200 h-16 sm:h-24 p-1 flex flex-col items-start cursor-pointer";
 
             if (isToday) {
-              cellClasses += " bg-yellow-50";
+              cellClasses += " bg-accent";
             } else if (!day.isCurrentMonth) {
-              cellClasses += " bg-gray-100";
+              cellClasses += " bg-background-foreground ";
             } else if (day.furlough >= 5 || day.sick >= 5) {
-              cellClasses += " bg-red-200";
+              cellClasses += " bg-error";
             }
-            let size: number;
-            if (window.innerWidth > 700) {
+
+            let size = 12; // default size
+            if (window.matchMedia("(min-width: 700px)").matches) {
               size = 18;
-            } else {
-              size = 12;
             }
+
             let absent = null;
             if (day.furlough || day.sick) {
               absent = (
@@ -244,6 +232,11 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
                   </div>
                 </DialogTrigger>
                 <DialogContent>
+                  <DialogTitle>
+                    {
+                      format(day.date, "EEEE", { locale: nl })
+                    }
+                  </DialogTitle>
                   <DayOverview
                     date={day.date}
                     furloughNames={day.furloughNames}
