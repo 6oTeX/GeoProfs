@@ -223,6 +223,7 @@ export class LeaveRequest {
       user_id: "",
       reason: "",
       user: null,
+      response: null
     };
   }
 }
