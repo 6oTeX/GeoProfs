@@ -1,4 +1,3 @@
-
 import {
   ChevronLeft,
   ChevronRight,
@@ -32,10 +31,7 @@ import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { User, UsersTable } from "@/components/UsersTable";
 
-
-
 export default async function Dashboard() {
-
   const sampleUsers: User[] = [
     {
       id: "1",

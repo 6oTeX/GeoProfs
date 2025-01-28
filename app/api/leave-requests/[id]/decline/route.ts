@@ -8,12 +8,10 @@ interface ContextParams {
 }
 
 export async function GET(request: NextRequest, context: ContextParams) {
-    const {id} = context.params;
+  const { id } = context.params;
 
-
-  
-    const response = {
-        text: `Declined request: ${id}`
-    }
+  const response = {
+    text: `Declined request: ${id}`,
+  };
   return NextResponse.json(response);
 }

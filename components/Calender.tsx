@@ -89,7 +89,9 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
           ? dayEvents
           : dayEvents.filter((e) => e.team === selectedTeam);
 
-      const filteredFurloughNames = relevantEvents.flatMap((e) => e.furloughNames);
+      const filteredFurloughNames = relevantEvents.flatMap(
+        (e) => e.furloughNames,
+      );
       const filteredSickNames = relevantEvents.flatMap((e) => e.sickNames);
 
       dates.push({
@@ -137,7 +139,11 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
   };
 
   const teams = Array.from(
-    new Set(Object.values(events).flatMap((eventArray) => eventArray.map((event) => event.team))),
+    new Set(
+      Object.values(events).flatMap((eventArray) =>
+        eventArray.map((event) => event.team),
+      ),
+    ),
   ).filter(Boolean);
 
   return (
@@ -233,9 +239,7 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
                 </DialogTrigger>
                 <DialogContent>
                   <DialogTitle>
-                    {
-                      format(day.date, "EEEE", { locale: nl })
-                    }
+                    {format(day.date, "EEEE", { locale: nl })}
                   </DialogTitle>
                   <DayOverview
                     date={day.date}

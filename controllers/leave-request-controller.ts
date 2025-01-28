@@ -26,7 +26,7 @@ class LeaveRequestController {
     reason: string,
     explanation: string,
     start_date: Date,
-    end_date: Date
+    end_date: Date,
   ) {
     let response: BlankResponse = { success: true, errors: [] };
 
@@ -170,7 +170,7 @@ class LeaveRequestController {
   public static async respond(
     id: string,
     to: string,
-    response_text: string
+    response_text: string,
   ): Promise<BlankResponse> {
     let response: BlankResponse = { success: true, errors: [] };
 
@@ -197,7 +197,7 @@ class LeaveRequestController {
     if (await !UserController.isManagerOf(request.data[0].user_id)) {
       response.success = false;
       response.errors.push(
-        `You do not have permission to accept or decline this request`
+        `You do not have permission to accept or decline this request`,
       );
       return response;
     }

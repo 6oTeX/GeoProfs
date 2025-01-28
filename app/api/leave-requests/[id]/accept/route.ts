@@ -9,8 +9,12 @@ interface ContextParams {
 }
 
 export async function GET(request: NextRequest, context: ContextParams) {
-    const {id} = context.params;
+  const { id } = context.params;
 
-    const response = await LeaveRequestController.respond(id,"accepted","Of course my friend");
+  const response = await LeaveRequestController.respond(
+    id,
+    "accepted",
+    "Of course my friend",
+  );
   return NextResponse.json(response);
 }

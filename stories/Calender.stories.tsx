@@ -25,26 +25,34 @@ const events = {
       sickNames: ["Bob"],
     },
   ],
-  "2025-01-03": [{
-    furloughNames: ["Alice", "Bob"],
-    sickNames: ["Charlie"],
-    team: "HRM",
-  }],
-  "2025-01-05": [{
-    furloughNames: ["David", "Eve", "Frank", "Alice", "Bob", "Charlie"],
-    sickNames: ["Dave", "Jake"],
-    team: "Finance",
-  }],
-  "2025-01-07": [{
-    furloughNames: ["David", "Eve"],
-    sickNames: ["Dave", "Jake"],
-    team: "Finance",
-  }],
-  "2025-01-08": [{
-    furloughNames: ["David", "Bob", "Charlie"],
-    sickNames: ["Dave", "Jake"],
-    team: "ICT",
-  }],
+  "2025-01-03": [
+    {
+      furloughNames: ["Alice", "Bob"],
+      sickNames: ["Charlie"],
+      team: "HRM",
+    },
+  ],
+  "2025-01-05": [
+    {
+      furloughNames: ["David", "Eve", "Frank", "Alice", "Bob", "Charlie"],
+      sickNames: ["Dave", "Jake"],
+      team: "Finance",
+    },
+  ],
+  "2025-01-07": [
+    {
+      furloughNames: ["David", "Eve"],
+      sickNames: ["Dave", "Jake"],
+      team: "Finance",
+    },
+  ],
+  "2025-01-08": [
+    {
+      furloughNames: ["David", "Bob", "Charlie"],
+      sickNames: ["Dave", "Jake"],
+      team: "ICT",
+    },
+  ],
 };
 
 // Dynamically calculate the counts
