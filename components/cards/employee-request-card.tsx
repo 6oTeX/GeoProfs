@@ -28,6 +28,20 @@ export default function EmployeeRequestCard({
   const [review, setReview] = useState('');
   const [status, setStatus] = useState('');
 
+  const stateTranslations = {
+    accepted: "Geaccepteerd",
+    submitted: "Openstaand",
+    declined: "Afgewezen",
+  };
+  
+  const stateColor = {
+    accepted: "text-green-500",
+    submitted: "text-orange-500",
+    declined: "text-red-500",
+    default: "text-gray-600",
+  };
+  
+
 //   Open modal
   const showResponse = () => {
     setIsModalOpen(true); // Open the modal to show detailed information
@@ -164,16 +178,11 @@ const acceptRequest = async () => {
           <div
             // Display based on request state.
             className={`px-2.5 py-0.1 text-xs font-medium rounded-lg flex items-center ${
-              element.state === 'accepted'
-                ? 'text-green-500'
-                : element.state === 'submitted'
-                ? 'text-orange-500'
-                : element.state === 'declined'
-                ? 'text-red-500'
-                : 'text-gray-600'
-            }`}
-          >
-            {element.state || "Niet beschikbaar"}
+              stateColor[element.state] || stateColor.default
+            }`
+          }
+            >
+            {stateTranslations[element.state] || "Niet beschikbaar"}
           </div>
         </div>
       </Card>
@@ -205,7 +214,7 @@ const acceptRequest = async () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold">Status:</h3>
-                  <p>{element.state || "Niet beschikbaar."}</p>
+                  <p>{stateTranslations[element.state] || "Niet beschikbaar"}</p>
                 </div>
                 <div>
                   <p>Verlof aangevraagd op: {new Intl.DateTimeFormat('en-GB').format(element.createdAtDate)}</p>
