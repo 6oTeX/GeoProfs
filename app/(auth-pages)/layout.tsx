@@ -9,7 +9,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
           GeoProfs
         </Link>
         <Link href="/" className="border hover:opacity-80 px-4 py-2 rounded ">
-          Back
+          Terug
         </Link>
       </header>
       <div className="m-auto">{children}</div>

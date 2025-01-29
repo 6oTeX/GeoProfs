@@ -8,8 +8,8 @@ interface ContextParams {
 }
 
 export async function PUT(request: NextRequest, context: ContextParams) {
-  const {id} = await context.params;
-  const {requestId,status,response} = await request.json();
+  const { id } = await context.params;
+  const { requestId, status, response } = await request.json();
 
   console.log(response);
 
@@ -18,6 +18,5 @@ export async function PUT(request: NextRequest, context: ContextParams) {
   await leave_request.pull();
   await leave_request.accept(response);
 
-
-  return NextResponse.json({success: true, errors: []});
+  return NextResponse.json({ success: true, errors: [] });
 }

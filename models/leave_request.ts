@@ -83,7 +83,6 @@ export class LeaveRequest {
   }
 
   public async push(): Promise<boolean> {
-    
     const supabase = await createClient();
 
     if (this.m_data.id != "UNDEFINED") {
@@ -97,18 +96,18 @@ export class LeaveRequest {
           end_date: this.m_data.end_date,
           explanation: this.m_data.explanation,
           state: this.m_data.state,
-          reviewed_by: this.m_data.reviewed_by?.id ? this.m_data.reviewed_by?.id : null,
+          reviewed_by: this.m_data.reviewed_by?.id
+            ? this.m_data.reviewed_by?.id
+            : null,
           reason: this.m_data.reason,
-          response: this.m_data.response
+          response: this.m_data.response,
         })
         .eq("id", this.m_data.id);
-      if (response.error)
-      {
+      if (response.error) {
         console.log(response.error.message);
         return false;
       }
       return true;
-
     } else {
       const insert_data = {
         start_date: this.m_data.start_date,
@@ -140,7 +139,7 @@ export class LeaveRequest {
       this.m_data.start_date,
       this.m_data.end_date,
       9,
-      17
+      17,
     );
     user.set(data);
     await user.push();
@@ -158,12 +157,11 @@ export class LeaveRequest {
   }
 
   public async decline(reason: string): Promise<boolean> {
-    
     // Get reviewer
     this.m_reviewer = new User();
     await this.m_reviewer.pull();
     this.m_data.reviewed_by = this.m_reviewer.get();
-    
+
     // update and push the request
     this.m_data.state = "declined";
     this.m_data.response = reason;
@@ -186,7 +184,7 @@ export class LeaveRequest {
   }
 
   public static async getAll(
-    withPull: boolean = false
+    withPull: boolean = false,
   ): Promise<LeaveRequest[]> {
     let requests: LeaveRequest[] = [];
 
@@ -223,7 +221,7 @@ export class LeaveRequest {
       user_id: "",
       reason: "",
       user: null,
-      response: null
+      response: null,
     };
   }
 }
