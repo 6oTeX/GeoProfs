@@ -203,9 +203,6 @@ const Calender: React.FC<CalenderProps> = ({ events = {} }) => {
             }
 
             let size = 12; // default size
-            if (window.matchMedia("(min-width: 700px)").matches) {
-              size = 18;
-            }
 
             let absent = null;
             if (day.furlough || day.sick) {

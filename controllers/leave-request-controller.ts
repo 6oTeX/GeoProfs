@@ -1,6 +1,7 @@
 "use server";
 import { createClient } from "@/utils/supabase/server";
 import UserController from "./user-controller";
+import { User } from "@/models/user";
 
 // helper function to calculate the amount of workhours in a set date range
 function calculateWorkHours(startDate: string, endDate: string) {
@@ -116,59 +117,12 @@ class LeaveRequestController {
   public static async getMyRequests() {
     let response: DataResponse = { success: true, errors: [], data: [] };
 
-    // get the auth-session
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) {
-      response.errors.push("No auth-session");
-      response.success = false;
-    } else {
-      // insert the request
-      const { data, error } = await supabase
-        .from("leave_requests")
-        .select("*")
-        .eq("user_id", user.id);
-      // check if fetch was successful
-      if (data) {
-        response.data = data;
-      } else if (error) {
-        response.errors.push(error.message);
-        response.success = false;
-      }
-    }
+    const user = new User();
 
-    // get user data
-    for (let i = 0; i < response.data.length; ++i) {
-      const user = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", response.data[i].user_id);
-      if (user.error) {
-        response.errors.push(user.error.message);
-        response.errors.push("Could not fetch user data");
-        response.success = false;
-      } else {
-        response.data[i].userData = user.data[0];
-      }
-      if (response.data[i].reviewed_by) {
-        const reviewByUser = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", response.data[i].reviewed_by);
-        if (reviewByUser.error) {
-          response.errors.push(reviewByUser.error.message);
-          response.errors.push("Could not fetch reviewer user data");
-          response.success = false;
-        } else {
-          delete reviewByUser.data[0].saldo;
-          response.data[i].reviewByUser = reviewByUser.data[0];
-        }
-      } else {
-        response.data[i].reviewByUser = {};
-      }
-    }
+    await user.pull();
+
+    response.data = user.getLeaveRequests().map(request => request.get());
+    
     return response;
   }
 
@@ -303,12 +257,10 @@ class LeaveRequestController {
     // update saldo
     if (to == "accepted") {
       // calculate saldo
-      console.log("Editing saldo");
       const diff =
         (new Date(request.data[0].start_date).getTime() -
           new Date(request.data[0].end_date).getTime()) /
         (60 * 60 * 1000 * 3);
-      console.log(diff);
     }
 
     return response;

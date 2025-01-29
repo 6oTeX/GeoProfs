@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import LeaveRequestController from "@/controllers/leave-request-controller";
+import { LeaveRequestData } from "@/models/leave_request";
 import { CheckCircle2, Clock, XCircle } from "lucide-react";
 
 export interface Application {
@@ -31,6 +32,7 @@ const statusConfig = {
 export default async function RecentApplications() {
   const { data, errors, success } =
     await LeaveRequestController.getMyRequests();
+
 
   data.map(
     (element: {
@@ -70,9 +72,9 @@ export default async function RecentApplications() {
 
       <div className="space-y-4">
         {success ? (
-          data.map((application: Application, index: number) => {
-            const status = statusConfig[application.status] || {
-              label: "Onbekend",
+          data.map((application: LeaveRequestData, index: number) => {
+            const status = {
+              label: application.state,
               color: "text-gray-500",
               icon: XCircle,
             };
@@ -83,15 +85,15 @@ export default async function RecentApplications() {
                 <div className="flex items-center gap-3">
                   <Avatar>
                     <AvatarImage
-                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Design_GeoProfs____40shadcn_2Fui-kDYGu1fpVshBz2pn9T8vsGvVyXcgta.png"
-                      alt={application.name}
+                      src={application.user?.avatar_url}
+                      alt={application.user?.full_name}
                     />
                     <AvatarFallback>OM</AvatarFallback>
                   </Avatar>
                   <div>
-                    <div className="font-medium">{application.name}</div>
+                    <div className="font-medium">{application.user?.full_name}</div>
                     <div className="text-sm text-muted-foreground">
-                      {application.email}
+                      {application.user?.email}
                     </div>
                   </div>
                 </div>
