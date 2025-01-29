@@ -44,7 +44,8 @@ export const updateSession = async (request: NextRequest) => {
     if (
       (request.nextUrl.pathname.startsWith("/calendar") ||
         request.nextUrl.pathname.startsWith("/leave-requests") ||
-        request.nextUrl.pathname.startsWith("/dashboard")) &&
+        request.nextUrl.pathname.startsWith("/dashboard") ||
+        request.nextUrl.pathname.startsWith("/reset-password")) &&
       (user.error || !user)
     ) {
       return NextResponse.redirect(new URL("/sign-in", request.url));
