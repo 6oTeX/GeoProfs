@@ -184,7 +184,7 @@ export class LeaveRequest {
   }
 
   public static async getAll(
-    withPull: boolean = false,
+    withPull: boolean = true,
   ): Promise<LeaveRequest[]> {
     let requests: LeaveRequest[] = [];
 

@@ -24,8 +24,8 @@ const DayOverview: React.FC<DayOverviewProps> = ({
       <table className="w-full mb-4">
         <thead>
           <tr>
-            <th className="text-left text-red-600">Verlof</th>
-            <th className="text-left text-yellow-500">Ziek</th>
+            <th className="text-left text-red-600">Afwezig</th>
+            <th className="text-left text-yellow-500">Aangevraagd</th>
           </tr>
         </thead>
         <tbody>

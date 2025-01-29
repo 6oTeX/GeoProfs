@@ -55,7 +55,7 @@ export default async function EmployeeRequestList() {
   }
   // Render the requests and separators.
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-row flex-wrap w-full gap-2">
       {sortedRequests.length > 0 ? (
         sortedRequests.map((element, index) => {
           if (element.isSeparator) {

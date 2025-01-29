@@ -107,6 +107,19 @@ const Navbar = () => {
             </TooltipTrigger>
             <TooltipContent side="bottom">Vraag verlof aan</TooltipContent>
           </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                href="/manage"
+                className="flex h-9 items-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
+              >
+                Manage
+                <span className="sr-only">Manage</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">Manage gebruikers</TooltipContent>
+          </Tooltip>
+          
           {/* Add more navigation items as needed */}
         </nav>
 

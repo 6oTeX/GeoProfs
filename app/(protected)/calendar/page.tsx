@@ -3,50 +3,62 @@ import DashboardMetrics from "@/components/DashboardMetrics";
 import RecentApplications, {
   Application,
 } from "@/components/RecentApplications";
+import { LeaveRequest, LeaveRequestData } from "@/models/leave_request";
+
+interface UserData {
+  id: string;
+  name: string;
+  team: string;
+}
+
+type EventData = Record<string, { team: string; furloughNames: string[]; sickNames: string[] }[]>;
+
+function transformLeaveRequests(leaveRequests: LeaveRequestData[]): EventData {
+  const events: EventData = {};
+
+
+  leaveRequests.forEach((request) => {
+    if (!request.user) {
+      console.log("ALPHA");
+      return;
+    }
+
+    const startDate = new Date(request.start_date);
+    const endDate = new Date(request.end_date);
+
+    for (
+      let date = new Date(startDate);
+      date <= endDate;
+      date.setDate(date.getDate() + 1)
+    ) {
+      const dateString = date.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+
+      if (!events[dateString]) {
+        events[dateString] = [];
+      }
+
+      let teamEntry = events[dateString].find((entry) => entry.team === request.user!.department_id);
+      if (!teamEntry) {
+        teamEntry = { team: request.user.department_id ? request.user.department_id : "Algemeen", furloughNames: [], sickNames: [] };
+        events[dateString].push(teamEntry);
+      }
+
+      if (request.state === "accepted") {
+        teamEntry.furloughNames.push(request.user.full_name);
+      } else if (request.state === "submitted") {
+        teamEntry.sickNames.push(request.user.full_name);
+      }
+    }
+  });
+  return events;
+}
 
 export default async function CalenderPage() {
-  const events = {
-    "2025-01-02": [
-      {
-        team: "ICT",
-        furloughNames: ["David"],
-        sickNames: ["Eve", "Frank"],
-      },
-      {
-        team: "Finance",
-        furloughNames: ["Alice", "Jane"],
-        sickNames: ["Bob"],
-      },
-    ],
-    "2025-01-03": [
-      {
-        furloughNames: ["Alice", "Bob"],
-        sickNames: ["Charlie"],
-        team: "HRM",
-      },
-    ],
-    "2025-01-05": [
-      {
-        furloughNames: ["David", "Eve", "Frank", "Alice", "Bob", "Charlie"],
-        sickNames: ["Dave", "Jake"],
-        team: "Finance",
-      },
-    ],
-    "2025-01-07": [
-      {
-        furloughNames: ["David", "Eve"],
-        sickNames: ["Dave", "Jake"],
-        team: "Finance",
-      },
-    ],
-    "2025-01-08": [
-      {
-        furloughNames: ["David", "Bob", "Charlie"],
-        sickNames: ["Dave", "Jake"],
-        team: "ICT",
-      },
-    ],
-  };
+
+
+  const requests = await LeaveRequest.getAll();
+
+  const events = transformLeaveRequests(requests.map(req => req.get()));
 
   const applications: Application[] = [
     {
