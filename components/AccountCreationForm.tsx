@@ -36,7 +36,7 @@ const AccountCreationForm: React.FC<AccountCreationFormProps> = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-4 p-4 bg-white rounded-md shadow"
+      className="space-y-4 p-4 bg-background rounded-md shadow"
     >
       <div>
         <Label htmlFor="firstName">Voornaam</Label>

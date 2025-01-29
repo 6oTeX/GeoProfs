@@ -96,7 +96,7 @@ export const columns: ColumnDef<User>[] = [
         <div
           className={cn(
             status === "Aanwezig" ? "text-green-600" : "text-red-600",
-            "text-right font-bold",
+            "text-right font-bold"
           )}
         >
           {status}
@@ -133,7 +133,7 @@ export function UsersTable({ users }: UsersTableProps) {
   const [filterStatus, setFilterStatus] = useState<string>("alle");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedsection, setSelectedsection] = useState<string>(
-    UserTeams[0] || "",
+    UserTeams[0] || ""
   );
 
   // Dialog states
@@ -147,7 +147,7 @@ export function UsersTable({ users }: UsersTableProps) {
   const [editEmail, setEditEmail] = useState("");
   const [editbalance, setEditbalance] = useState(0);
   const [editStatus, setEditStatus] = useState<"Aanwezig" | "Afwezig">(
-    "Aanwezig",
+    "Aanwezig"
   );
   const [editTeam, setEditTeam] = useState("");
   const [editRole, setEditRole] = useState("");
@@ -164,12 +164,12 @@ export function UsersTable({ users }: UsersTableProps) {
           `${user.employee.firstName} ${user.employee.lastName}`
             .toLowerCase()
             .includes(searchQuery.toLowerCase()) ||
-          user.employee.email.toLowerCase().includes(searchQuery.toLowerCase()),
+          user.employee.email.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
     if (selectedsection) {
       filtered = filtered.filter(
-        (user) => user.section.team === selectedsection,
+        (user) => user.section.team === selectedsection
       );
     }
     return filtered;
@@ -256,13 +256,13 @@ export function UsersTable({ users }: UsersTableProps) {
     };
 
     setInternalUsers((prev) =>
-      prev.map((u) => (u.id === selectedUser.id ? updatedUser : u)),
+      prev.map((u) => (u.id === selectedUser.id ? updatedUser : u))
     );
     setEditMode(false);
   };
 
   return (
-    <div className="w-full border rounded-lg p-4">
+    <div className="w-full border rounded-lg p-4 bg-background">
       <div className="flex items-center justify-between pb-4">
         <div className="flex flex-col">
           <h1 className="text-2xl font-bold">Personeel</h1>
@@ -292,7 +292,7 @@ export function UsersTable({ users }: UsersTableProps) {
         </div>
       </div>
       <div className="flex items-center justify-between pb-4">
-        <div className="flex items-center space-x-4 bg-gray-200 p-1 rounded">
+        <div className="flex items-center space-x-4 bg-background p-1 rounded">
           <Button
             variant="outline"
             onClick={() => setFilterStatus("alle")}
@@ -330,7 +330,7 @@ export function UsersTable({ users }: UsersTableProps) {
       </div>
       <div className="rounded-md border">
         <Table className="border-collapse border-spacing-0">
-          <TableHeader>
+          <TableHeader className="w-full">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className="border-b">
                 {headerGroup.headers.map((header) => {
@@ -340,7 +340,7 @@ export function UsersTable({ users }: UsersTableProps) {
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext(),
+                            header.getContext()
                           )}
                     </TableHead>
                   );
@@ -361,7 +361,7 @@ export function UsersTable({ users }: UsersTableProps) {
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext(),
+                        cell.getContext()
                       )}
                     </TableCell>
                   ))}
