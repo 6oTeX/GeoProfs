@@ -1,6 +1,8 @@
 "use server";
 import { createClient } from "@/utils/supabase/server";
 import UserController from "./user-controller";
+import { LeaveRequest } from "@/models/leave_request";
+import { User } from "@/models/user";
 
 // helper function to calculate the amount of workhours in a set date range
 function calculateWorkHours(startDate: string, endDate: string) {
@@ -106,6 +108,23 @@ class LeaveRequestController {
     return response;
   }
 
+  public static async getMyManagedRequests()
+  {
+        const user = new User();
+        await user.pull();
+        const departments = await user.getManagedDepartments();
+    
+        let requests: LeaveRequest[] = [];
+        for (let i = 0; i < departments.length; ++i)
+        {
+            requests = requests.concat(departments[i].getRequests());
+        }
+    
+        const data = requests.map(request => request.get());
+
+        return data;
+  }
+
   /**
    * @brief get all requests of the logged in user
    *
@@ -114,62 +133,9 @@ class LeaveRequestController {
    * @returns errors
    */
   public static async getMyRequests() {
-    let response: DataResponse = { success: true, errors: [], data: {} };
-
-    // get the auth-session
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) {
-      response.errors.push("No auth-session");
-      response.success = false;
-    } else {
-      // insert the request
-      const { data, error } = await supabase
-        .from("leave_requests")
-        .select("*")
-        .eq("user_id", user.id);
-      // check if fetch was successful
-      if (data) {
-        response.data = data;
-      } else if (error) {
-        response.errors.push(error.message);
-        response.success = false;
-      }
-    }
-
-    // get user data
-    for (let i = 0; i < response.data.length; ++i) {
-      const user = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", response.data[i].user_id);
-      if (user.error) {
-        response.errors.push(user.error.message);
-        response.errors.push("Could not fetch user data");
-        response.success = false;
-      } else {
-        response.data[i].userData = user.data[0];
-      }
-      if (response.data[i].reviewed_by) {
-        const reviewByUser = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", response.data[i].reviewed_by);
-        if (reviewByUser.error) {
-          response.errors.push(reviewByUser.error.message);
-          response.errors.push("Could not fetch reviewer user data");
-          response.success = false;
-        } else {
-          delete reviewByUser.data[0].saldo;
-          response.data[i].reviewByUser = reviewByUser.data[0];
-        }
-      } else {
-        response.data[i].reviewByUser = {};
-      }
-    }
-    return response;
+    const user = new User();
+    await user.pull(true);
+    return user.getLeaveRequests().map(request => request.get());
   }
 
   public static async getMyRequestsFiltered(state: string) {
@@ -202,61 +168,6 @@ class LeaveRequestController {
     }
 
     return { success, returnData, errors_txt };
-  }
-
-  public static async getMyManagedRequests(): Promise<DataResponse> {
-    const supabase = await createClient();
-    let response: DataResponse = { success: false, errors: [], data: {} };
-
-    // get user information
-    const { user, error } = await UserController.getUser();
-    if (error) {
-      response.errors.push(error.message);
-      response.success = false;
-      return response;
-    }
-    if (!user) {
-      response.success = false;
-      response.errors.push("No auth-session");
-      return response;
-    }
-
-    // get the departments you are managing
-    const department = await supabase
-      .from("departments")
-      .select("*")
-      .eq("manager_id", user.id);
-    if (department.error) {
-      response.success = false;
-      response.errors.push(department.error.message);
-      return response;
-    }
-
-    for (let i = 0; i < department.data.length; ++i) {
-      // get the users you are managing
-      const users = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("department_id", department.data[i].id);
-      if (users.error) {
-        response.success = false;
-        response.errors.push(users.error.message);
-      } else {
-        for (let j = 0; j < users.data.length; ++i) {
-          const requests = await supabase
-            .from("leave_requests")
-            .select("*")
-            .eq("user_id", users.data[j].id);
-          if (requests.error) {
-            response.errors.push(requests.error.message);
-            response.success = false;
-          } else {
-          }
-        }
-      }
-    }
-
-    return response;
   }
 
   public static async respond(

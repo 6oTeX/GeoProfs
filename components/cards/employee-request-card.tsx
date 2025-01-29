@@ -164,10 +164,10 @@ const acceptRequest = async () => {
               {element.reason || "Niet beschikbaar."}
             </span>
             <span className="text-xs text-muted-foreground">
-              {element.userData.full_name || "Niet beschikbaar."}
+              {element.user.full_name || "Niet beschikbaar."}
             </span>
             <span className="text-xs text-muted-foreground">
-              {element.userData.email || "Niet beschikbaar."}
+              {element.user.email || "Niet beschikbaar."}
             </span>
           </div>
         </div>
@@ -206,8 +206,8 @@ const acceptRequest = async () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold">Gebruiker Informatie:</h3>
-                  <p>Naam: {element.userData.full_name || "Niet beschikbaar."}</p>
-                  <p>Email: {element.userData.email || "Niet beschikbaar."}</p>
+                  <p>Naam: {element.user.full_name || "Niet beschikbaar."}</p>
+                  <p>Email: {element.user.email || "Niet beschikbaar."}</p>
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold">Datum:</h3>

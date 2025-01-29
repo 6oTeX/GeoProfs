@@ -1,45 +1,39 @@
 import LeaveRequestController from "@/controllers/leave-request-controller";
 import { Separator } from "@/components/ui/separator"
 import EmployeeRequestCard from "./employee-request-card";
+import axios from "axios";
 
 export default async function EmployeeRequestList() {
     // Check if user is a manager.
-    const isManager = true;
+    const isManager = false;
     var requestsToGather;
     if (isManager)  {
-        requestsToGather = LeaveRequestController.getMyRequests();
-        // requestsToGet = LeaveRequestController.getRequestsByDepartment();
+        requestsToGather = await LeaveRequestController.getMyManagedRequests();
     } else {
-        requestsToGather = LeaveRequestController.getMyRequests();
+        requestsToGather = await LeaveRequestController.getMyRequests();
     }
-    const employeeRequestList = await requestsToGather;
+    const employeeRequestList = requestsToGather;
     const currentDate = new Date();
     let sortedRequests: any[] = [];
-    if (Array.isArray(employeeRequestList.data))
+    if (Array.isArray(employeeRequestList))
     {
-        const parsedRequests = employeeRequestList.data.map((element) => ({
-            ...element,
-            // Parse dates from returnData into Date objects.
-            startDate: new Date(element.start_date),
-            endDate: new Date(element.end_date),
-            createdAtDate: new Date(element.created_at)
-        }));
+        const parsedRequests = employeeRequestList;
     
         // Separate into active, upcoming, and past requests.
         const activeRequests = parsedRequests.filter(
-            (element) => element.startDate <= currentDate && element.endDate >= currentDate
+            (element) => element.start_date <= currentDate && element.end_date >= currentDate
         );
         const upcomingRequests = parsedRequests.filter(
-            (element) => element.startDate > currentDate
+            (element) => element.start_date > currentDate
         );
         const pastRequests = parsedRequests.filter(
-            (element) => element.endDate < currentDate
+            (element) => element.end_date < currentDate
         );
     
         // Sort each list by startDate.
-        activeRequests.sort((a, b) => a.startDate - b.startDate);
-        upcomingRequests.sort((a, b) => a.startDate - b.startDate);
-        pastRequests.sort((a, b) => a.startDate - b.startDate);
+        // activeRequests.sort((a, b) => a.start_date - b.start_date);
+        // upcomingRequests.sort((a, b) => a.startDate - b.startDate);
+        // pastRequests.sort((a, b) => a.startDate - b.startDate);
     
         const separator = { isSeparator: true, type: null };
     
