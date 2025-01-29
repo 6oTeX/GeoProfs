@@ -102,11 +102,11 @@ const Navbar = () => {
                 href="/create-leave-request"
                 className="flex h-9 items-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
               >
-                Create Leave request
-                <span className="sr-only">Create Leave request</span>
+                Vraag verlof aan
+                <span className="sr-only">Vraag verlof aan</span>
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="bottom">Create Leave request</TooltipContent>
+            <TooltipContent side="bottom">Vraag verlof aan</TooltipContent>
           </Tooltip>
           {/* Add more navigation items as needed */}
         </nav>
