@@ -33,25 +33,30 @@ class UserController {
     return true;
   }
 
-  public static async getSaldo(userId: string): Promise<number> {
+  public static async getProfile(userId: string): Promise<{
+    full_name: string;
+    username: string;
+    saldo: number;
+    avatar_url: string;
+  }> {
     const supabase = await createClient();
     const user = await supabase.from("profiles").select("*").eq("id", userId);
     if (user.error) {
-      return -1;
+      return {
+        saldo: 0,
+        full_name: "",
+        username: "",
+        avatar_url: "",
+      };
     }
 
-    return user.data[0].saldo;
+    return {
+      saldo: user.data[0].saldo,
+      full_name: user.data[0].full_name,
+      username: user.data[0].username,
+      avatar_url: user.data[0].avatar_url,
+    };
   }
-
-  // public static async getPresence(userId: string): Promise<string> {
-  //   const supabase = await createClient();
-  //   const user = await supabase.from("profiles").select("*").eq("id", userId);
-  //   if (user.error) {
-  //     return "Onbekend";
-  //   }
-
-  //   return user.data[0].presence;
-  // }
 
   public static async isManagerOf(userId: string): Promise<boolean> {
     const supabase = await createClient();
