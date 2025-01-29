@@ -16,6 +16,23 @@ class UserController {
     };
   }
 
+  public static async updateSaldo(
+    userId: string,
+    addition: number
+  ): Promise<boolean> {
+    const supabase = await createClient();
+    const user = await supabase.from("profiles").select("*").eq("id", userId);
+    if (user.error) {
+      return false;
+    }
+
+    const update = await supabase
+      .from("profiles")
+      .update({ saldo: user.data[0].saldo + addition });
+
+    return true;
+  }
+
   public static async isManagerOf(userId: string): Promise<boolean> {
     const supabase = await createClient();
     const me = await this.getUser();
