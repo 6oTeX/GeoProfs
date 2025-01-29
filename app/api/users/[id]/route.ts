@@ -1,4 +1,4 @@
-import { User, UserData } from "@/models/user";
+import { User } from "@/models/user";
 import { NextRequest, NextResponse } from "next/server";
 
 interface ContextParams {

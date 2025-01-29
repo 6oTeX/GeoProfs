@@ -17,7 +17,6 @@ import {
 import { Aperture, Menu, Search } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-
 import { getProfileAction, signOutAction } from "@/app/actions";
 
 interface ProfileProps {
@@ -159,9 +158,8 @@ const Navbar = () => {
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           <Menu
-            className={`h-6 w-6 transition-transform duration-200 ${
-              isMobileMenuOpen ? "rotate-90" : ""
-            }`}
+            className={`h-6 w-6 transition-transform duration-200 ${isMobileMenuOpen ? "rotate-90" : ""
+              }`}
           />
           <span className="sr-only">
             {isMobileMenuOpen ? "Close Menu" : "Open Menu"}

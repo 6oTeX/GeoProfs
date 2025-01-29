@@ -1,6 +1,4 @@
-import { LeaveRequest } from "@/models/leave_request";
 import { User, UserData } from "@/models/user";
-import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
 export async function GET() {

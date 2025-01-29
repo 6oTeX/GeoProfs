@@ -1,11 +1,11 @@
+import { NotificationContextProvider } from "@/components/providers/NotificationContext";
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { GeistSans } from "geist/font/sans";
 import { ThemeProvider } from "next-themes";
-import "./globals.css";
-import "react-toastify/dist/ReactToastify.css";
-import { NotificationContextProvider } from "@/components/providers/NotificationContext";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { ReactNode } from "react";
+import "react-toastify/dist/ReactToastify.css";
+import "./globals.css";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`

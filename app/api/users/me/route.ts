@@ -1,4 +1,3 @@
-import { LeaveRequest } from "@/models/leave_request";
 import { User } from "@/models/user";
 import { NextResponse } from "next/server";
 

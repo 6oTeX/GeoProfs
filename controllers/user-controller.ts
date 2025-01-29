@@ -1,5 +1,4 @@
 "use server";
-import translate from "translate";
 import { createClient } from "@/utils/supabase/server";
 import { AuthError, User } from "@supabase/supabase-js";
 
@@ -18,7 +17,7 @@ class UserController {
 
   public static async updateSaldo(
     userId: string,
-    addition: number,
+    addition: number
   ): Promise<boolean> {
     const supabase = await createClient();
     const user = await supabase.from("profiles").select("*").eq("id", userId);

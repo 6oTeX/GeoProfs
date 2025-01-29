@@ -1,11 +1,10 @@
-import LeaveRequestController from "@/controllers/leave-request-controller";
-import LeaveRequestForm from "@/components/forms/leave-request-form";
 import EmployeeRequestList from "@/components/cards/employee-request-list";
-import { Button } from "@/components/ui/button";
 import DashboardMetrics from "@/components/dashboard-metrics";
+import LeaveRequestForm from "@/components/forms/leave-request-form";
 import RecentApplications, {
   Application,
 } from "@/components/recent-applications";
+import LeaveRequestController from "@/controllers/leave-request-controller";
 
 export default async function CreateRequest() {
   const test = async () => {
