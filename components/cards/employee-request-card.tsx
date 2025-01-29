@@ -42,7 +42,7 @@ export default function EmployeeRequestCard({
 const acceptRequest = async () => {
     // Check if response is filled in
     if (!review.trim()) {
-      alert("Response is required before accepting the request.");
+      alert("Beoordeling is verplicht voordat u de aanvraag accepteert!");
       return;
     }
   
@@ -52,7 +52,6 @@ const acceptRequest = async () => {
       status: 'accepted',
       response: review,
     };
-    console.log(payload);
     try {
     // Send request to accept the leave request
       const response = await fetch(`/api/leave-requests/${element.id}/accept`, { 
@@ -68,13 +67,13 @@ const acceptRequest = async () => {
       }
   
       await response.json();
-      alert("Request Accepted");
+      alert("Verlofaanvraag geaccepteerd!");
   
       setReview('');
       setStatus('accepted');
     } catch (error) {
       console.error("Error:", error);
-      alert("Failed to accept request");
+      alert("Er is een fout opgetreden bij het accepteren van de aanvraag!");
     }
   
     setIsLoading(false);
@@ -84,7 +83,7 @@ const acceptRequest = async () => {
   const declineRequest = async () => {
     // Check if response is filled in
     if (!review.trim()) {
-      alert("Response is required before declining the request.");
+      alert("Beoordeling is verplicht voordat u de aanvraag afwijst!");
       return;
     }
   
@@ -94,7 +93,6 @@ const acceptRequest = async () => {
       status: 'declined',
       response: review,
     };
-    console.log(payload);
     try {
     // Send request to decline the leave request
       const response = await fetch(`/api/leave-requests/${element.id}/decline`, {
@@ -110,13 +108,13 @@ const acceptRequest = async () => {
       }
   
       await response.json();
-      alert("Request Declined");
+      alert("Verlofaanvraag afgewezen!");
   
       setReview('');
       setStatus('declined');
     } catch (error) {
       console.error("Error:", error);
-      alert("Failed to decline request");
+      alert("Er is een fout opgetreden bij het afwijzen van de aanvraag!");
     }
   
     setIsLoading(false);
