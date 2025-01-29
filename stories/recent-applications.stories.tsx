@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import RecentApplications, {
   Application,
-} from "../components/recent-applications";
+} from "../components/RecentApplications";
 const meta: Meta<typeof RecentApplications> = {
   component: RecentApplications,
 };

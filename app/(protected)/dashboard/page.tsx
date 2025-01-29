@@ -1,8 +1,8 @@
 import { User, UsersTable } from "@/components/UsersTable";
-import DashboardMetrics from "@/components/dashboard-metrics";
+import DashboardMetrics from "@/components/DashboardMetrics";
 import RecentApplications, {
   Application,
-} from "@/components/recent-applications";
+} from "@/components/RecentApplications";
 
 export default async function Dashboard() {
   const sampleUsers: User[] = [

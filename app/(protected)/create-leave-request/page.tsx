@@ -1,9 +1,9 @@
 import EmployeeRequestList from "@/components/cards/employee-request-list";
-import DashboardMetrics from "@/components/dashboard-metrics";
+import DashboardMetrics from "@/components/DashboardMetrics";
 import LeaveRequestForm from "@/components/forms/leave-request-form";
 import RecentApplications, {
   Application,
-} from "@/components/recent-applications";
+} from "@/components/RecentApplications";
 import LeaveRequestController from "@/controllers/leave-request-controller";
 
 export default async function CreateRequest() {

@@ -1,8 +1,8 @@
 import Calender from "@/components/Calender";
-import DashboardMetrics from "@/components/dashboard-metrics";
+import DashboardMetrics from "@/components/DashboardMetrics";
 import RecentApplications, {
   Application,
-} from "@/components/recent-applications";
+} from "@/components/RecentApplications";
 
 export default async function CalenderPage() {
   const events = {

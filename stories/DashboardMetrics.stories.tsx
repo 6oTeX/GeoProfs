@@ -1,4 +1,4 @@
-import DashboardMetrics from "../components/dashboard-metrics";
+import DashboardMetrics from "../components/DashboardMetrics";
 
 export default {
   title: "Components/DashboardMetrics",

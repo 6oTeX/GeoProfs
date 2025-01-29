@@ -1,5 +1,5 @@
 import { NotificationContextProvider } from "@/components/providers/NotificationContext";
-import { ThemeSwitcher } from "@/components/theme-switcher";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { GeistSans } from "geist/font/sans";
 import { ThemeProvider } from "next-themes";

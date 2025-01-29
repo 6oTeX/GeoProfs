@@ -41,7 +41,6 @@ export default async function DashboardMetrics() {
   const { data, success } =
     await LeaveRequestController.getCurrentPresentUsers();
 
-  console.log(data);
   // Define the metrics
   const metrics = [
     {

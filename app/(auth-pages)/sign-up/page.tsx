@@ -1,5 +1,5 @@
 import { signUpAction } from "@/app/actions";
-import { FormMessage, Message } from "@/components/form-message";
+import { FormMessage, Message } from "@/components/FormMessage";
 import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -30,7 +30,7 @@ export default function Signup({ searchParams }: { searchParams: Message }) {
           <Label htmlFor="password">Wachtwoord</Label>
           <Input
             type="password"
-            name="Wachtwoord"
+            name="password"
             placeholder="Jouw wachtwoord"
             minLength={6}
             required
