@@ -12,7 +12,7 @@ export const signUpAction = async (formData: FormData) => {
   const origin = (await headers()).get("origin");
 
   if (!email || !password) {
-    return { error: "Email and password are required" };
+    return { error: "E-mailadres en wachtwoord zijn verplicht." };
   }
 
   const { error } = await supabase.auth.signUp({
@@ -30,7 +30,7 @@ export const signUpAction = async (formData: FormData) => {
     return encodedRedirect(
       "success",
       "/sign-up",
-      "Thanks for signing up! Please check your email for a verification link.",
+      "Bedankt voor je registratie! Controleer je e-mail voor een verificatielink.",
     );
   }
 };
@@ -59,7 +59,11 @@ export const forgotPasswordAction = async (formData: FormData) => {
   const callbackUrl = formData.get("callbackUrl")?.toString();
 
   if (!email) {
-    return encodedRedirect("error", "/forgot-password", "Email is required");
+    return encodedRedirect(
+      "error",
+      "/forgot-password",
+      "E-mailadres is verplicht.",
+    );
   }
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -71,7 +75,7 @@ export const forgotPasswordAction = async (formData: FormData) => {
     return encodedRedirect(
       "error",
       "/forgot-password",
-      "Could not reset password",
+      "Kon wachtwoord niet resetten.",
     );
   }
 
@@ -82,7 +86,7 @@ export const forgotPasswordAction = async (formData: FormData) => {
   return encodedRedirect(
     "success",
     "/forgot-password",
-    "Check your email for a link to reset your password.",
+    "Controleer je e-mail voor een link om je wachtwoord te resetten.",
   );
 };
 
@@ -96,12 +100,16 @@ export const resetPasswordAction = async (formData: FormData) => {
     encodedRedirect(
       "error",
       "/reset-password",
-      "Password and confirm password are required",
+      "Wachtwoord en bevestigingswachtwoord zijn verplicht.",
     );
   }
 
   if (password !== confirmPassword) {
-    encodedRedirect("error", "/reset-password", "Passwords do not match");
+    encodedRedirect(
+      "error",
+      "/reset-password",
+      "Wachtwoorden komen niet overeen.",
+    );
   }
 
   const { error } = await supabase.auth.updateUser({
@@ -109,10 +117,14 @@ export const resetPasswordAction = async (formData: FormData) => {
   });
 
   if (error) {
-    encodedRedirect("error", "/reset-password", "Password update failed");
+    encodedRedirect(
+      "error",
+      "/reset-password",
+      "Wachtwoord bijwerken mislukt.",
+    );
   }
 
-  encodedRedirect("success", "/reset-password", "Password updated");
+  encodedRedirect("success", "/reset-password", "Wachtwoord bijgewerkt.");
 };
 
 export const signOutAction = async () => {
