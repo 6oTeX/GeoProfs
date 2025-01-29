@@ -40,7 +40,7 @@ export default async function CreateRequest() {
           <EmployeeRequestList />
         </div>
         <div>
-          <RecentApplications applications={applications} />
+          <RecentApplications />
         </div>
       </main>
     </div>

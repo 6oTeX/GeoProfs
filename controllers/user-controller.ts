@@ -18,7 +18,7 @@ class UserController {
 
   public static async updateSaldo(
     userId: string,
-    addition: number,
+    addition: number
   ): Promise<boolean> {
     const supabase = await createClient();
     const user = await supabase.from("profiles").select("*").eq("id", userId);
@@ -32,6 +32,26 @@ class UserController {
 
     return true;
   }
+
+  public static async getSaldo(userId: string): Promise<number> {
+    const supabase = await createClient();
+    const user = await supabase.from("profiles").select("*").eq("id", userId);
+    if (user.error) {
+      return -1;
+    }
+
+    return user.data[0].saldo;
+  }
+
+  // public static async getPresence(userId: string): Promise<string> {
+  //   const supabase = await createClient();
+  //   const user = await supabase.from("profiles").select("*").eq("id", userId);
+  //   if (user.error) {
+  //     return "Onbekend";
+  //   }
+
+  //   return user.data[0].presence;
+  // }
 
   public static async isManagerOf(userId: string): Promise<boolean> {
     const supabase = await createClient();

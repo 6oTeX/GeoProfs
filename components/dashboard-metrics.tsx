@@ -1,5 +1,8 @@
 import { Bell, Calendar, Clock, Activity } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import LeaveRequestController from "@/controllers/leave-request-controller";
+import UserController from "@/controllers/user-controller";
+import { User, UsersTable } from './UsersTable';
 
 interface MetricCardProps {
   title: string;
@@ -23,18 +26,23 @@ function MetricCard({ title, value, change, icon }: MetricCardProps) {
   );
 }
 
-export default function DashboardMetrics() {
+export default async function DashboardMetrics() {
+
+  const userData = await UserController.getUser();
+  const saldo = await UserController.getSaldo(userData.user?.id as string);
+
+
   const metrics = [
     {
       title: "Datum",
-      value: "$1,329",
-      change: "+201 since last hour",
+      value: new Date().toLocaleDateString("nl-NL", { weekday: "long", year: "numeric", month: "long", day: "numeric" }),
+      change: new Date().toLocaleTimeString("nl-NL", { hour: "2-digit", minute: "2-digit" }),
       icon: <Calendar className="h-4 w-4" />,
     },
     {
       title: "Verlof uren",
-      value: "$1,329",
-      change: "+201 since last hour",
+      value: saldo.toString(),
+      change: "Saldo",
       icon: <Clock className="h-4 w-4" />,
     },
     {

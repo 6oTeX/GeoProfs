@@ -89,7 +89,7 @@ export default async function CalenderPage() {
           <Calender events={processedEvents} />
         </div>
         <div>
-          <RecentApplications applications={applications} />
+          <RecentApplications />
         </div>
       </main>
     </div>

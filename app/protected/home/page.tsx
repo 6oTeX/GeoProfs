@@ -76,7 +76,7 @@ export default async function Dashboard() {
           <UsersTable users={sampleUsers} />
         </div>
         <div>
-          <RecentApplications applications={applications} />
+          <RecentApplications />
         </div>
       </main>
     </div>
