@@ -29,15 +29,19 @@ const statusConfig = {
 };
 
 export default async function RecentApplications() {
+  const { data, errors, success } =
+    await LeaveRequestController.getMyRequests();
 
-  const { data, errors, success } = await LeaveRequestController.getMyRequests();
-
-  data.map((element: { start_date: string | number | Date; end_date: string | number | Date }) => ({
-    ...element,
-    startDate: new Date(element.start_date),
-    endDate: new Date(element.end_date),
-  }));
-
+  data.map(
+    (element: {
+      start_date: string | number | Date;
+      end_date: string | number | Date;
+    }) => ({
+      ...element,
+      startDate: new Date(element.start_date),
+      endDate: new Date(element.end_date),
+    }),
+  );
 
   return (
     <Card className="p-6">
@@ -66,14 +70,12 @@ export default async function RecentApplications() {
 
       <div className="space-y-4">
         {success ? (
-
           data.map((application: Application, index: number) => {
-            const status =
-              statusConfig[application.status] || {
-                label: "Onbekend",
-                color: "text-gray-500",
-                icon: XCircle,
-              };
+            const status = statusConfig[application.status] || {
+              label: "Onbekend",
+              color: "text-gray-500",
+              icon: XCircle,
+            };
             const StatusIcon = status.icon;
 
             return (
@@ -99,14 +101,12 @@ export default async function RecentApplications() {
                 </div>
               </div>
             );
-          }
-          )
+          })
         ) : (
           <div className="text-center text-muted-foreground">
             Er zijn geen recente aanvragen
           </div>
         )}
-
       </div>
     </Card>
   );

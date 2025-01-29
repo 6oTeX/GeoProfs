@@ -75,7 +75,7 @@ const Navbar = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="/protected/home"
+                href="/dashboard"
                 className="flex h-9 items-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
               >
                 Dashboard
@@ -87,7 +87,7 @@ const Navbar = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="/protected/calendar"
+                href="/calendar"
                 className="flex h-9 items-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
               >
                 Kalender
@@ -99,7 +99,7 @@ const Navbar = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="/protected/create-leave-request"
+                href="/create-leave-request"
                 className="flex h-9 items-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
               >
                 Create Leave request

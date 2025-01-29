@@ -1,8 +1,7 @@
-import { Bell, Calendar, Clock, Activity } from "lucide-react";
+import { Calendar, Clock, Activity, PersonStanding } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import LeaveRequestController from "@/controllers/leave-request-controller";
 import UserController from "@/controllers/user-controller";
-import { User, UsersTable } from './UsersTable';
 
 interface MetricCardProps {
   title: string;
@@ -11,6 +10,7 @@ interface MetricCardProps {
   icon: React.ReactNode;
 }
 
+// Card component for the metrics on the dashboard
 function MetricCard({ title, value, change, icon }: MetricCardProps) {
   return (
     <Card className="relative overflow-hidden">
@@ -27,35 +27,61 @@ function MetricCard({ title, value, change, icon }: MetricCardProps) {
 }
 
 export default async function DashboardMetrics() {
-
+  // Grab the user data and profile info
   const userData = await UserController.getUser();
-  const saldo = await UserController.getSaldo(userData.user?.id as string);
+  const profileInfo = await UserController.getProfile(
+    (userData.user?.id as string) || "",
+  );
 
+  // Calculate the days until the new
+  const untilNewPeriod =
+    new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate() -
+    new Date().getDate();
 
+  const { data, success } =
+    await LeaveRequestController.getCurrentPresentUsers();
+
+  console.log(data);
+  // Define the metrics
   const metrics = [
     {
+      title: "Welkom terug",
+      value: success ? profileInfo.full_name : "Laden...",
+      change: "Hoe gaat het vandaag?",
+      icon: <PersonStanding className="h-4 w-4" />,
+    },
+    {
       title: "Datum",
-      value: new Date().toLocaleDateString("nl-NL", { weekday: "long", year: "numeric", month: "long", day: "numeric" }),
-      change: new Date().toLocaleTimeString("nl-NL", { hour: "2-digit", minute: "2-digit" }),
+      value: new Date().toLocaleDateString("nl-NL", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }),
+      change: new Date().toLocaleTimeString("nl-NL", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
       icon: <Calendar className="h-4 w-4" />,
     },
     {
-      title: "Verlof uren",
-      value: saldo.toString(),
-      change: "Saldo",
+      title: "Huidig saldo",
+      value: success ? profileInfo.saldo + " uur" : "Laden...",
+      change: `Dagen tot nieuwe periode: ${untilNewPeriod}`,
       icon: <Clock className="h-4 w-4" />,
     },
     {
       title: "Status personeel",
-      value: "$1,329",
-      change: "+201 since last hour",
+      value: success
+        ? data
+          ? data.present.length +
+            " Aanwezig, " +
+            data.absent.length +
+            " afwezig"
+          : "Laden..."
+        : "Laden...",
+      change: "Vandaag",
       icon: <Activity className="h-4 w-4" />,
-    },
-    {
-      title: "Aantal aanvragen",
-      value: "$1,329",
-      change: "+201 since last hour",
-      icon: <Bell className="h-4 w-4" />,
     },
   ];
 

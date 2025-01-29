@@ -18,7 +18,7 @@ class UserController {
 
   public static async updateSaldo(
     userId: string,
-    addition: number
+    addition: number,
   ): Promise<boolean> {
     const supabase = await createClient();
     const user = await supabase.from("profiles").select("*").eq("id", userId);
