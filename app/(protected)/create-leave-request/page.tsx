@@ -1,6 +1,6 @@
-import EmployeeRequestList from "@/components/cards/employee-request-list";
+import EmployeeRequestList from "@/components/cards/EmployeeRequestList";
 import DashboardMetrics from "@/components/DashboardMetrics";
-import LeaveRequestForm from "@/components/forms/leave-request-form";
+import LeaveRequestForm from "@/components/forms/LeaveRequestForm";
 import RecentApplications, {
   Application,
 } from "@/components/RecentApplications";

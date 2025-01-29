@@ -1,6 +1,6 @@
 import LeaveRequestController from "@/controllers/leave-request-controller";
 import { Separator } from "@/components/ui/separator";
-import EmployeeRequestCard from "./employee-request-card";
+import EmployeeRequestCard from "./EmployeeRequestCard";
 
 export default async function EmployeeRequestList() {
   // Check if user is a manager.
