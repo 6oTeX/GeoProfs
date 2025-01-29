@@ -57,6 +57,7 @@ class LeaveRequestController {
   ) {
     let response: BlankResponse = { success: true, errors: [] };
 
+    // check if the date range is valid
     const current_date = new Date();
     if (
       start_date < current_date ||

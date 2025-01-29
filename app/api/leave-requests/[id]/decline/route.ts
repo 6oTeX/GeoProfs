@@ -8,7 +8,7 @@ interface ContextParams {
 }
 
 export async function PUT(request: NextRequest, context: ContextParams) {
-  const { id } = context.params;
+  const {id} = await context.params;
   const body = await request.json();
 
   // get the leave request in question
@@ -21,5 +21,5 @@ export async function PUT(request: NextRequest, context: ContextParams) {
   // push the new request state to supabase
   await leave_request.push();
 
-  return NextResponse.json({ success: true, errors: [] });
+  return NextResponse.json({success: true, errors: []});
 }
