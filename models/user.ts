@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { LeaveRequest, LeaveRequestData } from "./leave_request";
+import { Department } from "./department";
 
 export interface UserData {
   id: string;
@@ -10,6 +11,7 @@ export interface UserData {
   saldo: number;
   email: string;
   leave_requests: LeaveRequestData[];
+  department_id: string | null;
 }
 
 export class User {
@@ -57,6 +59,7 @@ export class User {
         saldo: data.saldo,
         email: data.email,
         leave_requests: [],
+        department_id: data.department_id,
       };
 
       if (recursive) {
@@ -110,6 +113,36 @@ export class User {
     return this.m_leave_requests;
   }
 
+  public async isManagerOf(user: User): Promise<boolean>
+  {
+    const supabase = await createClient();
+
+    await user.pull();
+    const department_id = user.get().department_id;
+    if (department_id != null)
+    {
+      // fetch department data
+      const department = new Department(department_id);
+      await department.pull();
+
+      const manager = await department.getManager();
+      if (manager)
+      {
+        await manager.pull();
+        if (manager.get().id == this.m_data.id)
+        {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public async isManagedBy(user: User): Promise<boolean>
+  {
+    return !(await user.isManagerOf(this));
+  }
+
   public static async getAll(): Promise<User[]> {
     const supabase = await createClient();
     const { data, error } = await supabase.from("profiles").select("*");
@@ -137,6 +170,7 @@ export class User {
       saldo: 0,
       email: "",
       leave_requests: [],
+      department_id: null
     };
   }
 }

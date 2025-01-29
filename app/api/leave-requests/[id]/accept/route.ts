@@ -8,18 +8,16 @@ interface ContextParams {
 }
 
 export async function PUT(request: NextRequest, context: ContextParams) {
-  const {id} = context.params;
-  const body = await request.json();
+  const {id} = await context.params;
+  const {requestId,status,response} = await request.json();
+
+  console.log(response);
 
   // get the leave request in question
   const leave_request = new LeaveRequest(id);
   await leave_request.pull();
+  await leave_request.accept(response);
 
-  // accept the request
-  leave_request.accept(body.response);
-
-  // push the new request state to supabase
-  await leave_request.push();
 
   return NextResponse.json({success: true, errors: []});
 }

@@ -13,6 +13,7 @@ export interface LeaveRequestData {
   user_id: string;
   user: UserData | null;
   reason: string;
+  response: string | null;
 }
 
 export class LeaveRequest {
@@ -57,6 +58,7 @@ export class LeaveRequest {
         user_id: data.user_id,
         reason: data.reason,
         user: null,
+        response: null,
       };
 
       if (this.m_data.state == "accepted" && data.reviewed_by) {
@@ -81,13 +83,32 @@ export class LeaveRequest {
   }
 
   public async push(): Promise<boolean> {
+    
     const supabase = await createClient();
+
     if (this.m_data.id != "UNDEFINED") {
+      console.log("supabase.update()");
+
       const response = await supabase
         .from("leave_requests")
-        .update(this.m_data)
+        .update({
+          id: this.m_data.id,
+          start_date: this.m_data.start_date,
+          end_date: this.m_data.end_date,
+          explanation: this.m_data.explanation,
+          state: this.m_data.state,
+          reviewed_by: this.m_data.reviewed_by?.id ? this.m_data.reviewed_by?.id : null,
+          reason: this.m_data.reason,
+          response: this.m_data.response
+        })
         .eq("id", this.m_data.id);
-      return !response.error;
+      if (response.error)
+      {
+        console.log(response.error.message);
+        return false;
+      }
+      return true;
+
     } else {
       const insert_data = {
         start_date: this.m_data.start_date,
@@ -124,15 +145,29 @@ export class LeaveRequest {
     user.set(data);
     await user.push();
 
+    // Get reviewer
+    this.m_reviewer = new User();
+    await this.m_reviewer.pull();
+    this.m_data.reviewed_by = this.m_reviewer.get();
+
     // update and push the request
+    this.m_data.response = reason;
     this.m_data.state = "accepted";
     await this.push();
     return true;
   }
 
   public async decline(reason: string): Promise<boolean> {
+    
+    // Get reviewer
+    this.m_reviewer = new User();
+    await this.m_reviewer.pull();
+    this.m_data.reviewed_by = this.m_reviewer.get();
+    
     // update and push the request
     this.m_data.state = "declined";
+    this.m_data.response = reason;
+    await this.push();
     return true;
   }
 
@@ -188,6 +223,7 @@ export class LeaveRequest {
       user_id: "",
       reason: "",
       user: null,
+      response: null
     };
   }
 }
