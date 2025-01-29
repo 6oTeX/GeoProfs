@@ -105,7 +105,7 @@ export default function LeaveRequestForm() {
       body: JSON.stringify(payload),
     })
       .then((response) => response.json())
-      .then((responseData) => {})
+      .then((responseData) => { })
       .catch((error) => {
         console.error("Error:", error);
       });
@@ -247,6 +247,7 @@ export default function LeaveRequestForm() {
                       <Calendar
                         // Changing the data based on if 1 or 2 dates have been selected.
                         mode="range"
+                        locale={nl}
                         selected={dateRange}
                         onSelect={(selectedDateRange) => {
                           if (selectedDateRange?.from) {
