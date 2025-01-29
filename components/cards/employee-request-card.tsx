@@ -28,12 +28,14 @@ export default function EmployeeRequestCard({
   const [review, setReview] = useState('');
   const [status, setStatus] = useState('');
 
+  // Change the state text based on the state.
   const stateTranslations = {
     accepted: "Geaccepteerd",
     submitted: "Openstaand",
     declined: "Afgewezen",
   };
   
+  // Change the state color based on the state.
   const stateColor = {
     accepted: "text-green-500",
     submitted: "text-orange-500",
@@ -176,7 +178,7 @@ const acceptRequest = async () => {
             </span>
           </div>
           <div
-            // Display based on request state.
+            // Display state and color based on request state.
             className={`px-2.5 py-0.1 text-xs font-medium rounded-lg flex items-center ${
               stateColor[element.state] || stateColor.default
             }`
