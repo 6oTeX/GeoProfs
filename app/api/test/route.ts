@@ -3,10 +3,9 @@ import { User } from "@/models/user";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  
   const user = new User();
   await user.pull();
-  
+
   // create a new, empty request object
   const req = new LeaveRequest();
   const data = req.get();

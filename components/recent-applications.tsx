@@ -9,8 +9,6 @@ export interface Application {
   status: "approved" | "rejected" | "pending";
 }
 
-
-
 const statusConfig = {
   approved: {
     label: "Goedgekeurd",
@@ -29,9 +27,11 @@ const statusConfig = {
   },
 };
 
-export default function RecentApplications(
-  { applications }: { applications: Application[] }
-) {
+export default function RecentApplications({
+  applications,
+}: {
+  applications: Application[];
+}) {
   return (
     <Card className="p-6">
       <div className="flex items-center justify-between mb-6">

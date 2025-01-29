@@ -97,7 +97,7 @@ export class User {
 
   public get(): UserData {
     this.m_data.leave_requests = this.m_leave_requests.map((request) =>
-      request.get()
+      request.get(),
     );
     return this.m_data;
   }

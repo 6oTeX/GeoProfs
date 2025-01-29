@@ -119,7 +119,7 @@ export class LeaveRequest {
       this.m_data.start_date,
       this.m_data.end_date,
       9,
-      17
+      17,
     );
     user.set(data);
     await user.push();
@@ -151,7 +151,7 @@ export class LeaveRequest {
   }
 
   public static async getAll(
-    withPull: boolean = false
+    withPull: boolean = false,
   ): Promise<LeaveRequest[]> {
     let requests: LeaveRequest[] = [];
 

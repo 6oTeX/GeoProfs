@@ -12,11 +12,10 @@ export async function POST(request: Request) {
   } else {
     reason = submitData.reason;
   }
-  
 
   const user = new User();
   await user.pull();
-  
+
   // create a new, empty request object
   const req = new LeaveRequest();
   const data = req.get();

@@ -1,37 +1,8 @@
-import {
-  ChevronLeft,
-  ChevronRight,
-  Copy,
-  CreditCard,
-  MoreVertical,
-  Truck,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-} from "@/components/ui/pagination";
-import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
 import { User, UsersTable } from "@/components/UsersTable";
 import DashboardMetrics from "@/components/dashboard-metrics";
-import RecentApplications from "@/components/recent-applications";
+import RecentApplications, {
+  Application,
+} from "@/components/recent-applications";
 
 export default async function Dashboard() {
   const sampleUsers: User[] = [
@@ -79,12 +50,6 @@ export default async function Dashboard() {
     },
   ];
 
-  interface Application {
-    name: string;
-    email: string;
-    status: "approved" | "rejected" | "pending";
-  }
-
   const applications: Application[] = [
     {
       name: "Olivia Martin",
@@ -103,19 +68,15 @@ export default async function Dashboard() {
     },
   ];
 
-
   return (
-    <div className="flex min-h-screen w-full flex-col bg-muted/40">
+    <div className="flex min-h-screen w-full flex-col">
       <main className="grid flex-1 items-start gap-4 p-4 pt-28 sm:px-6 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
         <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
-
           <DashboardMetrics />
           <UsersTable users={sampleUsers} />
         </div>
         <div>
-          <RecentApplications
-            applications={applications}
-          />
+          <RecentApplications applications={applications} />
         </div>
       </main>
     </div>

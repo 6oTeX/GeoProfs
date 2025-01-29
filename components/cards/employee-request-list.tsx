@@ -3,32 +3,47 @@ import { Separator } from "@/components/ui/separator";
 import EmployeeRequestCard from "./employee-request-card";
 
 export default async function EmployeeRequestList() {
-  const employeeRequestList = await LeaveRequestController.getMyRequests();
+  const { data, errors, success } =
+    await LeaveRequestController.getMyRequests();
   const currentDate = new Date();
 
-  const parsedRequests = employeeRequestList.returnData.map((element) => ({
-    ...element,
-    // Parse dates from returnData into Date objects.
-    startDate: new Date(element.start_date),
-    endDate: new Date(element.end_date),
-  }));
+  const parsedRequests = data.map(
+    (element: {
+      start_date: string | number | Date;
+      end_date: string | number | Date;
+    }) => ({
+      ...element,
+      // Parse dates from returnData into Date objects.
+      startDate: new Date(element.start_date),
+      endDate: new Date(element.end_date),
+    }),
+  );
 
   // Separate into active, upcoming, and past requests.
   const activeRequests = parsedRequests.filter(
-    (element) =>
+    (element: { startDate: Date; endDate: Date }) =>
       element.startDate <= currentDate && element.endDate >= currentDate,
   );
   const upcomingRequests = parsedRequests.filter(
-    (element) => element.startDate > currentDate,
+    (element: { startDate: Date }) => element.startDate > currentDate,
   );
   const pastRequests = parsedRequests.filter(
-    (element) => element.endDate < currentDate,
+    (element: { endDate: Date }) => element.endDate < currentDate,
   );
 
   // Sort each list by startDate.
-  activeRequests.sort((a, b) => a.startDate - b.startDate);
-  upcomingRequests.sort((a, b) => a.startDate - b.startDate);
-  pastRequests.sort((a, b) => a.startDate - b.startDate);
+  activeRequests.sort(
+    (a: { startDate: Date }, b: { startDate: Date }) =>
+      a.startDate.getTime() - b.startDate.getTime(),
+  );
+  upcomingRequests.sort(
+    (a: { startDate: Date }, b: { startDate: Date }) =>
+      a.startDate.getTime() - b.startDate.getTime(),
+  );
+  pastRequests.sort(
+    (a: { startDate: Date }, b: { startDate: Date }) =>
+      a.startDate.getTime() - b.startDate.getTime(),
+  );
 
   const separator = { isSeparator: true, type: null };
 
