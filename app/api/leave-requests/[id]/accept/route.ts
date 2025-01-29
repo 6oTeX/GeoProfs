@@ -18,6 +18,5 @@ export async function PUT(request: NextRequest, context: ContextParams) {
   await leave_request.pull();
   await leave_request.accept(response);
 
-
   return NextResponse.json({success: true, errors: []});
 }
