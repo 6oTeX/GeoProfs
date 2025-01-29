@@ -96,6 +96,18 @@ const Navbar = () => {
             </TooltipTrigger>
             <TooltipContent side="bottom">Kalender</TooltipContent>
           </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                href="/protected/create-leave-request"
+                className="flex h-9 items-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
+              >
+                Create Leave request
+                <span className="sr-only">Create Leave request</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">Create Leave request</TooltipContent>
+          </Tooltip>
           {/* Add more navigation items as needed */}
         </nav>
 
@@ -147,9 +159,8 @@ const Navbar = () => {
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           <Menu
-            className={`h-6 w-6 transition-transform duration-200 ${
-              isMobileMenuOpen ? "rotate-90" : ""
-            }`}
+            className={`h-6 w-6 transition-transform duration-200 ${isMobileMenuOpen ? "rotate-90" : ""
+              }`}
           />
           <span className="sr-only">
             {isMobileMenuOpen ? "Close Menu" : "Open Menu"}

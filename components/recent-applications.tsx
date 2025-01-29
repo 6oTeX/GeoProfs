@@ -9,23 +9,7 @@ export interface Application {
   status: "approved" | "rejected" | "pending";
 }
 
-const applications: Application[] = [
-  {
-    name: "Olivia Martin",
-    email: "olivia.martin@email.com",
-    status: "approved",
-  },
-  {
-    name: "Olivia Martin",
-    email: "olivia.martin@email.com",
-    status: "rejected",
-  },
-  {
-    name: "Olivia Martin",
-    email: "olivia.martin@email.com",
-    status: "pending",
-  },
-];
+
 
 const statusConfig = {
   approved: {
@@ -46,7 +30,7 @@ const statusConfig = {
 };
 
 export default function RecentApplications(
-  Application: Application[] = applications,
+  { applications }: { applications: Application[] }
 ) {
   return (
     <Card className="p-6">

@@ -3,7 +3,7 @@ import LeaveRequestForm from "@/components/forms/leave-request-form";
 import EmployeeRequestList from "@/components/cards/employee-request-list";
 import { Button } from "@/components/ui/button";
 
-export default async function Dashboard() {
+export default async function CreateRequest() {
   const test = async () => {
     LeaveRequestController.getMyRequests();
   };
