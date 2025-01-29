@@ -97,8 +97,6 @@ export default function LeaveRequestForm() {
       dateEnd: dateRange?.to || null,
     };
 
-    console.log("Submitting Payload:", payload);
-
     fetch("/api/leave-requests", {
       method: "POST",
       headers: {
@@ -108,7 +106,6 @@ export default function LeaveRequestForm() {
     })
       .then((response) => response.json())
       .then((responseData) => {
-        console.log("Success:", responseData);
       })
       .catch((error) => {
         console.error("Error:", error);

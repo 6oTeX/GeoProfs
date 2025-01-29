@@ -28,6 +28,22 @@ export default function EmployeeRequestCard({
   const [review, setReview] = useState('');
   const [status, setStatus] = useState('');
 
+  // Change the state text based on the state.
+  const stateTranslations = {
+    accepted: "Geaccepteerd",
+    submitted: "Openstaand",
+    declined: "Afgewezen",
+  };
+  
+  // Change the state color based on the state.
+  const stateColor = {
+    accepted: "text-green-500",
+    submitted: "text-orange-500",
+    declined: "text-red-500",
+    default: "text-gray-600",
+  };
+  
+
 //   Open modal
   const showResponse = () => {
     setIsModalOpen(true); // Open the modal to show detailed information
@@ -42,7 +58,7 @@ export default function EmployeeRequestCard({
 const acceptRequest = async () => {
     // Check if response is filled in
     if (!review.trim()) {
-      alert("Response is required before accepting the request.");
+      alert("Beoordeling is verplicht voordat u de aanvraag accepteert!");
       return;
     }
   
@@ -52,7 +68,6 @@ const acceptRequest = async () => {
       status: 'accepted',
       response: review,
     };
-    console.log(payload);
     try {
     // Send request to accept the leave request
       const response = await fetch(`/api/leave-requests/${element.id}/accept`, { 
@@ -68,13 +83,13 @@ const acceptRequest = async () => {
       }
   
       await response.json();
-      alert("Request Accepted");
+      alert("Verlofaanvraag geaccepteerd!");
   
       setReview('');
       setStatus('accepted');
     } catch (error) {
       console.error("Error:", error);
-      alert("Failed to accept request");
+      alert("Er is een fout opgetreden bij het accepteren van de aanvraag!");
     }
   
     setIsLoading(false);
@@ -84,7 +99,7 @@ const acceptRequest = async () => {
   const declineRequest = async () => {
     // Check if response is filled in
     if (!review.trim()) {
-      alert("Response is required before declining the request.");
+      alert("Beoordeling is verplicht voordat u de aanvraag afwijst!");
       return;
     }
   
@@ -94,7 +109,6 @@ const acceptRequest = async () => {
       status: 'declined',
       response: review,
     };
-    console.log(payload);
     try {
     // Send request to decline the leave request
       const response = await fetch(`/api/leave-requests/${element.id}/decline`, {
@@ -110,13 +124,13 @@ const acceptRequest = async () => {
       }
   
       await response.json();
-      alert("Request Declined");
+      alert("Verlofaanvraag afgewezen!");
   
       setReview('');
       setStatus('declined');
     } catch (error) {
       console.error("Error:", error);
-      alert("Failed to decline request");
+      alert("Er is een fout opgetreden bij het afwijzen van de aanvraag!");
     }
   
     setIsLoading(false);
@@ -164,18 +178,13 @@ const acceptRequest = async () => {
             </span>
           </div>
           <div
-            // Display based on request state.
+            // Display state and color based on request state.
             className={`px-2.5 py-0.1 text-xs font-medium rounded-lg flex items-center ${
-              element.state === 'accepted'
-                ? 'text-green-500'
-                : element.state === 'submitted'
-                ? 'text-orange-500'
-                : element.state === 'declined'
-                ? 'text-red-500'
-                : 'text-gray-600'
-            }`}
-          >
-            {element.state || "Niet beschikbaar"}
+              stateColor[element.state] || stateColor.default
+            }`
+          }
+            >
+            {stateTranslations[element.state] || "Niet beschikbaar"}
           </div>
         </div>
       </Card>
@@ -207,7 +216,7 @@ const acceptRequest = async () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold">Status:</h3>
-                  <p>{element.state || "Niet beschikbaar."}</p>
+                  <p>{stateTranslations[element.state] || "Niet beschikbaar"}</p>
                 </div>
                 <div>
                   <p>Verlof aangevraagd op: {new Intl.DateTimeFormat('en-GB').format(element.createdAtDate)}</p>
