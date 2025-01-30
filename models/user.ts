@@ -67,8 +67,7 @@ export class User {
       if (recursive) {
         await this.pullLeaveRequests();
 
-        if (this.m_data.department_id)
-        {
+        if (this.m_data.department_id) {
           this.m_department = new Department(this.m_data.department_id);
           await this.m_department.pull(false);
         }
@@ -122,8 +121,8 @@ export class User {
   }
 
   public getDepartment(): DepartmentData | null {
-    return (this.m_department) ? this.m_department.get() : null;
-  };
+    return this.m_department ? this.m_department.get() : null;
+  }
 
   public async isManagerOf(user: User): Promise<boolean> {
     const supabase = await createClient();

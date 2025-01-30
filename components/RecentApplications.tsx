@@ -33,7 +33,6 @@ export default async function RecentApplications() {
   const { data, errors, success } =
     await LeaveRequestController.getMyRequests();
 
-
   data.map(
     (element: {
       start_date: string | number | Date;
@@ -91,7 +90,9 @@ export default async function RecentApplications() {
                     <AvatarFallback>OM</AvatarFallback>
                   </Avatar>
                   <div>
-                    <div className="font-medium">{application.user?.full_name}</div>
+                    <div className="font-medium">
+                      {application.user?.full_name}
+                    </div>
                     <div className="text-sm text-muted-foreground">
                       {application.user?.email}
                     </div>

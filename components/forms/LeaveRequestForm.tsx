@@ -105,7 +105,7 @@ export default function LeaveRequestForm() {
       body: JSON.stringify(payload),
     })
       .then((response) => response.json())
-      .then((responseData) => { })
+      .then((responseData) => {})
       .catch((error) => {
         console.error("Error:", error);
       });

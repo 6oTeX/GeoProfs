@@ -11,11 +11,13 @@ interface UserData {
   team: string;
 }
 
-type EventData = Record<string, { team: string; furloughNames: string[]; sickNames: string[] }[]>;
+type EventData = Record<
+  string,
+  { team: string; furloughNames: string[]; sickNames: string[] }[]
+>;
 
 function transformLeaveRequests(leaveRequests: LeaveRequestData[]): EventData {
   const events: EventData = {};
-
 
   leaveRequests.forEach((request) => {
     if (!request.user) {
@@ -37,9 +39,17 @@ function transformLeaveRequests(leaveRequests: LeaveRequestData[]): EventData {
         events[dateString] = [];
       }
 
-      let teamEntry = events[dateString].find((entry) => entry.team === request.user!.department_id);
+      let teamEntry = events[dateString].find(
+        (entry) => entry.team === request.user!.department_id,
+      );
       if (!teamEntry) {
-        teamEntry = { team: request.user.department_id ? request.user.department_id : "Algemeen", furloughNames: [], sickNames: [] };
+        teamEntry = {
+          team: request.user.department_id
+            ? request.user.department_id
+            : "Algemeen",
+          furloughNames: [],
+          sickNames: [],
+        };
         events[dateString].push(teamEntry);
       }
 
@@ -54,11 +64,9 @@ function transformLeaveRequests(leaveRequests: LeaveRequestData[]): EventData {
 }
 
 export default async function CalenderPage() {
-
-
   const requests = await LeaveRequest.getAll();
 
-  const events = transformLeaveRequests(requests.map(req => req.get()));
+  const events = transformLeaveRequests(requests.map((req) => req.get()));
 
   const applications: Application[] = [
     {
