@@ -21,4 +21,12 @@ describe("Auth login", () => {
     cy.contains("Uitloggen").click();
     cy.contains("Login");
   });
+
+  it("Log-in with wrong password", () => {
+    cy.get(".h-20 > :nth-child(3) > .inline-flex").click();
+    cy.get('[placeholder="info@geoprofs.nl"]').type("user1@geoprofs.com");
+    cy.get('[placeholder="Jouw wachtwoord"]').type("password");
+    cy.get(".\\[\\&\\>input\\]\\:mb-3 > .inline-flex").click();
+    cy.contains("Onjuiste gebruikersnaam of wachtwoord");
+  });
 });
