@@ -148,16 +148,6 @@ INSERT INTO public.leave_requests (
     response
 ) VALUES
     (
-        (SELECT id FROM auth.users WHERE email = 'user1@geoprofs.com'),
-        '2023-11-01',
-        '2023-11-05',
-        'vacation',
-        'Family trip to the mountains.',
-        'submitted',
-        NULL,
-        NULL
-    ),
-    (
         (SELECT id FROM auth.users WHERE email = 'user2@geoprofs.com'),
         '2023-11-10',
         '2023-11-12',
