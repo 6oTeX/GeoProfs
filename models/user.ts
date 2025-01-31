@@ -100,7 +100,7 @@ export class User {
 
   public get(): UserData {
     this.m_data.leave_requests = this.m_leave_requests.map((request) =>
-      request.get()
+      request.get(),
     );
     return this.m_data;
   }
@@ -113,24 +113,20 @@ export class User {
     return this.m_leave_requests;
   }
 
-  public async isManagerOf(user: User): Promise<boolean>
-  {
+  public async isManagerOf(user: User): Promise<boolean> {
     const supabase = await createClient();
 
     await user.pull();
     const department_id = user.get().department_id;
-    if (department_id != null)
-    {
+    if (department_id != null) {
       // fetch department data
       const department = new Department(department_id);
       await department.pull();
 
       const manager = await department.getManager();
-      if (manager)
-      {
+      if (manager) {
         await manager.pull();
-        if (manager.get().id == this.m_data.id)
-        {
+        if (manager.get().id == this.m_data.id) {
           return true;
         }
       }
@@ -138,8 +134,7 @@ export class User {
     return false;
   }
 
-  public async isManagedBy(user: User): Promise<boolean>
-  {
+  public async isManagedBy(user: User): Promise<boolean> {
     return !(await user.isManagerOf(this));
   }
 
@@ -197,7 +192,7 @@ export class User {
       saldo: 0,
       email: "",
       leave_requests: [],
-      department_id: null
+      department_id: null,
     };
   }
 }

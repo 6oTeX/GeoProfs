@@ -3,7 +3,7 @@ import { supabaseClient } from "@/lib/supabaseClient";
 import { toast } from "react-toastify";
 import { Button } from "./ui/button";
 
-export default function DeployButton() {
+export default function ToastButtonSocket() {
   const handleInserts = (payload: { new: any }) => {
     const newNotification = payload.new;
     toast(newNotification.message, {

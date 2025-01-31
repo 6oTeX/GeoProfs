@@ -55,7 +55,7 @@ class LeaveRequestController {
     reason: string,
     explanation: string,
     start_date: Date,
-    end_date: Date
+    end_date: Date,
   ) {
     let response: BlankResponse = { success: true, errors: [] };
 
@@ -99,7 +99,7 @@ class LeaveRequestController {
   }
 
   public static async getRequestsByDepartment(
-    department_id: string
+    department_id: string,
   ): Promise<DataResponse> {
     let response: DataResponse = { success: true, errors: [], data: {} };
 
@@ -173,7 +173,7 @@ class LeaveRequestController {
   public static async respond(
     id: string,
     to: string,
-    response_text: string
+    response_text: string,
   ): Promise<BlankResponse> {
     let response: BlankResponse = { success: true, errors: [] };
 
@@ -200,7 +200,7 @@ class LeaveRequestController {
     if (await !UserController.isManagerOf(request.data[0].user_id)) {
       response.success = false;
       response.errors.push(
-        `You do not have permission to accept or decline this request`
+        `You do not have permission to accept or decline this request`,
       );
       return response;
     }
@@ -220,6 +220,61 @@ class LeaveRequestController {
           new Date(request.data[0].end_date).getTime()) /
         (60 * 60 * 1000 * 3);
       console.log(diff);
+    }
+
+    return response;
+  }
+
+  public static async getCurrentPresentUsers(): Promise<{
+    success: boolean;
+    errors: string[];
+    data: any;
+  }> {
+    let response: DataResponse = { success: true, errors: [], data: [] };
+
+    // get the auth-session
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      response.errors.push("No auth-session");
+      response.success = false;
+    } else {
+      // get all leave requests
+      const { data, error } = await supabase.from("leave_requests").select("*");
+      if (error) {
+        response.errors.push(error.message);
+        response.success = false;
+      } else {
+        // get all users
+        const users = await supabase.from("profiles").select("*");
+        if (users.error) {
+          response.errors.push(users.error.message);
+          response.success = false;
+        } else {
+          let presentUsers: any[] = [];
+          let absentUsers: any[] = [];
+          // filter out the users who are not present
+          for (let i = 0; i < users.data.length; ++i) {
+            let isOnLeave = false;
+            for (let j = 0; j < data.length; ++j) {
+              if (
+                data[j].user_id == users.data[i].id &&
+                data[j].state == "accepted"
+              ) {
+                isOnLeave = true;
+              }
+            }
+            if (isOnLeave) {
+              absentUsers.push(users.data[i]);
+            } else {
+              presentUsers.push(users.data[i]);
+            }
+          }
+          response.data = { present: presentUsers, absent: absentUsers };
+        }
+      }
     }
 
     return response;

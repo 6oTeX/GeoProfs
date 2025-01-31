@@ -14,7 +14,12 @@ import {
 import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -292,7 +297,7 @@ export function UsersTable({ users }: UsersTableProps) {
         </div>
       </div>
       <div className="flex items-center justify-between pb-4">
-        <div className="flex items-center space-x-4 bg-gray-200 p-1 rounded">
+        <div className="flex items-center space-x-4 bg-base p-1 rounded">
           <Button
             variant="outline"
             onClick={() => setFilterStatus("alle")}
@@ -406,7 +411,7 @@ export function UsersTable({ users }: UsersTableProps) {
         <Dialog open={showDialog} onOpenChange={closeDialog}>
           <DialogContent className="max-w-lg">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold">Gebruiker Details</h2>
+              <DialogTitle>Gebruiker Details</DialogTitle>
               <Button variant="ghost" onClick={closeDialog}>
                 X
               </Button>

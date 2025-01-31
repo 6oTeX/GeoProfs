@@ -17,7 +17,6 @@ import {
 import { Aperture, Menu, Search } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-
 import { getProfileAction, signOutAction } from "@/app/actions";
 
 interface ProfileProps {
@@ -63,7 +62,7 @@ const Navbar = () => {
       <div className="flex h-14 items-center px-4 sm:px-6">
         {/* Logo */}
         <Link
-          href="#"
+          href="/dashboard"
           className="flex h-9 w-9 items-center justify-center rounded-lg text-primary-foreground"
         >
           <Aperture className="h-5 w-5 text-foreground" />
@@ -75,7 +74,7 @@ const Navbar = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="#"
+                href="/dashboard"
                 className="flex h-9 items-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
               >
                 Dashboard
@@ -87,7 +86,7 @@ const Navbar = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="#"
+                href="/calendar"
                 className="flex h-9 items-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
               >
                 Kalender
@@ -95,6 +94,18 @@ const Navbar = () => {
               </Link>
             </TooltipTrigger>
             <TooltipContent side="bottom">Kalender</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                href="/create-leave-request"
+                className="flex h-9 items-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
+              >
+                Vraag verlof aan
+                <span className="sr-only">Vraag verlof aan</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">Vraag verlof aan</TooltipContent>
           </Tooltip>
           {/* Add more navigation items as needed */}
         </nav>

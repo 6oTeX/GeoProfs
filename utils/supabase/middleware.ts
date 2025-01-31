@@ -39,18 +39,25 @@ export const updateSession = async (request: NextRequest) => {
     // https://supabase.com/docs/guides/auth/server-side/nextjs
     const user = await supabase.auth.getUser();
 
-    // If the user is not logged in, redirect to the sign-in page
-    if (request.nextUrl.pathname.startsWith("/") && !user) {
-      return NextResponse.redirect(new URL("/sign-in", request.url));
-    }
-
     // protected routes
-    if (request.nextUrl.pathname.startsWith("/protected") && user.error) {
+
+    if (
+      (request.nextUrl.pathname.startsWith("/calendar") ||
+        request.nextUrl.pathname.startsWith("/leave-requests") ||
+        request.nextUrl.pathname.startsWith("/dashboard") ||
+        request.nextUrl.pathname.startsWith("/reset-password")) &&
+      (user.error || !user)
+    ) {
       return NextResponse.redirect(new URL("/sign-in", request.url));
     }
 
-    if (request.nextUrl.pathname === "/" && !user.error) {
-      return NextResponse.redirect(new URL("/protected", request.url));
+    // public routes
+    if (
+      request.nextUrl.pathname.startsWith("/sign-in") &&
+      !user.error &&
+      user
+    ) {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
     }
 
     return response;

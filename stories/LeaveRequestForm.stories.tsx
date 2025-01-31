@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import LeaveRequestForm from "@/components/forms/leave-request-form";
+import LeaveRequestForm from "@/components/forms/LeaveRequestForm";
 
 const meta: Meta<typeof LeaveRequestForm> = {
   component: LeaveRequestForm,

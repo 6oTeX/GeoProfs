@@ -29,6 +29,13 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+    /* Extra Colors for Error, Warning and Success */
+    --error: 0 84.2% 60.2%;
+    --error-foreground: 0 0% 98%;
+    --warning: 0 84.2% 60.2%;
+    --warning-foreground: 0 0% 98%;
+    --success: 0 84.2% 60.2%;
+    --success-foreground: 0 0% 98%;
   }
 
   .dark {
@@ -56,6 +63,13 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    /* Extra Colors for Error, Warning and Success */
+    --error: 0 84.2% 60.2%;
+    --error-foreground: 0 0% 98%;
+    --warning: 0 84.2% 60.2%;
+    --warning-foreground: 0 0% 98%;
+    --success: 0 84.2% 60.2%;
+    --success-foreground: 0 0% 98%;
   }
 }
 

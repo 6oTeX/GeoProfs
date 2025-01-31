@@ -1,5 +1,4 @@
 "use server";
-import translate from "translate";
 import { createClient } from "@/utils/supabase/server";
 import { AuthError, User } from "@supabase/supabase-js";
 
@@ -18,7 +17,7 @@ class UserController {
 
   public static async updateSaldo(
     userId: string,
-    addition: number
+    addition: number,
   ): Promise<boolean> {
     const supabase = await createClient();
     const user = await supabase.from("profiles").select("*").eq("id", userId);
@@ -31,6 +30,31 @@ class UserController {
       .update({ saldo: user.data[0].saldo + addition });
 
     return true;
+  }
+
+  public static async getProfile(userId: string): Promise<{
+    full_name: string;
+    username: string;
+    saldo: number;
+    avatar_url: string;
+  }> {
+    const supabase = await createClient();
+    const user = await supabase.from("profiles").select("*").eq("id", userId);
+    if (user.error) {
+      return {
+        saldo: 0,
+        full_name: "",
+        username: "",
+        avatar_url: "",
+      };
+    }
+
+    return {
+      saldo: user.data[0].saldo,
+      full_name: user.data[0].full_name,
+      username: user.data[0].username,
+      avatar_url: user.data[0].avatar_url,
+    };
   }
 
   public static async isManagerOf(userId: string): Promise<boolean> {
