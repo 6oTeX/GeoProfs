@@ -121,8 +121,8 @@ class LeaveRequestController {
 
     await user.pull();
 
-    response.data = user.getLeaveRequests().map(request => request.get());
-    
+    response.data = user.getLeaveRequests().map((request) => request.get());
+
     return response;
   }
 

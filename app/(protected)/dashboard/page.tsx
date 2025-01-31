@@ -6,33 +6,30 @@ import RecentApplications, {
 import * as models from "@/models/user";
 
 export default async function Dashboard() {
-
-
   const users = await models.User.getAll();
 
-  for (let i = 0; i < users.length; ++i)
-  {
+  for (let i = 0; i < users.length; ++i) {
     await users[i].pull();
   }
 
-  const userData = users.map(user => {
+  const userData = users.map((user) => {
     const data = user.get();
     const department = user.getDepartment();
-    
+
     return {
       id: data.id,
       balance: data.saldo,
       employee: {
         firstName: data.full_name,
         lastName: "",
-        email: data.email
+        email: data.email,
       },
       status: "Aanwezig",
       section: {
         team: department ? department.name : "Algemeen",
-        role: "Werknemer"
-      }
-    }
+        role: "Werknemer",
+      },
+    };
   });
 
   const sampleUsers: User[] = [

@@ -119,7 +119,7 @@ const Navbar = () => {
             </TooltipTrigger>
             <TooltipContent side="bottom">Manage gebruikers</TooltipContent>
           </Tooltip>
-          
+
           {/* Add more navigation items as needed */}
         </nav>
 
