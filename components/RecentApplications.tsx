@@ -30,7 +30,7 @@ const statusConfig = {
 };
 
 export default async function RecentApplications() {
-  const { data, errors, success } =
+  const data =
     await LeaveRequestController.getMyRequests();
 
   data.map(
@@ -70,10 +70,10 @@ export default async function RecentApplications() {
       </div>
 
       <div className="space-y-4">
-        {success ? (
-          data.map((application: LeaveRequestData, index: number) => {
-            const status = {
-              label: application.state,
+        {data ? (
+          data.map((application: Application, index: number) => {
+            const status = statusConfig[application.status] || {
+              label: "Onbekend",
               color: "text-gray-500",
               icon: XCircle,
             };

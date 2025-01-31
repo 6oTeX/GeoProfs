@@ -149,6 +149,33 @@ export class User {
     return !(await user.isManagerOf(this));
   }
 
+  public async getManagedDepartments(): Promise<Department[]>
+  {
+    const departments: Department[] = [];
+
+    const supabase = await createClient();
+    if (!this.m_data.department_id)
+    {
+      return [];
+    }
+    const {data, error} = await supabase.from("departments").select("id").eq("manager",this.m_data.id);
+
+    if (error)
+    {
+      console.error(error.message);
+      return [];
+    }
+
+    for (let i = 0; i < data.length; ++i)
+    {
+      const department = new Department(data[i].id);
+      await department.pull(true);
+      departments.push(department);
+    }
+
+    return departments;
+  }
+
   public static async getAll(): Promise<User[]> {
     const supabase = await createClient();
     const { data, error } = await supabase.from("profiles").select("*");
