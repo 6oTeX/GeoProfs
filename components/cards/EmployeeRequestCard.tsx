@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Modal } from "@/components/ui/modal";
 
-
 interface EmployeeRequestCardProps {
   element: {
     id: string;
@@ -163,10 +162,11 @@ export default function EmployeeRequestCard({
         // Show response
         onClick={showResponse}
         // Change hover based on if request has passed.
-        className={`flex items-center justify-between w-full max-w-md p-3 border rounded-lg gap-3 cursor-pointer ${currentDate < element.endDate
+        className={`flex items-center justify-between w-full max-w-md p-3 border rounded-lg gap-3 cursor-pointer ${
+          currentDate < element.endDate
             ? "hover:bg-accent hover:shadow-md transition"
             : "bg-inactive"
-          }`}
+        }`}
       >
         <div className="flex items-center gap-3">
           <div className="flex flex-col">
@@ -190,8 +190,9 @@ export default function EmployeeRequestCard({
           </div>
           <div
             // Display state and color based on request state.
-            className={`px-2.5 py-0.1 text-xs font-medium rounded-lg flex items-center ${stateColor[element.state] || stateColor.default
-              }`}
+            className={`px-2.5 py-0.1 text-xs font-medium rounded-lg flex items-center ${
+              stateColor[element.state] || stateColor.default
+            }`}
           >
             {stateTranslations[element.state] || "Niet beschikbaar"}
           </div>
@@ -214,19 +215,12 @@ export default function EmployeeRequestCard({
                   <p>{element.explanation || "Niet beschikbaar."}</p>
                 </div>
                 <div>
-<<<<<<< HEAD:components/cards/employee-request-card.tsx
                   <h3 className="text-lg font-semibold">Gebruiker Informatie:</h3>
                   <p>Naam: {element.user.full_name || "Niet beschikbaar."}</p>
                   <p>Email: {element.user.email || "Niet beschikbaar."}</p>
-=======
                   <h3 className="text-lg font-semibold">
                     Gebruiker Informatie:
                   </h3>
-                  <p>
-                    Naam: {element.userData.full_name || "Niet beschikbaar."}
-                  </p>
-                  <p>Email: {element.userData.email || "Niet beschikbaar."}</p>
->>>>>>> dev:components/cards/EmployeeRequestCard.tsx
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold">Datum:</h3>
@@ -265,7 +259,7 @@ export default function EmployeeRequestCard({
                           {element.state === "submitted" && !element.reviewed_by
                             ? "Nog geen beoordeling"
                             : element.reviewByUser?.full_name ||
-                            "Niet beschikbaar."}
+                              "Niet beschikbaar."}
                         </p>
                         <p>
                           Reactie:{" "}
@@ -293,10 +287,11 @@ export default function EmployeeRequestCard({
                             title={
                               !review.trim() ? "Reactie is verplicht!" : ""
                             }
-                            className={`mt-4 px-4 py-2 bg-green-500 text-white rounded-lg ${isLoading || !review.trim()
+                            className={`mt-4 px-4 py-2 bg-green-500 text-white rounded-lg ${
+                              isLoading || !review.trim()
                                 ? "opacity-50 cursor-not-allowed"
                                 : "hover:bg-green-700"
-                              }`}
+                            }`}
                           >
                             Accepteren
                           </button>
@@ -308,10 +303,11 @@ export default function EmployeeRequestCard({
                             title={
                               !review.trim() ? "Reactie is verplicht!" : ""
                             }
-                            className={`mt-4 px-4 py-2 bg-red-500 text-white rounded-lg ${isLoading || !review.trim()
+                            className={`mt-4 px-4 py-2 bg-red-500 text-white rounded-lg ${
+                              isLoading || !review.trim()
                                 ? "opacity-50 cursor-not-allowed"
                                 : "hover:bg-red-700"
-                              }`}
+                            }`}
                           >
                             Afwijzen
                           </button>
@@ -328,7 +324,7 @@ export default function EmployeeRequestCard({
                       {element.state === "submitted" && !element.reviewed_by
                         ? "Nog geen beoordeling"
                         : element.reviewByUser?.full_name ||
-                        "Niet beschikbaar."}
+                          "Niet beschikbaar."}
                     </p>
                     <p>
                       Reactie:{" "}

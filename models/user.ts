@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { LeaveRequest, LeaveRequestData } from "./leave_request";
-import { Department } from "./department";
+import { Department, DepartmentData } from "./department";
 
 export interface UserData {
   id: string;
@@ -17,11 +17,13 @@ export interface UserData {
 export class User {
   private m_data: UserData;
   private m_leave_requests: LeaveRequest[];
+  private m_department: Department | null;
 
   public constructor(id: string | null = null) {
     this.m_data = User.getDefaultData();
     this.m_data.id = id ? id : "UNDEFINED";
     this.m_leave_requests = [];
+    this.m_department = null;
   }
 
   public async pull(recursive = true): Promise<boolean> {
@@ -64,6 +66,11 @@ export class User {
 
       if (recursive) {
         await this.pullLeaveRequests();
+
+        if (this.m_data.department_id) {
+          this.m_department = new Department(this.m_data.department_id);
+          await this.m_department.pull(false);
+        }
       }
     }
     return true;
@@ -111,6 +118,10 @@ export class User {
 
   public getLeaveRequests(): LeaveRequest[] {
     return this.m_leave_requests;
+  }
+
+  public getDepartment(): DepartmentData | null {
+    return this.m_department ? this.m_department.get() : null;
   }
 
   public async isManagerOf(user: User): Promise<boolean> {

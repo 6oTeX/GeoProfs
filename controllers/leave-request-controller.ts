@@ -214,12 +214,10 @@ class LeaveRequestController {
     // update saldo
     if (to == "accepted") {
       // calculate saldo
-      console.log("Editing saldo");
       const diff =
         (new Date(request.data[0].start_date).getTime() -
           new Date(request.data[0].end_date).getTime()) /
         (60 * 60 * 1000 * 3);
-      console.log(diff);
     }
 
     return response;
