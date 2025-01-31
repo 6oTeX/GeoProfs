@@ -1,13 +1,14 @@
 import LeaveRequestController from "@/controllers/leave-request-controller";
 import { Separator } from "@/components/ui/separator";
 import EmployeeRequestCard from "./EmployeeRequestCard";
+import { User } from "@/models/user";
 
 export default async function EmployeeRequestList() {
   // Check if user is a manager.
   const isManager = true;
   var requestsToGather;
   if (isManager) {
-    requestsToGather = LeaveRequestController.getMyRequests();
+    requestsToGather = LeaveRequestController.getMyManagedRequests();
     // requestsToGet = LeaveRequestController.getRequestsByDepartment();
   } else {
     requestsToGather = LeaveRequestController.getMyRequests();

@@ -5,7 +5,7 @@ import axios from "axios";
 
 export default async function EmployeeRequestList() {
     // Check if user is a manager.
-    const isManager = false;
+    const isManager = true;
     var requestsToGather;
     if (isManager)  {
         requestsToGather = await LeaveRequestController.getMyManagedRequests();

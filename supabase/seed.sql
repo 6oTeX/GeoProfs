@@ -237,3 +237,7 @@ INSERT INTO public.leave_requests (
         (SELECT id FROM auth.users WHERE email = 'user1@geoprofs.com'),
         'Approved.'
     );
+
+
+INSERT INTO public.departments (name,manager) VALUES ('ICT',(SELECT id FROM auth.users WHERE email = 'user1@geoprofs.com'));
+UPDATE public.profiles SET department_id = (SELECT id FROM public.departments WHERE name = 'ICT');
