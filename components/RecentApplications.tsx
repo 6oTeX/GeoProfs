@@ -12,17 +12,17 @@ export interface Application {
 }
 
 const statusConfig = {
-  approved: {
+  accepted: {
     label: "Goedgekeurd",
     color: "text-[#4ade80]",
     icon: CheckCircle2,
   },
-  rejected: {
+  declined: {
     label: "Afgekeurd",
     color: "text-[#dc2626]",
     icon: XCircle,
   },
-  pending: {
+  submitted: {
     label: "In afwachting",
     color: "text-[#fde047]",
     icon: Clock,
@@ -71,8 +71,8 @@ export default async function RecentApplications() {
 
       <div className="space-y-4">
         {data ? (
-          data.map((application: Application, index: number) => {
-            const status = statusConfig[application.status] || {
+          data.map((application: LeaveRequestData, index: number) => {
+            const status = statusConfig[application.state] || {
               label: "Onbekend",
               color: "text-gray-500",
               icon: XCircle,

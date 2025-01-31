@@ -15,8 +15,8 @@ export default async function EmployeeRequestList() {
   const employeeRequestList = await requestsToGather;
   const currentDate = new Date();
   let sortedRequests: any[] = [];
-  if (Array.isArray(employeeRequestList.data)) {
-    const parsedRequests = employeeRequestList.data.map((element) => ({
+  if (Array.isArray(employeeRequestList)) {
+    const parsedRequests = employeeRequestList.map((element) => ({
       ...element,
       // Parse dates from returnData into Date objects.
       startDate: new Date(element.start_date),
