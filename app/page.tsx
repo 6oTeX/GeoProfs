@@ -40,13 +40,13 @@ export default function GeoprofsLandingPage() {
                 href="#features"
                 className="flex items-center text-lg font-medium text-muted-foreground"
               >
-                Features
+                Functies
               </Link>
               <Link
                 href="#testimonials"
                 className="flex items-center text-lg font-medium text-muted-foreground"
               >
-                Testimonials
+                Getuigenissen
               </Link>
             </nav>
           </div>
@@ -59,16 +59,16 @@ export default function GeoprofsLandingPage() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem asChild>
-                <Link href="#features">Features</Link>
+                <Link href="#features">Functies</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="#testimonials">Testimonials</Link>
+                <Link href="#testimonials">Getuigenissen</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           <nav className="hidden md:flex">
             <Button asChild>
-              <Link href="/sign-in">Login</Link>
+              <Link href="/sign-in">Inloggen</Link>
             </Button>
           </nav>
         </div>
@@ -80,19 +80,18 @@ export default function GeoprofsLandingPage() {
         >
           <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
             <h2 className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
-              Features
+              Functies
             </h2>
             <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-              Discover how Geoprofs can revolutionize your company&apos;s
-              time-off management process.
+              Ontdek hoe Geoprofs uw bedrijf kan revolutioneren op het gebied van verlofbeheer.
             </p>
           </div>
           <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
             <Card>
               <CardHeader>
-                <CardTitle>Easy Leave Requests</CardTitle>
+                <CardTitle>Eenvoudige verlofaanvragen</CardTitle>
                 <CardDescription>
-                  Streamlined process for time-off requests.
+                  Gestroomlijnd proces voor verlofaanvragen.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -101,9 +100,9 @@ export default function GeoprofsLandingPage() {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Sick Day Reporting</CardTitle>
+                <CardTitle>Ziekmeldingen</CardTitle>
                 <CardDescription>
-                  Quick and easy sick day notifications.
+                  Snelle en eenvoudige ziekmeldingen.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -112,9 +111,9 @@ export default function GeoprofsLandingPage() {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Team Calendar</CardTitle>
+                <CardTitle>Teamkalender</CardTitle>
                 <CardDescription>
-                  Visualize your team&apos;s availability at a glance.
+                  Bekijk in één oogopslag de beschikbaarheid van uw team.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -123,9 +122,9 @@ export default function GeoprofsLandingPage() {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Mobile App</CardTitle>
+                <CardTitle>Mobiele app</CardTitle>
                 <CardDescription>
-                  Manage time-off on the go with our mobile application.
+                  Beheer uw verlof overal met onze mobiele app.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -134,9 +133,9 @@ export default function GeoprofsLandingPage() {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Approval Workflows</CardTitle>
+                <CardTitle>Goedkeuringsworkflows</CardTitle>
                 <CardDescription>
-                  Customizable approval processes for different leave types.
+                  Aanpasbare goedkeuringsprocessen voor verschillende verloftypes.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -145,9 +144,9 @@ export default function GeoprofsLandingPage() {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Reporting & Analytics</CardTitle>
+                <CardTitle>Rapportage en analyses</CardTitle>
                 <CardDescription>
-                  Gain insights into leave patterns and team availability.
+                  Krijg inzichten in verlofpatronen en teambeschikbaarheid.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -159,48 +158,44 @@ export default function GeoprofsLandingPage() {
         <section id="testimonials" className="container py-8 md:py-12 lg:py-24">
           <div className="mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-4 text-center">
             <h2 className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
-              Testimonials
+              Getuigenissen
             </h2>
             <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7 mb-8">
-              See what our customers are saying about Geoprofs.
+              Lees wat onze klanten over Geoprofs zeggen.
             </p>
           </div>
           <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
             <Card>
               <CardHeader>
-                <CardTitle>Streamlined Our Process</CardTitle>
+                <CardTitle>Gestroomlijnd proces</CardTitle>
                 <CardDescription>
-                  Sarah Johnson, HR Manager at TechCorp
+                  Sarah Johnson, HR Manager bij TechCorp
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                Geoprofs has completely streamlined our leave management
-                process. It&apos;s user-friendly and has saved us countless
-                hours.
+                Geoprofs heeft ons verlofbeheer volledig gestroomlijnd. Het is gebruiksvriendelijk en heeft ons talloze uren bespaard.
               </CardContent>
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Improved Team Communication</CardTitle>
+                <CardTitle>Verbeterde teamcommunicatie</CardTitle>
                 <CardDescription>
-                  Mark Lee, Team Lead at InnovateCo
+                  Mark Lee, teamleider bij InnovateCo
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                The team calendar feature has greatly improved our communication
-                and planning. We always know who&apos;s available.
+                De teamkalenderfunctie heeft onze communicatie en planning enorm verbeterd. We weten altijd wie er beschikbaar is.
               </CardContent>
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Perfect for Remote Teams</CardTitle>
+                <CardTitle>Perfect voor remote teams</CardTitle>
                 <CardDescription>
-                  Emily Chen, CEO of RemoteWorks
+                  Emily Chen, CEO van RemoteWorks
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                As a fully remote company, Geoprofs has been invaluable in
-                managing our global team&apos;s time-off and availability.
+                Als volledig remote bedrijf is Geoprofs van onschatbare waarde geweest bij het beheren van de beschikbaarheid en het verlof van ons wereldwijde team.
               </CardContent>
             </Card>
           </div>
@@ -209,16 +204,15 @@ export default function GeoprofsLandingPage() {
         <section className="container py-8 md:py-12 lg:py-24">
           <div className="mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-4 text-center">
             <h2 className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
-              Ready to simplify your leave management?
+              Klaar om uw verlofbeheer te vereenvoudigen?
             </h2>
             <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-              Join thousands of companies already using Geoprofs to streamline
-              their time-off processes.
+              Sluit u aan bij duizenden bedrijven die Geoprofs al gebruiken om hun verlofprocessen te stroomlijnen.
             </p>
             <div className="flex w-full max-w-sm items-center space-x-2">
-              <Input type="email" placeholder="Enter your work email" />
+              <Input type="email" placeholder="Voer uw zakelijke e-mailadres in" />
               <Button type="submit">
-                Get Started
+                Begin nu
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
@@ -228,11 +222,11 @@ export default function GeoprofsLandingPage() {
       <footer className="py-6 md:px-8 md:py-0">
         <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
           <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-            © 2024 Geoprofs. All rights reserved.
+            © 2024 Geoprofs. Alle rechten voorbehouden.
           </p>
           <nav className="flex gap-4 text-sm text-muted-foreground">
             <Link href="#" className="hover:underline">
-              Terms
+              Voorwaarden
             </Link>
             <Link href="#" className="hover:underline">
               Privacy

@@ -117,9 +117,9 @@ ADD CONSTRAINT unique_project_name UNIQUE (name);
 -- Create Projects
 INSERT INTO public.projects (name, description, start_date, end_date)
 VALUES
-  ('Project Alpha', 'Description for Project Alpha', '2023-11-01', '2023-11-30'),
-  ('Project Beta', 'Description for Project Beta', '2023-12-01', '2023-12-31'),
-  ('Project Gamma', 'Description for Project Gamma', '2023-11-15', '2023-12-15')
+  ('Project Alpha', 'Description for Project Alpha', '2025-01-01', '2025-01-30'),
+  ('Project Beta', 'Description for Project Beta', '2025-02-01', '2025-02-28'),
+  ('Project Gamma', 'Description for Project Gamma', '2025-01-15', '2025-02-15')
 ON CONFLICT (name) DO NOTHING;
 
 -- Assign Users to Projects
@@ -149,8 +149,8 @@ INSERT INTO public.leave_requests (
 ) VALUES
     (
         (SELECT id FROM auth.users WHERE email = 'user2@geoprofs.com'),
-        '2023-11-10',
-        '2023-11-12',
+        '2025-01-10',
+        '2025-01-02',
         'sick',
         'Recovering from flu.',
         'accepted',
@@ -159,8 +159,8 @@ INSERT INTO public.leave_requests (
     ),
     (
         (SELECT id FROM auth.users WHERE email = 'user3@geoprofs.com'),
-        '2023-11-15',
-        '2023-11-18',
+        '2025-01-15',
+        '2025-01-18',
         'wedding',
         'Attending a friends wedding.',
         'declined',
@@ -169,8 +169,8 @@ INSERT INTO public.leave_requests (
     ),
     (
         (SELECT id FROM auth.users WHERE email = 'user4@geoprofs.com'),
-        '2023-12-01',
-        '2023-12-05',
+        '2025-02-01',
+        '2025-02-05',
         'other',
         'Personal matters to attend to.',
         'resubmitted',
@@ -179,8 +179,8 @@ INSERT INTO public.leave_requests (
     ),
     (
         (SELECT id FROM auth.users WHERE email = 'user5@geoprofs.com'),
-        '2023-12-10',
-        '2023-12-12',
+        '2025-02-10',
+        '2025-02-12',
         'death',
         'Attending a family funeral.',
         'submitted',
@@ -189,8 +189,8 @@ INSERT INTO public.leave_requests (
     ),
     (
         (SELECT id FROM auth.users WHERE email = 'user6@geoprofs.com'),
-        '2023-12-15',
-        '2023-12-20',
+        '2025-02-15',
+        '2025-02-20',
         'vacation',
         'Holiday trip.',
         'accepted',
@@ -199,8 +199,8 @@ INSERT INTO public.leave_requests (
     ),
     (
         (SELECT id FROM auth.users WHERE email = 'user7@geoprofs.com'),
-        '2023-11-25',
-        '2023-11-27',
+        '2025-01-25',
+        '2025-01-27',
         'sick',
         'Medical check-up.',
         'accepted',
@@ -209,8 +209,8 @@ INSERT INTO public.leave_requests (
     ),
     (
         (SELECT id FROM auth.users WHERE email = 'user8@geoprofs.com'),
-        '2023-12-22',
-        '2023-12-24',
+        '2025-02-22',
+        '2025-02-24',
         'vacation',
         'Family gathering.',
         'submitted',
@@ -219,8 +219,8 @@ INSERT INTO public.leave_requests (
     ),
     (
         (SELECT id FROM auth.users WHERE email = 'user9@geoprofs.com'),
-        '2023-11-20',
-        '2023-11-22',
+        '2025-01-20',
+        '2025-01-22',
         'sick',
         'Dental surgery recovery.',
         'accepted',
