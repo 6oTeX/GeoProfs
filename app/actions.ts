@@ -8,11 +8,11 @@ import { redirect } from "next/navigation";
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
-  const supabase = createClient();
-  const origin = headers().get("origin");
+  const supabase = await createClient();
+  const origin = (await headers()).get("origin");
 
   if (!email || !password) {
-    return { error: "Email and password are required" };
+    return { error: "E-mailadres en wachtwoord zijn verplicht." };
   }
 
   const { error } = await supabase.auth.signUp({
@@ -30,7 +30,7 @@ export const signUpAction = async (formData: FormData) => {
     return encodedRedirect(
       "success",
       "/sign-up",
-      "Thanks for signing up! Please check your email for a verification link.",
+      "Bedankt voor je registratie! Controleer je e-mail voor een verificatielink.",
     );
   }
 };
@@ -38,7 +38,7 @@ export const signUpAction = async (formData: FormData) => {
 export const signInAction = async (formData: FormData) => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { error } = await supabase.auth.signInWithPassword({
     email,
@@ -46,24 +46,32 @@ export const signInAction = async (formData: FormData) => {
   });
 
   if (error) {
-    return encodedRedirect("error", "/sign-in", error.message);
+    return encodedRedirect(
+      "error",
+      "/sign-in",
+      "Onjuiste gebruikersnaam of wachtwoord.",
+    );
   }
 
-  return redirect("/protected");
+  return redirect("/dashboard");
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
-  const supabase = createClient();
-  const origin = headers().get("origin");
+  const supabase = await createClient();
+  const origin = (await headers()).get("origin");
   const callbackUrl = formData.get("callbackUrl")?.toString();
 
   if (!email) {
-    return encodedRedirect("error", "/forgot-password", "Email is required");
+    return encodedRedirect(
+      "error",
+      "/forgot-password",
+      "E-mailadres is verplicht.",
+    );
   }
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${origin}/auth/callback?redirect_to=/protected/reset-password`,
+    redirectTo: `${origin}/auth/callback?redirect_to=/reset-password`,
   });
 
   if (error) {
@@ -71,7 +79,7 @@ export const forgotPasswordAction = async (formData: FormData) => {
     return encodedRedirect(
       "error",
       "/forgot-password",
-      "Could not reset password",
+      "Kon wachtwoord niet resetten.",
     );
   }
 
@@ -82,12 +90,12 @@ export const forgotPasswordAction = async (formData: FormData) => {
   return encodedRedirect(
     "success",
     "/forgot-password",
-    "Check your email for a link to reset your password.",
+    "Controleer je e-mail voor een link om je wachtwoord te resetten.",
   );
 };
 
 export const resetPasswordAction = async (formData: FormData) => {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const password = formData.get("password") as string;
   const confirmPassword = formData.get("confirmPassword") as string;
@@ -95,16 +103,16 @@ export const resetPasswordAction = async (formData: FormData) => {
   if (!password || !confirmPassword) {
     encodedRedirect(
       "error",
-      "/protected/reset-password",
-      "Password and confirm password are required",
+      "/reset-password",
+      "Wachtwoord en bevestigingswachtwoord zijn verplicht.",
     );
   }
 
   if (password !== confirmPassword) {
     encodedRedirect(
       "error",
-      "/protected/reset-password",
-      "Passwords do not match",
+      "/reset-password",
+      "Wachtwoorden komen niet overeen.",
     );
   }
 
@@ -115,16 +123,39 @@ export const resetPasswordAction = async (formData: FormData) => {
   if (error) {
     encodedRedirect(
       "error",
-      "/protected/reset-password",
-      "Password update failed",
+      "/reset-password",
+      "Wachtwoord bijwerken mislukt.",
     );
   }
 
-  encodedRedirect("success", "/protected/reset-password", "Password updated");
+  encodedRedirect("success", "/reset-password", "Wachtwoord bijgewerkt.");
 };
 
 export const signOutAction = async () => {
-  const supabase = createClient();
-  await supabase.auth.signOut();
-  return redirect("/sign-in");
+  const supabase = await createClient();
+  await supabase.auth.signOut().finally(() => {
+    return redirect("/sign-in");
+  });
+};
+
+export const getProfileAction = async () => {
+  const supabase = await createClient();
+
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userError) {
+    console.error(userError.message);
+    return null;
+  }
+
+  const { data: profileData, error: profileError } = await supabase
+    .from("profiles")
+    .select("updated_at, username,full_name, avatar_url")
+    .eq("id", userData.user.id)
+    .single();
+
+  if (profileError) {
+    console.error(profileError.message);
+    return null;
+  }
+  return profileData;
 };

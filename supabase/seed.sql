@@ -1,179 +1,239 @@
-CREATE TYPE public.notification_type AS ENUM (
-    'info',
-    'warning',
-    'error'
-);
+-- Add Admin user with email
+INSERT INTO
+    auth.users (
+        instance_id,
+        id,
+        aud,
+        role,
+        email,
+        encrypted_password,
+        email_confirmed_at,
+        recovery_sent_at,
+        last_sign_in_at,
+        raw_app_meta_data,
+        raw_user_meta_data,
+        created_at,
+        updated_at,
+        confirmation_token,
+        email_change,
+        email_change_token_new,
+        recovery_token
+    ) (
+        select
+            '00000000-0000-0000-0000-000000000000',
+            uuid_generate_v4 (),
+            'authenticated',
+            'supabase_admin',
+            'info@geoprofs.com',
+            crypt ('password', gen_salt ('bf')),
+            current_timestamp,
+            current_timestamp,
+            current_timestamp,
+            '{"provider":"email","providers":["email"]}',
+            '{"full_name": "Admin", "avatar_url": "https://api.dicebear.com/9.x/miniavs/png?seed=admin", "username": "admin", "saldo": 0 }'::jsonb,
+            current_timestamp,
+            current_timestamp,
+            '',
+            '',
+            '',
+            ''
+    );
 
-CREATE TABLE public.notifications (
-    id serial,
-    user_id uuid null,
-    message text not null,
-    notification_type public.notification_type null default 'info'::notification_type,
-    created_at timestamp with time zone null default now(),
-    is_read boolean null default false,
-    payload jsonb null,
-    receiver_id uuid[] not null,
-    constraint notifications_pkey primary key (id),
-    constraint notifications_user_id_fkey foreign key (user_id) references auth.users (id)
-) tablespace pg_default;
-
--- Step 1: Enable RLS on the notifications table
-ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
-
--- Step 2: Enable Realtime option in the notifications table
-ALTER publication supabase_realtime add table public.notifications;
-
-
--- Step 3: Create Policies
-
--- Allow users to view their own notifications
-CREATE POLICY "Allow users to select their own notifications"
-ON notifications
-FOR SELECT
-               USING (auth.uid() = user_id);
-
--- Allow users to update their own notifications
-CREATE POLICY "Allow users to update their own notifications"
-ON notifications
-FOR UPDATE
-               USING (auth.uid() = user_id);
-
--- Allow only admins to insert notifications
-CREATE POLICY "Allow admins to insert notifications"
-ON notifications
-FOR INSERT
-WITH CHECK (EXISTS (SELECT 1 FROM auth.users WHERE id = auth.uid() AND is_super_admin = true));
-
--- Deny all access by default
-CREATE POLICY "Deny all access by default"
-ON notifications
-FOR ALL
-USING (false);
-
--- Create a table for public profiles
-create table profiles (
-    id uuid references auth.users on delete cascade not null primary key,
-    updated_at timestamp with time zone,
-    username text unique,
-    full_name text,
-    avatar_url text,
-    website text,
-constraint username_length check (char_length(username) >= 3)
-);
-
-
--- Set up Row Level Security (RLS)
--- See https://supabase.com/docs/guides/auth/row-level-security for more details.
-alter table profiles
-    enable row level security;
-
-create policy "Public profiles are viewable by everyone." on profiles
-  for select using (true);
-
-create policy "Users can insert their own profile." on profiles
-  for insert with check ((select auth.uid()) = id);
-
-create policy "Users can update own profile." on profiles
-  for update using ((select auth.uid()) = id);
-
--- This trigger automatically creates a profile entry when a new user signs up via Supabase Auth.
--- See https://supabase.com/docs/guides/auth/managing-user-data#using-triggers for more details.
-create function public.handle_new_user()
-    returns trigger
-    set search_path = ''
-as $$
-begin
-insert into public.profiles (id, full_name, avatar_url)
-values (new.id, new.raw_user_meta_data->>'full_name', new.raw_user_meta_data->>'avatar_url');
-return new;
-end;
-$$ language plpgsql security definer;
-create trigger on_auth_user_created
-    after insert on auth.users
-    for each row execute procedure public.handle_new_user();
-
--- Set up Storage!
-insert into storage.buckets (id, name)
-values ('avatars', 'avatars');
-
--- Set up access controls for storage.
--- See https://supabase.com/docs/guides/storage#policy-examples for more details.
-create policy "Avatar images are publicly accessible." on storage.objects
-  for select using (bucket_id = 'avatars');
-
-create policy "Anyone can upload an avatar." on storage.objects
-  for insert with check (bucket_id = 'avatars');
+-- Create test users
+INSERT INTO
+    auth.users (
+        instance_id,
+        id,
+        aud,
+        role,
+        email,
+        encrypted_password,
+        email_confirmed_at,
+        recovery_sent_at,
+        last_sign_in_at,
+        raw_app_meta_data,
+        raw_user_meta_data,
+        created_at,
+        updated_at,
+        confirmation_token,
+        email_change,
+        email_change_token_new,
+        recovery_token
+    ) (
+        select
+            '00000000-0000-0000-0000-000000000000',
+            uuid_generate_v4 (),
+            'authenticated',
+            'authenticated',
+            'user' || gs::text || '@geoprofs.com',
+            crypt ('password123', gen_salt ('bf')),
+            current_timestamp,
+            current_timestamp,
+            current_timestamp,
+            '{"provider":"email","providers":["email"]}',
+            format('{"full_name": "User %s", "avatar_url": "https://api.dicebear.com/9.x/miniavs/png?seed=%s", "username": "user%s", "saldo": %s}', gs::text, gs::text, gs::text,gs * 10)::jsonb,
+            current_timestamp,
+            current_timestamp,
+            '',
+            '',
+            '',
+            ''
+        FROM
+            generate_series(1, 10) AS gs
+    );
 
 
 
-INSERT INTO auth.users (
-    instance_id,
-    id,
-    aud,
-    role,
-    email,
-    encrypted_password,
-    email_confirmed_at,
-    invited_at,
-    confirmation_token,
-    confirmation_sent_at,
-    recovery_token,
-    recovery_sent_at,
-    email_change_token_new,
-    email_change,
-    email_change_sent_at,
-    last_sign_in_at,
-    raw_app_meta_data,
-    raw_user_meta_data,
-    is_super_admin,
-    created_at,
-    updated_at,
-    phone,
-    phone_confirmed_at,
-    phone_change,
-    phone_change_token,
-    phone_change_sent_at,
-    email_change_token_current,
-    email_change_confirm_status,
-    banned_until,
-    reauthentication_token,
-    reauthentication_sent_at,
-    is_sso_user,
-    deleted_at,
-    is_anonymous
-) VALUES (
-             '11111111-1111-1111-1111-111111111111', -- instance_id (dummy UUID)
-             '00000000-0000-0000-0000-000000000001', -- id (dummy UUID for user)
-             'dummy_aud',                           -- aud (optional field)
-             'admin',                               -- role (admin role)
-             'admin@gmail.com',                     -- email (admin email)
-             '$2a$12$7Tgk1.j5W9sJRV5gI.e8LOkX5miG5bwH2OuTQXgjgFf5K/MU.NboW', -- encrypted_password (bcrypt hash of "password")
-             NOW(),                                 -- email_confirmed_at (timestamp for email confirmation)
-             NOW(),                                 -- invited_at (timestamp for invitation)
-             'dummy_confirmation_token',            -- confirmation_token
-             NOW(),                                 -- confirmation_sent_at
-             'dummy_recovery_token',                -- recovery_token
-             NOW(),                                 -- recovery_sent_at
-             NULL,                                  -- email_change_token_new
-             NULL,                                  -- email_change
-             NULL,                                  -- email_change_sent_at
-             NOW(),                                 -- last_sign_in_at
-             '{}'::jsonb,                           -- raw_app_meta_data (empty JSON)
-             '{}'::jsonb,                           -- raw_user_meta_data (empty JSON)
-             TRUE,                                  -- is_super_admin (set true for admin)
-             NOW(),                                 -- created_at (timestamp of creation)
-             NOW(),                                 -- updated_at (timestamp of last update)
-             '+123456789',                          -- phone (dummy phone number)
-             NOW(),                                 -- phone_confirmed_at
-             '',                                    -- phone_change (default empty)
-             '',                                    -- phone_change_token (default empty)
-             NULL,                                  -- phone_change_sent_at
-             '',                                    -- email_change_token_current (default empty)
-             0,                                     -- email_change_confirm_status (default 0)
-             NULL,                                  -- banned_until (no ban set)
-             '',                                    -- reauthentication_token (default empty)
-             NOW(),                                 -- reauthentication_sent_at
-             FALSE,                                 -- is_sso_user (not an SSO user)
-             NULL,                                  -- deleted_at (not deleted)
-             FALSE                                  -- is_anonymous (not anonymous)
-         );
+
+-- Test user email identities with non-null provider_id
+INSERT INTO
+    auth.identities (
+        id,
+        user_id,
+        identity_data,
+        provider,
+        provider_id,
+        last_sign_in_at,
+        created_at,
+        updated_at
+    ) (
+        select
+            uuid_generate_v4 (),
+            id,
+            format('{"sub":"%s","email":"%s"}', id::text, email)::jsonb,
+            'email',
+            id::text,  -- assuming provider_id can be the same as user_id
+            current_timestamp,
+            current_timestamp,
+            current_timestamp
+        from
+            auth.users
+    );
+
+-- Add unique constraint to the name column in the projects table
+ALTER TABLE public.projects
+ADD CONSTRAINT unique_project_name UNIQUE (name);
+
+-- Create Projects
+INSERT INTO public.projects (name, description, start_date, end_date)
+VALUES
+  ('Project Alpha', 'Description for Project Alpha', '2023-11-01', '2023-11-30'),
+  ('Project Beta', 'Description for Project Beta', '2023-12-01', '2023-12-31'),
+  ('Project Gamma', 'Description for Project Gamma', '2023-11-15', '2023-12-15')
+ON CONFLICT (name) DO NOTHING;
+
+-- Assign Users to Projects
+INSERT INTO public.user_project_relations (project_id, user_id)
+VALUES
+    ((SELECT id FROM public.projects WHERE name = 'Project Alpha'), (SELECT id FROM auth.users WHERE email = 'user1@geoprofs.com')),
+    ((SELECT id FROM public.projects WHERE name = 'Project Alpha'), (SELECT id FROM auth.users WHERE email = 'user2@geoprofs.com')),
+    ((SELECT id FROM public.projects WHERE name = 'Project Alpha'), (SELECT id FROM auth.users WHERE email = 'user3@geoprofs.com')),
+    ((SELECT id FROM public.projects WHERE name = 'Project Alpha'), (SELECT id FROM auth.users WHERE email = 'user4@geoprofs.com')),
+    ((SELECT id FROM public.projects WHERE name = 'Project Beta'), (SELECT id FROM auth.users WHERE email = 'user5@geoprofs.com')),
+    ((SELECT id FROM public.projects WHERE name = 'Project Beta'), (SELECT id FROM auth.users WHERE email = 'user6@geoprofs.com')),
+    ((SELECT id FROM public.projects WHERE name = 'Project Beta'), (SELECT id FROM auth.users WHERE email = 'user7@geoprofs.com')),
+    ((SELECT id FROM public.projects WHERE name = 'Project Gamma'), (SELECT id FROM auth.users WHERE email = 'user8@geoprofs.com')),
+    ((SELECT id FROM public.projects WHERE name = 'Project Gamma'), (SELECT id FROM auth.users WHERE email = 'user9@geoprofs.com')),
+    ((SELECT id FROM public.projects WHERE name = 'Project Gamma'), (SELECT id FROM auth.users WHERE email = 'user10@geoprofs.com'));
+
+-- Insert Dummy Leave Requests
+INSERT INTO public.leave_requests (
+    user_id,
+    start_date,
+    end_date,
+    reason,
+    explanation,
+    state,
+    reviewed_by,
+    response
+) VALUES
+    (
+        (SELECT id FROM auth.users WHERE email = 'user1@geoprofs.com'),
+        '2023-11-01',
+        '2023-11-05',
+        'vacation',
+        'Family trip to the mountains.',
+        'submitted',
+        NULL,
+        NULL
+    ),
+    (
+        (SELECT id FROM auth.users WHERE email = 'user2@geoprofs.com'),
+        '2023-11-10',
+        '2023-11-12',
+        'sick',
+        'Recovering from flu.',
+        'accepted',
+        (SELECT id FROM auth.users WHERE email = 'user10@geoprofs.com'),
+        'Get well soon!'
+    ),
+    (
+        (SELECT id FROM auth.users WHERE email = 'user3@geoprofs.com'),
+        '2023-11-15',
+        '2023-11-18',
+        'wedding',
+        'Attending a friends wedding.',
+        'declined',
+        (SELECT id FROM auth.users WHERE email = 'user7@geoprofs.com'),
+        'Not approved due to project deadlines.'
+    ),
+    (
+        (SELECT id FROM auth.users WHERE email = 'user4@geoprofs.com'),
+        '2023-12-01',
+        '2023-12-05',
+        'other',
+        'Personal matters to attend to.',
+        'resubmitted',
+        NULL,
+        NULL
+    ),
+    (
+        (SELECT id FROM auth.users WHERE email = 'user5@geoprofs.com'),
+        '2023-12-10',
+        '2023-12-12',
+        'death',
+        'Attending a family funeral.',
+        'submitted',
+        NULL,
+        NULL
+    ),
+    (
+        (SELECT id FROM auth.users WHERE email = 'user6@geoprofs.com'),
+        '2023-12-15',
+        '2023-12-20',
+        'vacation',
+        'Holiday trip.',
+        'accepted',
+        (SELECT id FROM auth.users WHERE email = 'user9@geoprofs.com'),
+        'Enjoy your holiday!'
+    ),
+    (
+        (SELECT id FROM auth.users WHERE email = 'user7@geoprofs.com'),
+        '2023-11-25',
+        '2023-11-27',
+        'sick',
+        'Medical check-up.',
+        'accepted',
+        (SELECT id FROM auth.users WHERE email = 'user10@geoprofs.com'),
+        'Approved. Take care.'
+    ),
+    (
+        (SELECT id FROM auth.users WHERE email = 'user8@geoprofs.com'),
+        '2023-12-22',
+        '2023-12-24',
+        'vacation',
+        'Family gathering.',
+        'submitted',
+        NULL,
+        NULL
+    ),
+    (
+        (SELECT id FROM auth.users WHERE email = 'user9@geoprofs.com'),
+        '2023-11-20',
+        '2023-11-22',
+        'sick',
+        'Dental surgery recovery.',
+        'accepted',
+        (SELECT id FROM auth.users WHERE email = 'user1@geoprofs.com'),
+        'Approved.'
+    );
